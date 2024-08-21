@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "algorithm.h": "c",
+        "public.h": "c",
+        "stdint.h": "c",
+        "test_algorithms.h": "c"
+    }
+}

@@ -1,0 +1,901 @@
+best results:
+rank 1
+output sequence: [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 293696 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 692345
+	tapeMotorWear:			 15
+
+rank 2
+output sequence: [8, 2, 7, 5, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 296958 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 736541
+	tapeMotorWear:			 11
+
+rank 3
+output sequence: [8, 2, 5, 7, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 304643 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 691325
+	tapeMotorWear:			 19
+
+rank 4
+output sequence: [8, 2, 7, 5, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 307905 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 735521
+	tapeMotorWear:			 15
+
+rank 5
+output sequence: [8, 2, 5, 7, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 314932 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 751363
+	tapeMotorWear:			 17
+
+rank 6
+output sequence: [8, 2, 7, 5, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 318194 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 795559
+	tapeMotorWear:			 13
+
+rank 7
+output sequence: [8, 2, 5, 7, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 318836 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 743041
+	tapeMotorWear:			 19
+
+rank 8
+output sequence: [8, 2, 7, 5, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 320922 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 787237
+	tapeMotorWear:			 15
+
+rank 9
+output sequence: [8, 5, 2, 7, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 321915 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 795731
+	tapeMotorWear:			 15
+
+rank 10
+output sequence: [8, 7, 5, 2, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 325246 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 839927
+	tapeMotorWear:			 11
+
+rank 11
+output sequence: [8, 2, 5, 7, 1, 4, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 326257 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 750343
+	tapeMotorWear:			 21
+
+rank 12
+output sequence: [2, 8, 5, 7, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 328529 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 784245
+	tapeMotorWear:			 19
+
+rank 13
+output sequence: [8, 2, 7, 5, 1, 4, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 329519 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 794539
+	tapeMotorWear:			 17
+
+rank 14
+output sequence: [8, 2, 5, 7, 4, 1, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 329548 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 742021
+	tapeMotorWear:			 23
+
+rank 15
+output sequence: [8, 2, 7, 5, 4, 1, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 331634 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 786217
+	tapeMotorWear:			 19
+
+rank 16
+output sequence: [2, 8, 7, 5, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 331912 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 828441
+	tapeMotorWear:			 15
+
+rank 17
+output sequence: [8, 5, 2, 7, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 332862 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 794711
+	tapeMotorWear:			 19
+
+rank 18
+output sequence: [8, 7, 5, 2, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 336193 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 838907
+	tapeMotorWear:			 15
+
+rank 19
+output sequence: [8, 5, 7, 2, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 337588 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 849259
+	tapeMotorWear:			 15
+
+rank 20
+output sequence: [8, 7, 2, 5, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 337761 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 849259
+	tapeMotorWear:			 15
+
+rank 21
+output sequence: [2, 8, 5, 7, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 339476 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 783225
+	tapeMotorWear:			 23
+
+rank 22
+output sequence: [8, 2, 5, 7, 4, 1, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 340072 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 802059
+	tapeMotorWear:			 21
+
+rank 23
+output sequence: [8, 2, 7, 5, 4, 1, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 342158 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 846255
+	tapeMotorWear:			 17
+
+rank 24
+output sequence: [2, 8, 7, 5, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 342859 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 827421
+	tapeMotorWear:			 19
+
+rank 25
+output sequence: [8, 5, 2, 7, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 343151 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 854749
+	tapeMotorWear:			 17
+
+rank 26
+output sequence: [8, 2, 5, 7, 1, 9, 3, 4, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 343450 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 871915
+	tapeMotorWear:			 15
+
+rank 27
+output sequence: [5, 8, 2, 7, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 344364 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 878299
+	tapeMotorWear:			 15
+
+rank 28
+output sequence: [8, 2, 5, 7, 1, 4, 10, 6, 9, 3, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 344498 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 912189
+	tapeMotorWear:			 11
+
+rank 29
+output sequence: [2, 5, 8, 7, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 344566 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 878299
+	tapeMotorWear:			 15
+
+rank 30
+output sequence: [8, 7, 5, 2, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 346482 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 898945
+	tapeMotorWear:			 13
+
+rank 31
+output sequence: [8, 2, 7, 5, 1, 9, 3, 4, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 346712 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 916111
+	tapeMotorWear:			 11
+
+rank 32
+output sequence: [8, 5, 2, 7, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 347055 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 846427
+	tapeMotorWear:			 19
+
+rank 33
+output sequence: [7, 5, 8, 2, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 347221 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 922495
+	tapeMotorWear:			 11
+
+rank 34
+output sequence: [8, 2, 7, 5, 1, 4, 10, 6, 9, 3, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 347760 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 956385
+	tapeMotorWear:			 7
+
+rank 35
+output sequence: [2, 7, 5, 8, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 347775 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 922495
+	tapeMotorWear:			 11
+
+rank 36
+output sequence: [8, 5, 7, 2, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 348535 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 848239
+	tapeMotorWear:			 19
+
+rank 37
+output sequence: [8, 7, 2, 5, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 348708 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 848239
+	tapeMotorWear:			 19
+
+rank 38
+output sequence: [8, 7, 5, 2, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 349305 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 890623
+	tapeMotorWear:			 15
+
+rank 39
+output sequence: [2, 8, 5, 7, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 349765 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 843263
+	tapeMotorWear:			 21
+
+rank 40
+output sequence: [8, 2, 5, 7, 4, 1, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 351162 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 801039
+	tapeMotorWear:			 25
+
+rank 41
+output sequence: [2, 8, 7, 5, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 353148 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 887459
+	tapeMotorWear:			 17
+
+rank 42
+output sequence: [8, 2, 5, 1, 7, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 353179 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 907287
+	tapeMotorWear:			 15
+
+rank 43
+output sequence: [8, 2, 7, 5, 4, 1, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 353248 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 845235
+	tapeMotorWear:			 21
+
+rank 44
+output sequence: [2, 8, 5, 7, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 353669 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 834941
+	tapeMotorWear:			 23
+
+rank 45
+output sequence: [8, 5, 2, 7, 1, 4, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 354476 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 853729
+	tapeMotorWear:			 21
+
+rank 46
+output sequence: [8, 2, 5, 7, 9, 3, 1, 4, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 355086 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 913279
+	tapeMotorWear:			 15
+
+rank 47
+output sequence: [8, 2, 1, 7, 5, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 355213 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 951483
+	tapeMotorWear:			 11
+
+rank 48
+output sequence: [5, 8, 2, 7, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 355311 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 877279
+	tapeMotorWear:			 19
+
+rank 49
+output sequence: [2, 5, 8, 7, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 355513 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 877279
+	tapeMotorWear:			 19
+
+rank 50
+output sequence: [8, 2, 5, 7, 4, 9, 3, 1, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 355709 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 913279
+	tapeMotorWear:			 15
+
+rank 51
+output sequence: [2, 8, 7, 5, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 355876 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 879137
+	tapeMotorWear:			 19
+
+rank 52
+output sequence: [8, 2, 5, 7, 1, 3, 4, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 356476 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 870895
+	tapeMotorWear:			 19
+
+rank 53
+output sequence: [8, 2, 5, 7, 1, 4, 6, 10, 9, 3, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 356657 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 921521
+	tapeMotorWear:			 15
+
+rank 54
+output sequence: [5, 2, 8, 7, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 356788 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 887631
+	tapeMotorWear:			 19
+
+rank 55
+output sequence: [8, 2, 7, 5, 9, 3, 1, 4, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 356866 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 957475
+	tapeMotorWear:			 11
+
+rank 56
+output sequence: [8, 2, 5, 7, 1, 3, 9, 4, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 357138 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 881247
+	tapeMotorWear:			 19
+
+rank 57
+output sequence: [8, 5, 2, 7, 4, 1, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 357767 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 845407
+	tapeMotorWear:			 23
+
+rank 58
+output sequence: [8, 2, 7, 5, 4, 9, 3, 1, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 357795 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 957475
+	tapeMotorWear:			 11
+
+rank 59
+output sequence: [8, 7, 5, 2, 1, 4, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 357807 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 897925
+	tapeMotorWear:			 17
+
+rank 60
+output sequence: [7, 5, 8, 2, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 358168 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 921475
+	tapeMotorWear:			 15
+
+rank 61
+output sequence: [2, 7, 5, 8, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 358722 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 921475
+	tapeMotorWear:			 15
+
+rank 62
+output sequence: [8, 5, 7, 2, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 358824 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 908277
+	tapeMotorWear:			 17
+
+rank 63
+output sequence: [8, 7, 2, 5, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 358997 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 908277
+	tapeMotorWear:			 17
+
+rank 64
+output sequence: [8, 2, 5, 7, 1, 4, 3, 10, 6, 9, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359277 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 916345
+	tapeMotorWear:			 15
+
+rank 65
+output sequence: [8, 2, 5, 7, 1, 4, 10, 6, 3, 9, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359561 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 926697
+	tapeMotorWear:			 15
+
+rank 66
+output sequence: [7, 5, 2, 8, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359644 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 931827
+	tapeMotorWear:			 15
+
+rank 67
+output sequence: [8, 2, 5, 7, 1, 9, 4, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359687 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 881247
+	tapeMotorWear:			 19
+
+rank 68
+output sequence: [8, 2, 7, 5, 1, 3, 4, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359738 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 915091
+	tapeMotorWear:			 15
+
+rank 69
+output sequence: [7, 8, 2, 5, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359857 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 931827
+	tapeMotorWear:			 15
+
+rank 70
+output sequence: [8, 2, 7, 5, 1, 4, 6, 10, 9, 3, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 359919 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 965717
+	tapeMotorWear:			 11
+
+rank 71
+output sequence: [8, 7, 5, 2, 4, 1, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 360017 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 889603
+	tapeMotorWear:			 19
+
+rank 72
+output sequence: [5, 7, 8, 2, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 360158 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 931827
+	tapeMotorWear:			 15
+
+rank 73
+output sequence: [2, 7, 8, 5, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 360291 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 931827
+	tapeMotorWear:			 15
+
+rank 74
+output sequence: [8, 2, 5, 7, 1, 4, 9, 10, 6, 3, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 360357 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 921521
+	tapeMotorWear:			 15
+
+rank 75
+output sequence: [2, 5, 7, 8, 1, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 360359 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 931827
+	tapeMotorWear:			 15
+
+rank 76
+output sequence: [8, 2, 7, 5, 1, 3, 9, 4, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 360400 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 925443
+	tapeMotorWear:			 15
+
+rank 77
+output sequence: [2, 8, 5, 7, 1, 4, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 361090 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 842243
+	tapeMotorWear:			 25
+
+rank 78
+output sequence: [8, 5, 7, 2, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 361647 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 899955
+	tapeMotorWear:			 19
+
+rank 79
+output sequence: [8, 7, 2, 5, 4, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 361725 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 899955
+	tapeMotorWear:			 19
+
+rank 80
+output sequence: [8, 2, 7, 5, 1, 4, 3, 10, 6, 9, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 362539 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 960541
+	tapeMotorWear:			 11
+
+rank 81
+output sequence: [8, 2, 7, 5, 1, 4, 10, 6, 3, 9, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 362823 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 970893
+	tapeMotorWear:			 11
+
+rank 82
+output sequence: [8, 2, 7, 5, 1, 9, 4, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 362949 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 925443
+	tapeMotorWear:			 15
+
+rank 83
+output sequence: [8, 2, 7, 5, 1, 4, 9, 10, 6, 3, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 363619 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 965717
+	tapeMotorWear:			 11
+
+rank 84
+output sequence: [8, 2, 5, 1, 7, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 364126 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 906267
+	tapeMotorWear:			 19
+
+rank 85
+output sequence: [2, 8, 5, 7, 4, 1, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 364381 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 833921
+	tapeMotorWear:			 27
+
+rank 86
+output sequence: [2, 8, 7, 5, 1, 4, 3, 9, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 364473 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 886439
+	tapeMotorWear:			 21
+
+rank 87
+output sequence: [8, 2, 5, 4, 7, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 364497 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 948651
+	tapeMotorWear:			 15
+
+rank 88
+output sequence: [8, 2, 5, 7, 1, 9, 3, 4, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 364920 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 930933
+	tapeMotorWear:			 17
+
+rank 89
+output sequence: [8, 2, 5, 1, 4, 7, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 365050 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 948651
+	tapeMotorWear:			 15
+
+rank 90
+output sequence: [5, 8, 2, 7, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 365600 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 937317
+	tapeMotorWear:			 17
+
+rank 91
+output sequence: [2, 5, 8, 7, 1, 4, 9, 3, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 365802 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 937317
+	tapeMotorWear:			 17
+
+rank 92
+output sequence: [8, 2, 1, 7, 5, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 366160 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 950463
+	tapeMotorWear:			 15
+
+rank 93
+output sequence: [2, 8, 7, 5, 4, 1, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 366588 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 878117
+	tapeMotorWear:			 23
+
+rank 94
+output sequence: [8, 2, 1, 4, 7, 5, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 366778 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 992847
+	tapeMotorWear:			 11
+
+rank 95
+output sequence: [8, 2, 7, 1, 5, 4, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 367728 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 960815
+	tapeMotorWear:			 15
+
+rank 96
+output sequence: [5, 2, 8, 7, 1, 4, 3, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 367735 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 886611
+	tapeMotorWear:			 23
+
+rank 97
+output sequence: [8, 2, 4, 7, 5, 1, 9, 3, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 367802 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 992847
+	tapeMotorWear:			 11
+
+rank 98
+output sequence: [8, 2, 5, 7, 9, 3, 4, 1, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 367967 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 922611
+	tapeMotorWear:			 19
+
+rank 99
+output sequence: [8, 2, 5, 7, 3, 1, 4, 9, 10, 6, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 368113 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 912259
+	tapeMotorWear:			 19
+
+rank 100
+output sequence: [8, 2, 7, 5, 1, 9, 3, 4, 6, 10, ]
+Key Metrics:
+	algorithmRunningDuration:	 0.000000 ms
+	addressingDuration:		 368182 ms
+	readDuration:			 6060 ms
+	tapeBeltWear:			 975129
+	tapeMotorWear:			 13
+
