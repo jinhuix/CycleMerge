@@ -28,6 +28,11 @@ set(TEST2
     ${PROJECT_SOURCE_DIR}/test_algorithms.c
 )
 
+set(DATA_GEN
+    ${PROJECT_SOURCE_DIR}/data_gen.c
+    ${PROJECT_SOURCE_DIR}/logging.c
+)
+
 # 包含头文件目录
 include_directories(${HEADER_DIRS})
 
@@ -40,6 +45,8 @@ target_link_libraries(test PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
 add_executable(test2  ${TEST2})
 target_link_libraries(test2 PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+
+add_executable(data_gen  ${DATA_GEN})
 
 # 添加编译选项和宏定义
 target_compile_options(project_hw PRIVATE -g -std=c99)
