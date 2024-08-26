@@ -1,0 +1,1246 @@
+[2024-08-22 08:57:15,433][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-08-22-08-57-15-433485.log
+[2024-08-22 08:57:15,449][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: random_scipy.
+[2024-08-22 08:57:15,450][basic_search][WARNING][base.py:64] [Build Surrogate] Use probabilistic random forest based on scikit-learn. For better performance, please install pyrfr: https://open-box.readthedocs.io/en/latest/installation/install_pyrfr.html
+[2024-08-22 08:57:15,452][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-08-22-08-57-15-450552.html
+[2024-08-22 08:57:15,454][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.0,
+  'x1': 0.0,
+  'x2': 0.0,
+  'x3': 0.0,
+  'x4': 0.0,
+  'x5': 0.0,
+  'x6': 0.0,
+  'x7': 0.0,
+  'x8': 0.0,
+  'x9': 0.0,
+})
+
+[2024-08-22 08:57:15,454][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [inf].
+[2024-08-22 08:57:15,455][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7279405926611294,
+  'x1': 0.9499742972597989,
+  'x2': 0.7526882657314036,
+  'x3': 0.9095905616183217,
+  'x4': 0.946379070313236,
+  'x5': 0.4795634909343367,
+  'x6': 0.5724671094916657,
+  'x7': 0.444995715131276,
+  'x8': 0.9400588172157769,
+  'x9': 0.5800032868853725,
+})
+
+[2024-08-22 08:57:15,455][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [inf].
+[2024-08-22 08:57:15,547][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.03614860193556757,
+  'x1': 0.3439800282640001,
+  'x2': 0.23932206206506823,
+  'x3': 0.10008465053031357,
+  'x4': 0.02126150129486082,
+  'x5': 0.250558351076302,
+  'x6': 0.7432900692946732,
+  'x7': 0.9516301639325209,
+  'x8': 0.8442261077436554,
+  'x9': 0.6343351154505843,
+})
+
+[2024-08-22 08:57:15,547][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [inf].
+[2024-08-22 08:57:15,713][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.8790956403644901,
+  'x1': 0.9427607725639505,
+  'x2': 0.5630341223763493,
+  'x3': 0.36751960726423083,
+  'x4': 0.27811817290598295,
+  'x5': 0.9794426458467425,
+  'x6': 0.000981989840045716,
+  'x7': 0.4338659832720473,
+  'x8': 0.04359746870400705,
+  'x9': 0.12376203292358123,
+})
+
+[2024-08-22 08:57:15,713][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [inf].
+[2024-08-22 08:57:15,908][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.9653728356564678,
+  'x1': 0.01635095919745566,
+  'x2': 0.06171659410057839,
+  'x3': 0.9873799759044158,
+  'x4': 0.7749934682651927,
+  'x5': 0.388051768964929,
+  'x6': 0.347299510026859,
+  'x7': 0.17213842167141757,
+  'x8': 0.24101293441667448,
+  'x9': 0.1140460269465805,
+})
+
+[2024-08-22 08:57:15,908][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [inf].
+[2024-08-22 08:57:16,115][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.026231294509629133,
+  'x1': 0.45945679027146236,
+  'x2': 0.7986159467012641,
+  'x3': 0.9492979033984171,
+  'x4': 0.006667848480388039,
+  'x5': 0.44404795779277884,
+  'x6': 0.7256647768637968,
+  'x7': 0.1587225208446431,
+  'x8': 0.4131068711313147,
+  'x9': 0.2318736657482383,
+})
+
+[2024-08-22 08:57:16,116][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [inf].
+[2024-08-22 08:57:16,152][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.30687825714245875,
+  'x1': 0.9088587262146897,
+  'x2': 0.6999224434372338,
+  'x3': 0.008543436189430098,
+  'x4': 0.7992893133197085,
+  'x5': 0.23916656181539364,
+  'x6': 0.7187524900768187,
+  'x7': 0.3710212823717549,
+  'x8': 0.03650859743744439,
+  'x9': 0.658373496508449,
+})
+
+[2024-08-22 08:57:16,152][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [inf].
+[2024-08-22 08:57:16,210][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.9959809480139837,
+  'x1': 0.19645580069996194,
+  'x2': 0.36485704861260926,
+  'x3': 0.462459089359162,
+  'x4': 0.8567583983251008,
+  'x5': 0.9038876792489628,
+  'x6': 0.7459431072468974,
+  'x7': 0.8532894863201146,
+  'x8': 0.9784797638151636,
+  'x9': 0.020385944589098037,
+})
+
+[2024-08-22 08:57:16,210][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [inf].
+[2024-08-22 08:57:16,212][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.03020388830391252,
+  'x1': 0.3694649909785751,
+  'x2': 0.9322979036462228,
+  'x3': 0.0092052656882321,
+  'x4': 0.20528384126932775,
+  'x5': 0.8845392509259696,
+  'x6': 0.22242425556229883,
+  'x7': 0.26958862339654865,
+  'x8': 0.7677630182121308,
+  'x9': 0.7828412744765727,
+})
+
+[2024-08-22 08:57:16,213][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [inf].
+[2024-08-22 08:57:16,216][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.006597957848324287,
+  'x1': 0.083146498362767,
+  'x2': 0.8553973491024185,
+  'x3': 0.8602051572135317,
+  'x4': 0.8851180963667753,
+  'x5': 0.14447259039752158,
+  'x6': 0.32221912781217743,
+  'x7': 0.3131141233622694,
+  'x8': 0.7543973357061585,
+  'x9': 0.989118747665533,
+})
+
+[2024-08-22 08:57:16,216][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [inf].
+[2024-08-22 08:57:16,219][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,220][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7573759925418113,
+  'x1': 0.9009235162702341,
+  'x2': 0.13961100902248713,
+  'x3': 0.36157068078942833,
+  'x4': 0.7836087910887436,
+  'x5': 0.663622668296688,
+  'x6': 0.15149639208153787,
+  'x7': 0.43084489298598916,
+  'x8': 0.35992522493230994,
+  'x9': 0.9862357728324377,
+})
+
+[2024-08-22 08:57:16,221][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [inf].
+[2024-08-22 08:57:16,223][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,224][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.9483941693292557,
+  'x1': 0.6459918871725128,
+  'x2': 0.581471272135809,
+  'x3': 0.6603593956683815,
+  'x4': 0.8730891387686549,
+  'x5': 0.22914698668603883,
+  'x6': 0.22300324935732263,
+  'x7': 0.6335473285125205,
+  'x8': 0.9133336484032377,
+  'x9': 0.3293642025040556,
+})
+
+[2024-08-22 08:57:16,224][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [inf].
+[2024-08-22 08:57:16,225][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,225][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.15635485255743797,
+  'x1': 0.7956770231354843,
+  'x2': 0.9549715055535225,
+  'x3': 0.7207999728782045,
+  'x4': 0.16021620402167425,
+  'x5': 0.08307965151028984,
+  'x6': 0.5706087674571177,
+  'x7': 0.11611692385539263,
+  'x8': 0.5432774951858887,
+  'x9': 0.005721978634280811,
+})
+
+[2024-08-22 08:57:16,225][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [inf].
+[2024-08-22 08:57:16,226][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-22 08:57:16,227][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.641173165368183,
+  'x1': 0.7186841777311275,
+  'x2': 0.8253061283730959,
+  'x3': 0.8880639802237952,
+  'x4': 0.5198532106674427,
+  'x5': 0.2047960543769688,
+  'x6': 0.1575310294004878,
+  'x7': 0.8040456209474578,
+  'x8': 0.7368069896352438,
+  'x9': 0.23528477373881407,
+})
+
+[2024-08-22 08:57:16,227][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [inf].
+[2024-08-22 08:57:16,234][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,235][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.45610972983394316,
+  'x1': 0.5494860774212421,
+  'x2': 0.49023056257644926,
+  'x3': 0.5432424799128583,
+  'x4': 0.2370755469238972,
+  'x5': 0.963607850312491,
+  'x6': 0.022285503533720163,
+  'x7': 0.1890115805188186,
+  'x8': 0.062439262828281494,
+  'x9': 0.6737809386532508,
+})
+
+[2024-08-22 08:57:16,235][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [inf].
+[2024-08-22 08:57:16,249][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,249][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.4282146514747027,
+  'x1': 0.9295970823446186,
+  'x2': 0.398416399201561,
+  'x3': 0.8240177673588374,
+  'x4': 0.22806877237076062,
+  'x5': 0.5228559256975143,
+  'x6': 0.3365323370796164,
+  'x7': 0.9902392443917523,
+  'x8': 0.5547520004617305,
+  'x9': 0.5840365327086927,
+})
+
+[2024-08-22 08:57:16,249][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [inf].
+[2024-08-22 08:57:16,251][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,252][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.2895127184419677,
+  'x1': 0.13464686966763317,
+  'x2': 0.8214789099450525,
+  'x3': 0.5673439116143003,
+  'x4': 0.57438449231232,
+  'x5': 0.9153395504949904,
+  'x6': 0.6799308452605187,
+  'x7': 0.3741776484631417,
+  'x8': 0.6507747689076326,
+  'x9': 0.35448929481968705,
+})
+
+[2024-08-22 08:57:16,252][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [inf].
+[2024-08-22 08:57:16,254][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,255][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.3638130073718914,
+  'x1': 0.06571614201394815,
+  'x2': 0.20128378496845578,
+  'x3': 0.7359087002199838,
+  'x4': 0.12114916846693713,
+  'x5': 0.6499196114186225,
+  'x6': 0.16304313359205347,
+  'x7': 0.9478736977371928,
+  'x8': 0.17404489467406448,
+  'x9': 0.5559023395444406,
+})
+
+[2024-08-22 08:57:16,255][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [inf].
+[2024-08-22 08:57:16,257][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,258][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.07557643716796814,
+  'x1': 0.9513573206346175,
+  'x2': 0.8496417359020934,
+  'x3': 0.1882886116531577,
+  'x4': 0.9739501746202246,
+  'x5': 0.023038366731335747,
+  'x6': 0.8002996507701983,
+  'x7': 0.7081189792116136,
+  'x8': 0.5807862286830558,
+  'x9': 0.36433674948875017,
+})
+
+[2024-08-22 08:57:16,258][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [inf].
+[2024-08-22 08:57:16,260][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,260][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.30674302292244315,
+  'x1': 0.10316441843330026,
+  'x2': 0.8590717449963999,
+  'x3': 0.871427178081221,
+  'x4': 0.18059186805551308,
+  'x5': 0.9526246757524253,
+  'x6': 0.13834864720616546,
+  'x7': 0.8217284482927244,
+  'x8': 0.6382079175773585,
+  'x9': 0.2537439887569545,
+})
+
+[2024-08-22 08:57:16,260][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [inf].
+[2024-08-22 08:57:16,262][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,262][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.604448351417406,
+  'x1': 0.04464024967727798,
+  'x2': 0.059229875590202985,
+  'x3': 0.5045638940041934,
+  'x4': 0.09381954617016086,
+  'x5': 0.443567295728454,
+  'x6': 0.3305498617769589,
+  'x7': 0.39958997245064753,
+  'x8': 0.4536934640802033,
+  'x9': 0.5845753544239564,
+})
+
+[2024-08-22 08:57:16,262][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [inf].
+[2024-08-22 08:57:16,264][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,264][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.346741741903128,
+  'x1': 0.277624087738653,
+  'x2': 0.14966305223651943,
+  'x3': 0.12061824057205262,
+  'x4': 0.21377230987615714,
+  'x5': 0.4742012619255376,
+  'x6': 0.040574546019436886,
+  'x7': 0.6639049221021658,
+  'x8': 0.49725250900289963,
+  'x9': 0.8038358538609414,
+})
+
+[2024-08-22 08:57:16,264][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [inf].
+[2024-08-22 08:57:16,266][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,267][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.6639830840082709,
+  'x1': 0.07542225653621493,
+  'x2': 0.07298811118721871,
+  'x3': 0.43230693393983466,
+  'x4': 0.5450937183160852,
+  'x5': 0.450565420842551,
+  'x6': 0.1321914331156555,
+  'x7': 0.709375327050677,
+  'x8': 0.7795160834094023,
+  'x9': 0.3341851119691789,
+})
+
+[2024-08-22 08:57:16,267][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [inf].
+[2024-08-22 08:57:16,269][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,269][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7865545574947678,
+  'x1': 0.38623250063361314,
+  'x2': 0.4600176844965206,
+  'x3': 0.44155569923575944,
+  'x4': 0.6509677094306541,
+  'x5': 0.9170165118791619,
+  'x6': 0.3491203532478856,
+  'x7': 0.4057061763134302,
+  'x8': 0.10571288887020003,
+  'x9': 0.593544093632228,
+})
+
+[2024-08-22 08:57:16,269][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [inf].
+[2024-08-22 08:57:16,271][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-22 08:57:16,271][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.14302229481794115,
+  'x1': 0.9910625954714039,
+  'x2': 0.9869634603885578,
+  'x3': 0.6020997630630935,
+  'x4': 0.24825510201322132,
+  'x5': 0.2990990632642766,
+  'x6': 0.1826291611793095,
+  'x7': 0.8473129036051913,
+  'x8': 0.18723230697278037,
+  'x9': 0.8618378185528537,
+})
+
+[2024-08-22 08:57:16,271][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [inf].
+[2024-08-22 08:57:16,273][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,274][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7959590204368676,
+  'x1': 0.2600653987704096,
+  'x2': 0.7212806931496526,
+  'x3': 0.47277038284770867,
+  'x4': 0.2628749459923634,
+  'x5': 0.5900239632399988,
+  'x6': 0.8424493887497697,
+  'x7': 0.354129967079845,
+  'x8': 0.8058157059603916,
+  'x9': 0.30258702961931605,
+})
+
+[2024-08-22 08:57:16,274][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [inf].
+[2024-08-22 08:57:16,276][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,276][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.6391951459995023,
+  'x1': 0.08697865621736955,
+  'x2': 0.20111573982767073,
+  'x3': 0.037552204961130875,
+  'x4': 0.25272375807120095,
+  'x5': 0.6847701373734578,
+  'x6': 0.8236464450185115,
+  'x7': 0.13705908163130942,
+  'x8': 0.8828831624746819,
+  'x9': 0.7135137405341611,
+})
+
+[2024-08-22 08:57:16,276][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [inf].
+[2024-08-22 08:57:16,278][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,278][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.5069385060613583,
+  'x1': 0.7493182026347334,
+  'x2': 0.18273652718137523,
+  'x3': 0.9606426618770693,
+  'x4': 0.5495720984465029,
+  'x5': 0.9871937077399155,
+  'x6': 0.6953452913774305,
+  'x7': 0.7041562954456241,
+  'x8': 0.3668063177094968,
+  'x9': 0.7986930480213968,
+})
+
+[2024-08-22 08:57:16,278][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [inf].
+[2024-08-22 08:57:16,280][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,281][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.4772649147010447,
+  'x1': 0.9514957638588988,
+  'x2': 0.21062889723772915,
+  'x3': 0.9279126698878257,
+  'x4': 0.3441468456573671,
+  'x5': 0.4291309264030978,
+  'x6': 0.758878700435811,
+  'x7': 0.5531431247645711,
+  'x8': 0.732636957922328,
+  'x9': 0.5538854572527322,
+})
+
+[2024-08-22 08:57:16,281][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [inf].
+[2024-08-22 08:57:16,283][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,283][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.049405739001499915,
+  'x1': 0.0003353197726664314,
+  'x2': 0.4485095923192063,
+  'x3': 0.9962023211660017,
+  'x4': 0.3718349814761017,
+  'x5': 0.009363251889665247,
+  'x6': 0.7918420070862782,
+  'x7': 0.0469919744349202,
+  'x8': 0.7069591776066777,
+  'x9': 0.31559039214706475,
+})
+
+[2024-08-22 08:57:16,283][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [inf].
+[2024-08-22 08:57:16,286][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,286][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7969917912210113,
+  'x1': 0.20410183047669217,
+  'x2': 0.4863852275707371,
+  'x3': 0.8146347260331805,
+  'x4': 0.6939643570549668,
+  'x5': 0.451850629176652,
+  'x6': 0.2247014236172663,
+  'x7': 0.4908749005828793,
+  'x8': 0.30319583114319837,
+  'x9': 0.3931842858118044,
+})
+
+[2024-08-22 08:57:16,286][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [inf].
+[2024-08-22 08:57:16,288][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-22 08:57:16,288][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.6286589202506203,
+  'x1': 0.6223292939257755,
+  'x2': 0.08885119341369652,
+  'x3': 0.651971027367537,
+  'x4': 0.6230110001718923,
+  'x5': 0.6023723632154181,
+  'x6': 0.3252863192295461,
+  'x7': 0.3701492196050191,
+  'x8': 0.470161119603278,
+  'x9': 0.6851737935840128,
+})
+
+[2024-08-22 08:57:16,289][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [inf].
+[2024-08-22 08:57:16,291][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,291][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.22676072780095313,
+  'x1': 0.4210226906781237,
+  'x2': 0.47802131640706214,
+  'x3': 0.989181022251985,
+  'x4': 0.7982235204948096,
+  'x5': 0.5075147000441832,
+  'x6': 0.06100309392419179,
+  'x7': 0.5634912066010263,
+  'x8': 0.20441804764367766,
+  'x9': 0.8405140410595379,
+})
+
+[2024-08-22 08:57:16,291][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [inf].
+[2024-08-22 08:57:16,293][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,294][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7829662663536492,
+  'x1': 0.4698124887309313,
+  'x2': 0.707517638920835,
+  'x3': 0.15647065269429827,
+  'x4': 0.8392431226906076,
+  'x5': 0.6729524713113229,
+  'x6': 0.35959732657609167,
+  'x7': 0.0614516477666891,
+  'x8': 0.15429565842274606,
+  'x9': 0.8041702949584233,
+})
+
+[2024-08-22 08:57:16,294][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [inf].
+[2024-08-22 08:57:16,296][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,297][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7092856207955266,
+  'x1': 0.24961394982777496,
+  'x2': 0.2249144821848369,
+  'x3': 0.5884209059052119,
+  'x4': 0.8400958372680708,
+  'x5': 0.3549817630020423,
+  'x6': 0.199809471543419,
+  'x7': 0.017303366992213243,
+  'x8': 0.22506958208696026,
+  'x9': 0.14250581396107986,
+})
+
+[2024-08-22 08:57:16,297][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [inf].
+[2024-08-22 08:57:16,299][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,299][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.22630910087921063,
+  'x1': 0.18226938844036522,
+  'x2': 0.788439209437839,
+  'x3': 0.7912567041795098,
+  'x4': 0.22835998247839462,
+  'x5': 0.8603492415014795,
+  'x6': 0.5517063018253267,
+  'x7': 0.7253269705175783,
+  'x8': 0.6962243401379704,
+  'x9': 0.705940260980665,
+})
+
+[2024-08-22 08:57:16,300][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [inf].
+[2024-08-22 08:57:16,302][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-22 08:57:16,302][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.12410429624040109,
+  'x1': 0.12320117024685384,
+  'x2': 0.21347446713034834,
+  'x3': 0.3278972436040323,
+  'x4': 0.29608901578790425,
+  'x5': 0.8024993161227124,
+  'x6': 0.9724369694019601,
+  'x7': 0.17040426879376647,
+  'x8': 0.12426755528019562,
+  'x9': 0.873571117301764,
+})
+
+[2024-08-22 08:57:16,302][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [inf].
+[2024-08-22 08:57:16,305][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,305][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.4703019884640023,
+  'x1': 0.3096749450196543,
+  'x2': 0.332821285023711,
+  'x3': 0.5066232982077027,
+  'x4': 0.871146459440332,
+  'x5': 0.22209316348095853,
+  'x6': 0.7241617273133614,
+  'x7': 0.2667124583066228,
+  'x8': 0.3110298056879679,
+  'x9': 0.4444226526440437,
+})
+
+[2024-08-22 08:57:16,305][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [inf].
+[2024-08-22 08:57:16,308][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,308][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.1024652958190343,
+  'x1': 0.575237705296481,
+  'x2': 0.6437697873505535,
+  'x3': 0.498028265683348,
+  'x4': 0.8786462544952585,
+  'x5': 0.7017144526559659,
+  'x6': 0.4561570057205262,
+  'x7': 0.164572649576478,
+  'x8': 0.7775054886470895,
+  'x9': 0.5985843724151416,
+})
+
+[2024-08-22 08:57:16,308][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [inf].
+[2024-08-22 08:57:16,311][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,311][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.680515014827241,
+  'x1': 0.9258130755496325,
+  'x2': 0.3745294142712736,
+  'x3': 0.3830111464318292,
+  'x4': 0.1627092290439598,
+  'x5': 0.43166308625398697,
+  'x6': 0.7379067255827485,
+  'x7': 0.8936468880395931,
+  'x8': 0.8313470234331688,
+  'x9': 0.7323553550889783,
+})
+
+[2024-08-22 08:57:16,311][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [inf].
+[2024-08-22 08:57:16,314][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,314][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.6566771296863249,
+  'x1': 0.6870366888435993,
+  'x2': 0.9258326323463992,
+  'x3': 0.1302445978323955,
+  'x4': 0.3484336509947824,
+  'x5': 0.31731637878087227,
+  'x6': 0.18496095930473655,
+  'x7': 0.9362601383507331,
+  'x8': 0.8638146513116155,
+  'x9': 0.745503658851194,
+})
+
+[2024-08-22 08:57:16,315][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [inf].
+[2024-08-22 08:57:16,317][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,318][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.722323947339718,
+  'x1': 0.36187443298479216,
+  'x2': 0.8839999062344571,
+  'x3': 0.2595410029275135,
+  'x4': 0.8216798265193612,
+  'x5': 0.6944876512292861,
+  'x6': 0.6486246252828033,
+  'x7': 0.1049418517970423,
+  'x8': 0.03151558496475804,
+  'x9': 0.4284415835575057,
+})
+
+[2024-08-22 08:57:16,318][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [inf].
+[2024-08-22 08:57:16,321][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,321][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.11403028074872867,
+  'x1': 0.27892941325325893,
+  'x2': 0.5404490279243429,
+  'x3': 0.30583071800704675,
+  'x4': 0.022577072314254654,
+  'x5': 0.4136495646708136,
+  'x6': 0.4863006324843353,
+  'x7': 0.6652590132353453,
+  'x8': 0.7670400837975218,
+  'x9': 0.5208865124249645,
+})
+
+[2024-08-22 08:57:16,321][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [inf].
+[2024-08-22 08:57:16,324][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,324][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7719855866516813,
+  'x1': 0.46761958934603676,
+  'x2': 0.45756466375584537,
+  'x3': 0.6621272705366054,
+  'x4': 0.6995980948182542,
+  'x5': 0.46287517628105534,
+  'x6': 0.2544695394942301,
+  'x7': 0.6831659886473623,
+  'x8': 0.827827417419705,
+  'x9': 0.05402699238908781,
+})
+
+[2024-08-22 08:57:16,324][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [inf].
+[2024-08-22 08:57:16,327][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,328][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.7176233247635465,
+  'x1': 0.5182916054435248,
+  'x2': 0.6213338864374734,
+  'x3': 0.22683714460998095,
+  'x4': 0.7917924233290956,
+  'x5': 0.6460397009838799,
+  'x6': 0.7923655357515756,
+  'x7': 0.6329302133177142,
+  'x8': 0.4721968325282264,
+  'x9': 0.41131438098163775,
+})
+
+[2024-08-22 08:57:16,328][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [inf].
+[2024-08-22 08:57:16,331][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,331][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.9945727000819465,
+  'x1': 0.7188345064244028,
+  'x2': 0.3324807283190564,
+  'x3': 0.6373894690936129,
+  'x4': 0.6096280348056777,
+  'x5': 0.7790527256758321,
+  'x6': 0.28861144401954475,
+  'x7': 0.9309812006622966,
+  'x8': 0.6291627144409576,
+  'x9': 0.30290144106517713,
+})
+
+[2024-08-22 08:57:16,331][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [inf].
+[2024-08-22 08:57:16,334][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-22 08:57:16,334][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.8137744719927866,
+  'x1': 0.6865393607925485,
+  'x2': 0.7983288746261901,
+  'x3': 0.6458464894475217,
+  'x4': 0.5051965462211847,
+  'x5': 0.3672877044992915,
+  'x6': 0.3774576968392481,
+  'x7': 0.6152996387914691,
+  'x8': 0.7810974314373004,
+  'x9': 0.5406344088121571,
+})
+
+[2024-08-22 08:57:16,335][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [inf].
+[2024-08-22 08:57:16,338][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,338][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.1756136915328853,
+  'x1': 0.9106423942573038,
+  'x2': 0.45901587120987386,
+  'x3': 0.1343262845772213,
+  'x4': 0.7566733331930383,
+  'x5': 0.3714643462752578,
+  'x6': 0.015242190612800521,
+  'x7': 0.12921580360651108,
+  'x8': 0.13903015359953308,
+  'x9': 0.08332546798096019,
+})
+
+[2024-08-22 08:57:16,338][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [inf].
+[2024-08-22 08:57:16,363][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,364][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.6152215444325527,
+  'x1': 0.8703297516605675,
+  'x2': 0.9117068207062327,
+  'x3': 0.10577573340257818,
+  'x4': 0.8366238098988528,
+  'x5': 0.0015924114070695605,
+  'x6': 0.34217147882035537,
+  'x7': 0.16827621721829433,
+  'x8': 0.437648384358283,
+  'x9': 0.2678612068011459,
+})
+
+[2024-08-22 08:57:16,364][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [inf].
+[2024-08-22 08:57:16,398][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-08-22 08:57:16,398][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 81, in obj_func
+    cost = self.black_box.get_cost_from_seq(seq)
+  File "/gyc_data/fray_data/project_hw/bayes.py", line 36, in get_cost_from_seq
+    output_param = OutputParam(len = self.io_len, sequence=(c_uint32 * self.io_len)(*action_seq))
+TypeError: incompatible types, IOUint instance instead of c_uint instance
+
+config: Configuration(values={
+  'x0': 0.6872767873287912,
+  'x1': 0.776654613572877,
+  'x2': 0.8547039368044159,
+  'x3': 0.45981924671091134,
+  'x4': 0.15866465927174989,
+  'x5': 0.26506849446120395,
+  'x6': 0.26813162395500223,
+  'x7': 0.3708854849568909,
+  'x8': 0.03567414227379184,
+  'x9': 0.7784141958212368,
+})
+
+[2024-08-22 08:57:16,399][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [inf].
+[2024-08-22 08:57:16,404][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-08-22-08-57-15-450552.html
+[2024-08-22 08:57:16,408][basic_search][WARNING][history.py:559] No feasible incumbent observations returned!

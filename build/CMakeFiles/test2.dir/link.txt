@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -rdynamic CMakeFiles/test2.dir/test2.c.o CMakeFiles/test2.dir/logging.c.o CMakeFiles/test2.dir/test_algorithms.c.o  -o test2  -Wl,-rpath,/gyc_data/fray_data/project_hw/lib ../lib/libseek_model.so -lm 

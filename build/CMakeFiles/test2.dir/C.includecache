@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/gyc_data/fray_data/project_hw/public.h
+stdint.h
+-
+stdio.h
+-
+
+/gyc_data/fray_data/project_hw/test_algorithms.c
+test_algorithms.h
+/gyc_data/fray_data/project_hw/test_algorithms.h
+
+/gyc_data/fray_data/project_hw/test_algorithms.h
+stdio.h
+-
+stdlib.h
+-
+public.h
+/gyc_data/fray_data/project_hw/public.h
+
