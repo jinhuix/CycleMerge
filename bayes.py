@@ -18,7 +18,7 @@ from public import read_case_file
 class Black_box():
     def __init__(self):
         # 初始化磁头状态和IO序列
-        head_info, io_list = read_case_file('./dataset/case_2.txt')
+        head_info, io_list = read_case_file('./dataset/case_4.txt')
 
         # 创建输入参数
         self.io_list = io_list
@@ -27,7 +27,7 @@ class Black_box():
         self.input_param = input_param = InputParam(headInfo=HeadInfo(*head_info), ioVec=io_vector)
         self.io_len = len(io_list)
         self.start = HeadInfo(wrap=input_param.headInfo.wrap, lpos=input_param.headInfo.lpos, status=input_param.headInfo.status)
-        self.default_seq = [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
+        self.default_seq = [47, 39, 20, 1, 24, 27, 46, 38, 28, 50, 43, 3, 45, 9, 22, 14, 49, 12, 36, 16, 13, 29, 10, 15, 41, 42, 21, 37, 44, 7, 4, 33, 48, 34, 26, 23, 11, 40, 25, 30, 2, 6, 18, 31, 35, 32, 17, 19, 8, 5, ]
 
 
     def get_cost_from_seq(self, seq):
@@ -44,21 +44,22 @@ class Black_box():
         total_belt_wear_lib = lib.TotalTapeBeltWearTimes(byref(self.input_param), byref(output_param), byref(seg_wear_info))
         total_motor_wear_lib = lib.TotalMotorWearTimes(byref(self.input_param), byref(output_param))
         total_cost = access_time.addressDuration
+        print([output_param.sequence[i] for i in range(output_param.len)] ,total_cost)
         return total_cost
 
 class Bo_process():
-    def __init__(self, io_len, black_box: Black_box = None , prf = True, max_runs = 100, random = False):
+    def __init__(self, io_len, black_box: Black_box = None , prf = True, max_runs = 50, random = False):
         params = {}
         self.io_len = io_len
         self.black_box = black_box
         # default_seq = [0] * self.io_len
-        default_seq = [1/s for s in self.black_box.default_seq]
+        default_seq = [s for s in self.black_box.default_seq]
         for i in range(self.io_len):
-            params[f'x{i}'] = (0, 1, default_seq[i])
+            params[f'x{i}'] = (0, self.io_len-1, default_seq[i]-1)
         space = sp.Space()
         space_config = []
         for name, para in params.items():
-            space_config.append(sp.Real(name, *para))
+            space_config.append(sp.Int(name, *para))
         if self.black_box is None:
             self.black_box = Black_box()
         space.add_variables(space_config)
@@ -73,7 +74,7 @@ class Bo_process():
                 task_id = 'basic_search',
                 logging_dir = 'logs_gray_clapboard_search',
                 visualization = 'basic',
-                initial_runs = 20, 
+                initial_runs = 8, 
                 random_state = 999,
                 advisor_type = 'random' if random else 'default',
             )
@@ -90,14 +91,14 @@ class Bo_process():
     
     def get_seq_from_config(self, config: sp.Configuration):
         vec = [config[f'x{i}'] for i in range(self.io_len)]
-         # 添加小扰动，避免排序歧义
-        # perturbation = np.random.normal(scale=1e-6, size=self.io_len)
-        # perturbed_vector = np.array(vec) + perturbation
-        perturbed_vector = np.array(vec)
-        
-        # 根据扰动后的向量排序，得到排序索引
-        ranking = np.argsort(perturbed_vector).tolist()
+        # data_with_indices = [(value, index) for index, value in enumerate(vec)]
+        # sorted_data_with_indices = sorted(data_with_indices, key=lambda x: x[0], reverse=True)
+        # ranking = [0] * len(vec)
+        # for rank, (_, index) in enumerate(sorted_data_with_indices, start=0):
+        #     ranking[index] = rank
+        ranking = vec
         return ranking
+    
     
     def run(self):
         self.history = self.opt.run()

@@ -1,0 +1,24 @@
+[2024-08-26 08:15:02,581][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-08-26-08-15-02-581059.log
+[2024-08-26 08:15:02,626][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: random_scipy.
+[2024-08-26 08:15:02,633][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-08-26-08-15-02-631684.html
+[2024-08-26 08:15:02,640][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [643344.0].
+[2024-08-26 08:15:02,679][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [3904092.0].
+[2024-08-26 08:15:02,724][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [4414488.0].
+[2024-08-26 08:15:02,762][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [3857984.0].
+[2024-08-26 08:15:02,803][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [4046171.0].
+[2024-08-26 08:15:02,839][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [3628338.0].
+[2024-08-26 08:15:02,879][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [3969222.0].
+[2024-08-26 08:15:02,916][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [3741486.0].
+[2024-08-26 08:15:02,949][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [3357935.0].
+[2024-08-26 08:15:02,992][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [4176866.0].
+[2024-08-26 08:16:05,765][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [4222422.0].
+[2024-08-26 08:16:08,675][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [3376464.0].
+[2024-08-26 08:16:14,964][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [4055245.0].
+[2024-08-26 08:16:20,683][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [4286401.0].
+[2024-08-26 08:16:28,483][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [2163333.0].
+[2024-08-26 08:16:32,120][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [3667930.0].
+[2024-08-26 08:16:40,486][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [2140247.0].
+[2024-08-26 08:17:03,661][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [1968674.0].
+[2024-08-26 08:17:17,818][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [3552297.0].
+[2024-08-26 08:17:35,182][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [3396180.0].
+[2024-08-26 08:17:50,697][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [3821235.0].

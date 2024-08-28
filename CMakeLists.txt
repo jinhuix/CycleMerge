@@ -17,15 +17,21 @@ set(SOURCES
     ${ALG_DIR}/algorithm.c
 )
 
-set(TEST
-    ${PROJECT_SOURCE_DIR}/test.c
-    ${PROJECT_SOURCE_DIR}/logging.c
-)
+# set(TEST
+#     ${PROJECT_SOURCE_DIR}/test.c
+#     ${PROJECT_SOURCE_DIR}/logging.c
+# )
 
-set(TEST2
-    ${PROJECT_SOURCE_DIR}/test2.c
+# set(TEST2
+#     ${PROJECT_SOURCE_DIR}/test2.c
+#     ${PROJECT_SOURCE_DIR}/logging.c
+#     ${PROJECT_SOURCE_DIR}/test_algorithms.c
+# )
+
+set(XJH
+    ${PROJECT_SOURCE_DIR}/xjh_test.c
     ${PROJECT_SOURCE_DIR}/logging.c
-    ${PROJECT_SOURCE_DIR}/test_algorithms.c
+    ${PROJECT_SOURCE_DIR}/xjh_algorithms.c
 )
 
 # 包含头文件目录
@@ -35,11 +41,14 @@ include_directories(${HEADER_DIRS})
 add_executable(project_hw  ${SOURCES})
 target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
-add_executable(test  ${PROJECT_SOURCE_DIR}/test.c ${PROJECT_SOURCE_DIR}/logging.c)
-target_link_libraries(test PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+# add_executable(test  ${PROJECT_SOURCE_DIR}/test.c ${PROJECT_SOURCE_DIR}/logging.c)
+# target_link_libraries(test PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
-add_executable(test2  ${TEST2})
-target_link_libraries(test2 PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+# add_executable(test2  ${TEST2})
+# target_link_libraries(test2 PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+
+add_executable(xjh  ${XJH})
+target_link_libraries(xjh PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
 # 添加编译选项和宏定义
 target_compile_options(project_hw PRIVATE -g -std=c99)
@@ -50,5 +59,6 @@ find_library(M_LIB m)
 
 # 将数学库链接到你的目标
 target_link_libraries(project_hw ${M_LIB})
-target_link_libraries(test ${M_LIB})
-target_link_libraries(test2 ${M_LIB})
+# target_link_libraries(test ${M_LIB})
+# target_link_libraries(test2 ${M_LIB})
+target_link_libraries(xjh ${M_LIB})

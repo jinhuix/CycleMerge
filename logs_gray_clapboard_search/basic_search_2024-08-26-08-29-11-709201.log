@@ -1,0 +1,15 @@
+[2024-08-26 08:29:11,709][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-08-26-08-29-11-709201.log
+[2024-08-26 08:29:11,748][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_optimizer_type: random_scipy.
+[2024-08-26 08:29:11,753][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-08-26-08-29-11-752115.html
+[2024-08-26 08:29:11,794][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [3953798.0].
+[2024-08-26 08:29:11,832][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [3831747.0].
+[2024-08-26 08:29:11,863][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [3357935.0].
+[2024-08-26 08:29:12,461][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [4371794.0].
+[2024-08-26 08:29:13,135][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [3972031.0].
+[2024-08-26 08:29:13,997][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [3349793.0].
+[2024-08-26 08:29:14,867][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [3652399.0].
+[2024-08-26 08:29:14,869][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-26 08:29:14,904][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [3710697.0].
+[2024-08-26 08:29:15,886][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [3638238.0].
+[2024-08-26 08:29:15,888][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-26 08:29:15,933][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [4217797.0].

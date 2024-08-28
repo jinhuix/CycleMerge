@@ -1,5 +1,4 @@
 /gyc_data/fray_data/project_hw/build/CMakeFiles/rebuild_cache.dir
-/gyc_data/fray_data/project_hw/build/CMakeFiles/test2.dir
+/gyc_data/fray_data/project_hw/build/CMakeFiles/xjh.dir
 /gyc_data/fray_data/project_hw/build/CMakeFiles/edit_cache.dir
-/gyc_data/fray_data/project_hw/build/CMakeFiles/test.dir
 /gyc_data/fray_data/project_hw/build/CMakeFiles/project_hw.dir

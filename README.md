@@ -7,13 +7,16 @@ GCC		≥ 	7.5
 ## 编译运行
 
 ```shell
-# 命令
+# 方法1
 cd project_hw
 mkdir build
 cd build
 cmake ..
 make
-./project_hw -f /home/project_hw/dataset/case_1.txt
+./project_hw -f ../dataset/case_1.txt
+
+# 方法2
+./run.sh
 ```
 
 

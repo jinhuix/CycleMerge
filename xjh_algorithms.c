@@ -11,8 +11,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
 
     /* 算法示例：先入先出算法 */
     output->len = input->ioVec.len;
-    for (uint32_t i = 0; i < output->len; i++)
-    {
+    for (uint32_t i = 0; i < output->len; i++) {
         output->sequence[i] = input->ioVec.ioArray[i].id;
     }
 
@@ -22,8 +21,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     int32_t seekT = 0;
     int32_t beltW = 0;
     int32_t motorW = 0;
-    for (uint32_t i = 0; i < 10000; i++)
-    {
+    for (uint32_t i = 0; i < 10000; i++) {
         seekT = SeekTimeCalculate(&start, &end);
         beltW = BeltWearTimes(&start, &end, NULL);
         motorW = MotorWearTimes(&start, &end);
@@ -35,19 +33,30 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     return RETURN_OK;
 }
 
+/* 先进先出 */
+int32_t FIFO(const InputParam *input, OutputParam *output) {
+    int32_t ret;
+
+    output->len = input->ioVec.len;
+    for (uint32_t i = 0; i < output->len; i++) {
+        output->sequence[i] = input->ioVec.ioArray[i].id;
+    }
+
+    return RETURN_OK;
+}
+
+/* 电梯调度 */
 int32_t SCAN(const InputParam *input, OutputParam *output) {
     // 初始化输出参数
     output->len = input->ioVec.len;
 
     // 复制 IO 请求数组并按 lpos 排序
     IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
-    if (sortedIOs == NULL)
-    {
+    if (sortedIOs == NULL) {
         free(output->sequence);
         return RETURN_ERROR;
     }
-    for (uint32_t i = 0; i < input->ioVec.len; ++i)
-    {
+    for (uint32_t i = 0; i < input->ioVec.len; ++i) {
         sortedIOs[i] = input->ioVec.ioArray[i];
     }
 
@@ -59,19 +68,13 @@ int32_t SCAN(const InputParam *input, OutputParam *output) {
 
     stack[++top] = low;
     stack[++top] = high;
-
-    while (top >= 0)
-    {
+    while (top >= 0) {
         high = stack[top--];
         low = stack[top--];
-
         uint32_t pivot = sortedIOs[high].startLpos;
         int i = low - 1;
-
-        for (int j = low; j < high; ++j)
-        {
-            if (sortedIOs[j].startLpos < pivot)
-            {
+        for (int j = low; j < high; ++j) {
+            if (sortedIOs[j].startLpos < pivot) {
                 ++i;
                 IOUint temp = sortedIOs[i];
                 sortedIOs[i] = sortedIOs[j];
@@ -82,17 +85,12 @@ int32_t SCAN(const InputParam *input, OutputParam *output) {
         IOUint temp = sortedIOs[i + 1];
         sortedIOs[i + 1] = sortedIOs[high];
         sortedIOs[high] = temp;
-
         int pi = i + 1;
-
-        if (pi - 1 > low)
-        {
+        if (pi - 1 > low) {
             stack[++top] = low;
             stack[++top] = pi - 1;
         }
-
-        if (pi + 1 < high)
-        {
+        if (pi + 1 < high) {
             stack[++top] = pi + 1;
             stack[++top] = high;
         }
@@ -100,34 +98,25 @@ int32_t SCAN(const InputParam *input, OutputParam *output) {
 
     // 初始化当前头位置为输入的头状态
     HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
-
     // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
     int direction = 1;
     uint32_t index = 0;
 
-    while (index < input->ioVec.len)
-    {
-        if (direction == 1)
-        {
+    while (index < input->ioVec.len) {
+        if (direction == 1) {
             // 从 BOT 向 EOT 扫描
-            for (uint32_t i = 0; i < input->ioVec.len; ++i)
-            {
-                if (sortedIOs[i].startLpos >= currentHead.lpos)
-                {
+            for (uint32_t i = 0; i < input->ioVec.len; ++i) {
+                if (sortedIOs[i].startLpos >= currentHead.lpos) {
                     output->sequence[index++] = sortedIOs[i].id;
                     currentHead.wrap = sortedIOs[i].wrap;
                     currentHead.lpos = sortedIOs[i].endLpos;
                 }
             }
             direction = -1; // 改变扫描方向
-        }
-        else
-        {
+        } else {
             // 从 EOT 向 BOT 扫描
-            for (int32_t i = input->ioVec.len - 1; i >= 0; --i)
-            {
-                if (sortedIOs[i].startLpos <= currentHead.lpos)
-                {
+            for (int32_t i = input->ioVec.len - 1; i >= 0; --i) {
+                if (sortedIOs[i].startLpos <= currentHead.lpos) {
                     output->sequence[index++] = sortedIOs[i].id;
                     currentHead.wrap = sortedIOs[i].wrap;
                     currentHead.lpos = sortedIOs[i].endLpos;

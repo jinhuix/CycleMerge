@@ -223,6 +223,7 @@ int main(int argc, char *argv[]) {
     char *file = NULL;
     pthread_t thread;
     int ret;
+    char *result_path = "../result/case_5.txt";
 
     // 使用 getopt 解析命令行参数
     while ((opt = getopt(argc, argv, "f:")) != -1) {
@@ -309,7 +310,7 @@ int main(int argc, char *argv[]) {
         PrintMetrics(&metrics);
 
         /* 保存指标数据到文件 */
-        SaveKeyMetricsToFile("./metrics.txt", &metrics, algorithms[i]);
+        SaveKeyMetricsToFile(result_path, &metrics, algorithms[i]);
     }
 
     free(inputParam->ioVec.ioArray);

@@ -11,6 +11,7 @@
 #include <sys/resource.h>
 #include <sys/types.h>
 #include <sys/sysinfo.h>
+#include <bits/getopt_core.h>
 
 #define MAX_PATH_LENGTH 256
 

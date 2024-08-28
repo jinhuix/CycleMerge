@@ -1,0 +1,60 @@
+/* FCFS ：关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 1.97 
+memoryUse(ms): 0 
+addressingDuration(ms): 7664161 
+readDuration(ms): 71972
+tapeBeltWear(times): 24025647
+tapeMotorWear(times): 184 
+errorIOCount: 0 
+
+/* Nearest ：关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 0.18 
+memoryUse(ms): 0 
+addressingDuration(ms): 1187565 
+readDuration(ms): 71972
+tapeBeltWear(times): 1833103
+tapeMotorWear(times): 108 
+errorIOCount: 0 
+
+/* SA ：关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 17.18 
+memoryUse(ms): 0 
+addressingDuration(ms): 1187565 
+readDuration(ms): 71972
+tapeBeltWear(times): 1833103
+tapeMotorWear(times): 108 
+errorIOCount: 0 
+
+/* TS ：关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 24304.67 
+memoryUse(ms): 0 
+addressingDuration(ms): 1078292 
+readDuration(ms): 71972
+tapeBeltWear(times): 1793463
+tapeMotorWear(times): 72 
+errorIOCount: 0 
+
+/* HC ：关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 340.18 
+memoryUse(ms): 0 
+addressingDuration(ms): 1078292 
+readDuration(ms): 71972
+tapeBeltWear(times): 1793463
+tapeMotorWear(times): 72 
+errorIOCount: 0 
+
+/* GA ：关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 0.65 
+memoryUse(ms): 0 
+addressingDuration(ms): 7664161 
+readDuration(ms): 71972
+tapeBeltWear(times): 24025647
+tapeMotorWear(times): 184 
+errorIOCount: 0 
+

@@ -111,30 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test2
+# Target rules for targets named xjh
 
 # Build rule for target.
-test2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test2
-.PHONY : test2
+xjh: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 xjh
+.PHONY : xjh
 
 # fast build rule for target.
-test2/fast:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/build
-.PHONY : test2/fast
-
-#=============================================================================
-# Target rules for targets named test
-
-# Build rule for target.
-test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test
-.PHONY : test
-
-# fast build rule for target.
-test/fast:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
-.PHONY : test/fast
+xjh/fast:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/build
+.PHONY : xjh/fast
 
 #=============================================================================
 # Target rules for targets named project_hw
@@ -182,8 +169,7 @@ logging.o: logging.c.o
 
 # target to build an object file
 logging.c.o:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/logging.c.o
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/logging.c.o
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/logging.c.o
 .PHONY : logging.c.o
 
 logging.i: logging.c.i
@@ -192,8 +178,7 @@ logging.i: logging.c.i
 
 # target to preprocess a source file
 logging.c.i:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/logging.c.i
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/logging.c.i
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/logging.c.i
 .PHONY : logging.c.i
 
 logging.s: logging.c.s
@@ -202,8 +187,7 @@ logging.s: logging.c.s
 
 # target to generate assembly for a file
 logging.c.s:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/logging.c.s
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/logging.c.s
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/logging.c.s
 .PHONY : logging.c.s
 
 main.o: main.c.o
@@ -233,86 +217,59 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/project_hw.dir/build.make CMakeFiles/project_hw.dir/main.c.s
 .PHONY : main.c.s
 
-test.o: test.c.o
+xjh_algorithms.o: xjh_algorithms.c.o
 
-.PHONY : test.o
-
-# target to build an object file
-test.c.o:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/test.c.o
-.PHONY : test.c.o
-
-test.i: test.c.i
-
-.PHONY : test.i
-
-# target to preprocess a source file
-test.c.i:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/test.c.i
-.PHONY : test.c.i
-
-test.s: test.c.s
-
-.PHONY : test.s
-
-# target to generate assembly for a file
-test.c.s:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/test.c.s
-.PHONY : test.c.s
-
-test2.o: test2.c.o
-
-.PHONY : test2.o
+.PHONY : xjh_algorithms.o
 
 # target to build an object file
-test2.c.o:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/test2.c.o
-.PHONY : test2.c.o
+xjh_algorithms.c.o:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/xjh_algorithms.c.o
+.PHONY : xjh_algorithms.c.o
 
-test2.i: test2.c.i
+xjh_algorithms.i: xjh_algorithms.c.i
 
-.PHONY : test2.i
+.PHONY : xjh_algorithms.i
 
 # target to preprocess a source file
-test2.c.i:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/test2.c.i
-.PHONY : test2.c.i
+xjh_algorithms.c.i:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/xjh_algorithms.c.i
+.PHONY : xjh_algorithms.c.i
 
-test2.s: test2.c.s
+xjh_algorithms.s: xjh_algorithms.c.s
 
-.PHONY : test2.s
+.PHONY : xjh_algorithms.s
 
 # target to generate assembly for a file
-test2.c.s:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/test2.c.s
-.PHONY : test2.c.s
+xjh_algorithms.c.s:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/xjh_algorithms.c.s
+.PHONY : xjh_algorithms.c.s
 
-test_algorithms.o: test_algorithms.c.o
+xjh_test.o: xjh_test.c.o
 
-.PHONY : test_algorithms.o
+.PHONY : xjh_test.o
 
 # target to build an object file
-test_algorithms.c.o:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/test_algorithms.c.o
-.PHONY : test_algorithms.c.o
+xjh_test.c.o:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/xjh_test.c.o
+.PHONY : xjh_test.c.o
 
-test_algorithms.i: test_algorithms.c.i
+xjh_test.i: xjh_test.c.i
 
-.PHONY : test_algorithms.i
+.PHONY : xjh_test.i
 
 # target to preprocess a source file
-test_algorithms.c.i:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/test_algorithms.c.i
-.PHONY : test_algorithms.c.i
+xjh_test.c.i:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/xjh_test.c.i
+.PHONY : xjh_test.c.i
 
-test_algorithms.s: test_algorithms.c.s
+xjh_test.s: xjh_test.c.s
 
-.PHONY : test_algorithms.s
+.PHONY : xjh_test.s
 
 # target to generate assembly for a file
-test_algorithms.c.s:
-	$(MAKE) -f CMakeFiles/test2.dir/build.make CMakeFiles/test2.dir/test_algorithms.c.s
-.PHONY : test_algorithms.c.s
+xjh_test.c.s:
+	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/xjh_test.c.s
+.PHONY : xjh_test.c.s
 
 # Help Target
 help:
@@ -321,9 +278,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... test2"
+	@echo "... xjh"
 	@echo "... edit_cache"
-	@echo "... test"
 	@echo "... project_hw"
 	@echo "... algorithm/algorithm.o"
 	@echo "... algorithm/algorithm.i"
@@ -334,15 +290,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... test.o"
-	@echo "... test.i"
-	@echo "... test.s"
-	@echo "... test2.o"
-	@echo "... test2.i"
-	@echo "... test2.s"
-	@echo "... test_algorithms.o"
-	@echo "... test_algorithms.i"
-	@echo "... test_algorithms.s"
+	@echo "... xjh_algorithms.o"
+	@echo "... xjh_algorithms.i"
+	@echo "... xjh_algorithms.s"
+	@echo "... xjh_test.o"
+	@echo "... xjh_test.i"
+	@echo "... xjh_test.s"
 .PHONY : help
 
 

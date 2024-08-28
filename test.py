@@ -7,7 +7,7 @@ from public import read_case_file
 
 
 # 初始化磁头状态和IO序列
-head_info, io_list = read_case_file('./dataset/case_4.txt')
+head_info, io_list = read_case_file('./dataset/case_2.txt')
 
 # 创建输入参数
 io_array = (IOUint * len(io_list))(*[IOUint(*io) for io in io_list])
@@ -15,7 +15,10 @@ io_vector = IOVector(len=len(io_list), ioArray=io_array)
 input_param = InputParam(headInfo=HeadInfo(*head_info), ioVec=io_vector)
 
 # 创建输出参数
-output_param = OutputParam(len=len(io_list), sequence=(c_uint32 * len(io_list))(*range(1, len(io_list) + 1)))
+# output_param = OutputParam(len=len(io_list), sequence=(c_uint32 * len(io_list))(*range(1, len(io_list) + 1)))
+a = [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
+output_param = OutputParam(len=len(io_list), sequence=(c_uint32 * len(io_list))(*a))
+#output_param.sequence = [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
 
 # 初始化磁头状态
 start = HeadInfo(wrap=input_param.headInfo.wrap, lpos=input_param.headInfo.lpos, status=input_param.headInfo.status)
