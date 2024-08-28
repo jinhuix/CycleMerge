@@ -65,7 +65,7 @@ void PrintMetrics(const KeyMetrics *metrics)
 }
 
 /* 将 KeyMetrics 结构体的内容保存到 TXT 文件 */
-void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics)
+void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics, char *algo, OutputParam *output)
 {
     FILE *file = fopen(filename, "a");
     // FILE *file = fopen(filename, "w");
@@ -74,6 +74,16 @@ void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics)
         perror("Error opening file");
         return;
     }
+
+    fprintf(file, "/* 算法名称 */\n");
+    fprintf(file, "Algorithm: %s\n", algo);
+
+    fprintf(file, "\nOutput sequence: [");
+    for (uint32_t i = 0; i < output->len; i++)
+    {
+        fprintf(file, "%u, ", output->sequence[i]);
+    }
+    fprintf(file, "]\n");
 
     fprintf(file, "/* 关键指标结构体 */\n");
     fprintf(file, "ioCount: %u \n", metrics->ioCount);
@@ -94,6 +104,8 @@ void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics)
 
     fprintf(file, "tapeMotorWear(times): %u \n", metrics->tapeMotorWear);
     fprintf(file, "errorIOCount: %u \n", metrics->errorIOCount);
+
+    fprintf(file, "\n\n");
 
     fclose(file);
     printf("\n指标写入文件 %s\n", filename);
@@ -311,7 +323,14 @@ int main(int argc, char *argv[])
     output->sequence = (uint32_t *)malloc(output->len * sizeof(uint32_t));
 
     // char **algorithms = {"FCFS", "SSTF", "SCAN", "CSCAN", "LOOK", "CLOOK"};
-    char *algorithms[] = {"FCFS", "Nearest", "SA", "TS", "HC", "GA"};
+    // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "HC", "GA", "merge"};
+    // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "merge"};
+    char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge"};
+    // char *algorithms[] = {"merge"};
+
+    char *save_path = "./metrics.txt";
+    FILE *temp = fopen(save_path, "w");
+    fclose(temp);
 
     int numAlgorithms = sizeof(algorithms) / sizeof(algorithms[0]);
     for (int i = 0; i < numAlgorithms; i++)
@@ -369,16 +388,17 @@ int main(int argc, char *argv[])
         /* 内存占用 */
         metrics.memoryUse = 0;
 
-        printf("\nOutput sequence: [");
-        for (uint32_t i = 0; i < output->len; i++)
-        {
-            printf("%u, ", output->sequence[i]);
-        }
-        printf("]\n");
+        // printf("\nOutput sequence: [");
+        // for (uint32_t i = 0; i < output->len; i++)
+        // {
+        //     printf("%u, ", output->sequence[i]);
+        // }
+        // printf("]\n");
 
         PrintMetrics(&metrics);
         /* 保存指标数据到文件 */
-        SaveKeyMetricsToFile("./metrics.txt", &metrics);
+
+        SaveKeyMetricsToFile(save_path, &metrics, algorithms[i], output);
     }
 
     free(inputParam->ioVec.ioArray);

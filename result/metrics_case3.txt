@@ -1,0 +1,75 @@
+/* 算法名称 */
+Algorithm: FCFS
+
+Output sequence: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, ]
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.50 
+memoryUse(ms): 0 
+addressingDuration(ms): 1003042 
+readDuration(ms): 12253
+tapeBeltWear(times): 3160916
+tapeMotorWear(times): 21 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: SCAN
+
+Output sequence: [7, 4, 1, 12, 13, 11, 2, 9, 5, 8, 10, 6, 3, ]
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.00 
+memoryUse(ms): 0 
+addressingDuration(ms): 460216 
+readDuration(ms): 12253
+tapeBeltWear(times): 1343909
+tapeMotorWear(times): 3 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: SCAN2
+
+Output sequence: [7, 4, 1, 12, 13, 11, 2, 9, 5, 8, 10, 6, 3, ]
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.00 
+memoryUse(ms): 0 
+addressingDuration(ms): 460216 
+readDuration(ms): 12253
+tapeBeltWear(times): 1343909
+tapeMotorWear(times): 3 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: Nearest
+
+Output sequence: [3, 7, 6, 4, 10, 8, 5, 1, 9, 2, 12, 13, 11, ]
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.00 
+memoryUse(ms): 0 
+addressingDuration(ms): 369748 
+readDuration(ms): 12253
+tapeBeltWear(times): 770796
+tapeMotorWear(times): 31 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: merge
+
+Output sequence: [6, 7, 3, 11, 12, 13, 2, 9, 1, 5, 8, 10, 4, ]
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.09 
+memoryUse(ms): 0 
+addressingDuration(ms): 498967 
+readDuration(ms): 12253
+tapeBeltWear(times): 1341796
+tapeMotorWear(times): 21 
+errorIOCount: 0 
+
+

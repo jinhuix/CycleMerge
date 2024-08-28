@@ -34,6 +34,11 @@ set(XJH
     ${PROJECT_SOURCE_DIR}/xjh_algorithms.c
 )
 
+set(DATA_GEN
+    ${PROJECT_SOURCE_DIR}/data_gen.c
+    ${PROJECT_SOURCE_DIR}/logging.c
+)
+
 # 包含头文件目录
 include_directories(${HEADER_DIRS})
 
@@ -49,6 +54,8 @@ target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model
 
 add_executable(xjh  ${XJH})
 target_link_libraries(xjh PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+
+add_executable(data_gen  ${DATA_GEN})
 
 # 添加编译选项和宏定义
 target_compile_options(project_hw PRIVATE -g -std=c99)
