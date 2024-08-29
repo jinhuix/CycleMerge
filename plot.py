@@ -4,8 +4,11 @@ import time
 from public import HeadInfo, IOUint, IOVector, InputParam, OutputParam
 from public import AccessTime, TapeBeltSegWearInfo, KeyMetrics, lib
 from public import read_case_file
+import os
+os.environ['MPLBACKEND'] = 'Agg'
 import matplotlib.pyplot as plt
 import numpy as np
+plt.ion()  # 启用交互式模式
 
 x=[]
 y=[]
@@ -15,7 +18,7 @@ z_values = {}
 
 # for w in range(0,280,10):
 for w in range(0,280,7):
-    for l in range(1,730994,10000):
+    for l in range(1,10000,100):
         start = HeadInfo(wrap=0, lpos=0, status=1)
         end = HeadInfo(wrap=w, lpos=l, status=1)
         seek_time = lib.SeekTimeCalculate(byref(start), byref(end))
@@ -52,3 +55,4 @@ ax.set_zlabel('Seek Time')
 
 # 显示图形
 plt.show()
+input("Press Enter to continue...")
