@@ -1,0 +1,85 @@
+The file path is: ../dataset/gen/gen_case3_io10000.txt
+head info : [109,671384,1]
+
+io count = 10000
+
+
+Running algorithm: FCFS
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        1.329 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              795788400 (ms)
+        readDuration:                    10844069 (ms)
+        tapeBeltWear:                    2471790944
+        tapeMotorWear:                   20268
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: SCAN
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        1.504 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              145801301 (ms)
+        readDuration:                    10844069 (ms)
+        tapeBeltWear:                    95415196
+        tapeMotorWear:                   37068
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: SCAN2
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        4.910 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              11229619 (ms)
+        readDuration:                    10844069 (ms)
+        tapeBeltWear:                    23607323
+        tapeMotorWear:                   172
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: Nearest
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        1979.922 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              11010086 (ms)
+        readDuration:                    10844069 (ms)
+        tapeBeltWear:                    21117952
+        tapeMotorWear:                   618
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: merge
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        76871.338 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              9753217 (ms)
+        readDuration:                    10844069 (ms)
+        tapeBeltWear:                    20428536
+        tapeMotorWear:                   302
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: partition_scan
+best_scan_method=2 best_partition_size=255000
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        674.332 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              10929586 (ms)
+        readDuration:                    10844069 (ms)
+        tapeBeltWear:                    23296319
+        tapeMotorWear:                   220
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt

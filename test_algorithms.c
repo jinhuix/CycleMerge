@@ -1134,6 +1134,352 @@ int32_t merge(const InputParam *input, OutputParam *output)
     return RETURN_OK;
 }
 
+int32_t partition_scan(const InputParam *input, OutputParam *output)
+{
+    // 复制 IO 请求数组并按 lpos 排序
+    IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
+    if (sortedIOs == NULL)
+    {
+        free(output->sequence);
+        return RETURN_ERROR;
+    }
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        sortedIOs[i] = input->ioVec.ioArray[i];
+    }
+
+    // 快速排序
+    int low = 0;
+    int high = input->ioVec.len - 1;
+    int stack[high - low + 1];
+    int top = -1;
+
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0)
+    {
+        // 从栈中弹出 high 和 low 值，表示当前需要排序的子数组的边界
+        high = stack[top--];
+        low = stack[top--];
+
+        // 选择子数组的最后一个元素作为枢轴（pivot），并初始化变量 i 为 low - 1
+        uint32_t pivot = sortedIOs[high].startLpos;
+        int i = low - 1;
+
+        // 遍历当前子数组
+        for (int j = low; j < high; ++j)
+        {
+            // 将所有小于枢轴的元素移到枢轴的左边
+            if (sortedIOs[j].startLpos < pivot)
+            {
+                ++i; // i 指向当前小于枢轴的元素的位置
+                IOUint temp = sortedIOs[i];
+                sortedIOs[i] = sortedIOs[j];
+                sortedIOs[j] = temp;
+            }
+        }
+
+        // 将枢轴元素放到正确的位置
+        IOUint temp = sortedIOs[i + 1];
+        sortedIOs[i + 1] = sortedIOs[high];
+        sortedIOs[high] = temp;
+
+        int pi = i + 1;
+        // 根据枢轴的位置 pi，将左子数组和右子数组的边界压入栈中
+        if (pi - 1 > low)
+        {
+            stack[++top] = low;
+            stack[++top] = pi - 1;
+        }
+
+        if (pi + 1 < high)
+        {
+            stack[++top] = pi + 1;
+            stack[++top] = high;
+        }
+    }
+
+    //----排序结束----
+
+    //----搜索最佳分割参数----
+    int partition_len = 20000;
+
+    int min_time = 0x3f3f3f3f, best_partition_size = 5000;
+    // scan1为只按io请求的开始位置进行排序，可能会有同向掉头的情况
+    // scan2保证后一个请求的开始位置在前一个请求的结束位置之后，不会同向掉头，但可能需要扫描多次
+    int best_scan_method = 1;
+    int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
+    for (int i = 5000; i <= 740000; i += 5000)
+    {
+        partition_len = i;
+        _partition_scan1(input, output, sortedIOs, partition_len);
+        AccessTime accessTime = {0};
+        TotalAccessTime(input, output, &accessTime);
+        int time = accessTime.addressDuration;
+        if (time < min_time)
+        {
+            best_scan_method = 1;
+            best_partition_size = i;
+            min_time = time;
+            for (int j = 0; j < input->ioVec.len; j++)
+            {
+                best_sequence[j] = output->sequence[j];
+            }
+        }
+        _partition_scan2(input, output, sortedIOs, partition_len);
+        TotalAccessTime(input, output, &accessTime);
+        time = accessTime.addressDuration;
+        if (time < min_time)
+        {
+            best_scan_method = 2;
+            best_partition_size = i;
+            min_time = time;
+            for (int j = 0; j < input->ioVec.len; j++)
+            {
+                best_sequence[j] = output->sequence[j];
+            }
+        }
+    }
+    printf("best_scan_method=%d best_partition_size=%d\n", best_scan_method, best_partition_size);
+    for (int i = 0; i < input->ioVec.len; i++)
+    {
+        output->sequence[i] = best_sequence[i];
+    }
+    free(best_sequence);
+    free(sortedIOs);
+}
+
+int32_t _partition_scan1(const InputParam *input, OutputParam *output, IOUint *sortedIOs, int partition_len)
+{
+    // 初始化输出参数
+    output->len = input->ioVec.len;
+    // for (uint32_t i = 0; i < output->len; i++)
+    // {
+    //     output->sequence[i] = input->ioVec.ioArray[i].id;
+    // }
+
+    int partition_threshold = partition_len;
+    int partition_num = (MAX_LPOS + partition_threshold - 1) / partition_threshold;
+    int partition_io_num[1000] = {0};
+    int partition_io_start[1000] = {0};
+    int partition_start_now = 0;
+    int now = 0;
+    for (int i = 0; i < input->ioVec.len; i++)
+    {
+        // printf("\n");
+        // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+        if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+        {
+            // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+            while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            {
+                partition_start_now += partition_threshold;
+                now++;
+            }
+            partition_io_start[now] = i;
+        }
+        // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+        partition_io_num[now]++;
+    }
+
+    // 初始化当前头位置为输入的头状态
+    HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+    // HeadInfo currentHead = {0, 0, 0};
+
+    uint32_t index = 0;
+
+    bool vis[input->ioVec.len + 1];
+    memset(vis, 0, sizeof(vis));
+    int processed_partition_io = 0;
+    for (int cur = 0; cur < partition_num; cur++)
+    {
+        // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
+        int direction = 1;
+        currentHead.lpos = 0;
+        // DEBUG("index=%d, cur partition=%d, start=%d, num=%d\n", index, cur, partition_io_start[cur], partition_io_num[cur]);
+        int last_cnt = 1;
+        while (index < processed_partition_io + partition_io_num[cur])
+        {
+            // DEBUG("index=%d, direction=%d\n", index, direction);
+            if (direction == 1)
+            {
+                // int cur_cnt = 0;
+                // 从 BOT 向 EOT 扫描
+                for (uint32_t i = partition_io_start[cur];
+                     i < partition_io_start[cur] + partition_io_num[cur]; ++i)
+                {
+                    // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
+                    if (sortedIOs[i].wrap & 1 || vis[sortedIOs[i].id])
+                    {
+                        continue;
+                    }
+                    if (sortedIOs[i].startLpos > currentHead.lpos || currentHead.lpos == 0)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        // cur_cnt++;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        // currentHead.lpos = sortedIOs[i].endLpos;
+                        currentHead.lpos = sortedIOs[i].startLpos;
+                    }
+                }
+                direction = -1; // 改变扫描方向
+
+                // if (last_cnt == 0)
+                currentHead.lpos = MAX_LPOS;
+                // last_cnt = cur_cnt;
+            }
+            else
+            {
+                // int cur_cnt = 0;
+                // 从 EOT 向 BOT 扫描
+                for (int32_t i = partition_io_start[cur] + partition_io_num[cur] - 1;
+                     i >= partition_io_start[cur]; --i)
+                {
+                    // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
+                    if (!(sortedIOs[i].wrap & 1) || vis[sortedIOs[i].id])
+                    {
+                        continue;
+                    }
+                    if (sortedIOs[i].startLpos < currentHead.lpos)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        // cur_cnt++;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        // currentHead.lpos = sortedIOs[i].endLpos;
+                        currentHead.lpos = sortedIOs[i].startLpos;
+                    }
+                }
+                direction = 1; // 改变扫描方向
+
+                // if (last_cnt == 0)
+                currentHead.lpos = 0;
+                // last_cnt = cur_cnt;
+            }
+        }
+        processed_partition_io += partition_io_num[cur];
+    }
+
+    return RETURN_OK;
+}
+
+int32_t _partition_scan2(const InputParam *input, OutputParam *output, IOUint *sortedIOs, int partition_len)
+{
+    // 初始化输出参数
+    output->len = input->ioVec.len;
+    // for (uint32_t i = 0; i < output->len; i++)
+    // {
+    //     output->sequence[i] = input->ioVec.ioArray[i].id;
+    // }
+
+    int partition_threshold = partition_len;
+    int partition_num = (MAX_LPOS + partition_threshold - 1) / partition_threshold;
+    int partition_io_num[1000] = {0};
+    int partition_io_start[1000] = {0};
+    int partition_start_now = 0;
+    int now = 0;
+    for (int i = 0; i < input->ioVec.len; i++)
+    {
+        // printf("\n");
+        // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+        if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+        {
+            // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+            while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            {
+                partition_start_now += partition_threshold;
+                now++;
+            }
+            partition_io_start[now] = i;
+        }
+        // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+        partition_io_num[now]++;
+    }
+
+    // 初始化当前头位置为输入的头状态
+    HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+    // HeadInfo currentHead = {0, 0, 0};
+
+    uint32_t index = 0;
+
+    bool vis[input->ioVec.len + 1];
+    memset(vis, 0, sizeof(vis));
+    int processed_partition_io = 0;
+    for (int cur = 0; cur < partition_num; cur++)
+    {
+        // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
+        int direction = 1;
+        currentHead.lpos = 0;
+        // DEBUG("index=%d, cur partition=%d, start=%d, num=%d\n", index, cur, partition_io_start[cur], partition_io_num[cur]);
+        int last_cnt = 1;
+        while (index < processed_partition_io + partition_io_num[cur])
+        {
+            // DEBUG("index=%d, direction=%d\n", index, direction);
+            if (direction == 1)
+            {
+                // int cur_cnt = 0;
+                // 从 BOT 向 EOT 扫描
+                for (uint32_t i = partition_io_start[cur];
+                     i < partition_io_start[cur] + partition_io_num[cur]; ++i)
+                {
+                    // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
+                    if (sortedIOs[i].wrap & 1 || vis[sortedIOs[i].id])
+                    {
+                        continue;
+                    }
+                    if (sortedIOs[i].startLpos > currentHead.lpos || currentHead.lpos == 0)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        // cur_cnt++;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        currentHead.lpos = sortedIOs[i].endLpos;
+                        // currentHead.lpos = sortedIOs[i].startLpos;
+                    }
+                }
+                direction = -1; // 改变扫描方向
+
+                // if (last_cnt == 0)
+                currentHead.lpos = MAX_LPOS;
+                // last_cnt = cur_cnt;
+            }
+            else
+            {
+                // int cur_cnt = 0;
+                // 从 EOT 向 BOT 扫描
+                for (int32_t i = partition_io_start[cur] + partition_io_num[cur] - 1;
+                     i >= partition_io_start[cur]; --i)
+                {
+                    // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
+                    if (!(sortedIOs[i].wrap & 1) || vis[sortedIOs[i].id])
+                    {
+                        continue;
+                    }
+                    if (sortedIOs[i].startLpos < currentHead.lpos)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        // cur_cnt++;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        currentHead.lpos = sortedIOs[i].endLpos;
+                        // currentHead.lpos = sortedIOs[i].startLpos;
+                    }
+                }
+                direction = 1; // 改变扫描方向
+
+                // if (last_cnt == 0)
+                currentHead.lpos = 0;
+                // last_cnt = cur_cnt;
+            }
+        }
+        processed_partition_io += partition_io_num[cur];
+    }
+
+    return RETURN_OK;
+}
+
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm)
 {
     int32_t ret;
@@ -1175,6 +1521,10 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorit
     else if (strcmp(algorithm, "merge") == 0)
     {
         ret = merge(input, output);
+    }
+    else if (strcmp(algorithm, "partition_scan") == 0)
+    {
+        ret = partition_scan(input, output);
     }
     else
     {

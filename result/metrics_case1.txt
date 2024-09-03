@@ -4,7 +4,7 @@ Algorithm: FCFS
 Output sequence: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ]
 /* 关键指标结构体 */
 ioCount: 15 
-algorithmRunningDuration(ms): 2.46 
+algorithmRunningDuration(ms): 1.32 
 memoryUse(ms): 0 
 addressingDuration(ms): 1362738 
 readDuration(ms): 9090
@@ -49,7 +49,7 @@ Algorithm: Nearest
 Output sequence: [14, 5, 15, 2, 7, 11, 13, 6, 9, 4, 12, 8, 3, 1, 10, ]
 /* 关键指标结构体 */
 ioCount: 15 
-algorithmRunningDuration(ms): 0.00 
+algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 354295 
 readDuration(ms): 9090
@@ -64,12 +64,29 @@ Algorithm: merge
 Output sequence: [15, 2, 7, 11, 5, 14, 10, 3, 8, 1, 12, 4, 13, 6, 9, ]
 /* 关键指标结构体 */
 ioCount: 15 
-algorithmRunningDuration(ms): 0.10 
+algorithmRunningDuration(ms): 0.19 
 memoryUse(ms): 0 
 addressingDuration(ms): 589179 
 readDuration(ms): 9090
 tapeBeltWear(times): 1638886
 tapeMotorWear(times): 21 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: partition_scan
+
+best_scan_method=1 best_partition_size=5000
+
+Output sequence: [14, 5, 15, 2, 7, 11, 13, 6, 9, 4, 12, 8, 3, 1, 10, ]
+/* 关键指标结构体 */
+ioCount: 15 
+algorithmRunningDuration(ms): 0.38 
+memoryUse(ms): 0 
+addressingDuration(ms): 354295 
+readDuration(ms): 9090
+tapeBeltWear(times): 746675
+tapeMotorWear(times): 27 
 errorIOCount: 0 
 
 

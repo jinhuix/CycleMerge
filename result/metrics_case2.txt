@@ -1,10 +1,24 @@
 /* 算法名称 */
+Algorithm: ORACLE
+
+Output sequence: [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
+/* 关键指标结构体 */
+ioCount: 10 
+algorithmRunningDuration(ms): 0
+memoryUse(ms): 0 
+addressingDuration(ms): 293696 
+readDuration(ms): 6060
+tapeBeltWear(times): 692345
+tapeMotorWear(times): 15 
+errorIOCount: 0 
+
+/* 算法名称 */
 Algorithm: FCFS
 
 Output sequence: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ]
 /* 关键指标结构体 */
 ioCount: 10 
-algorithmRunningDuration(ms): 2.49 
+algorithmRunningDuration(ms): 1.38 
 memoryUse(ms): 0 
 addressingDuration(ms): 850195 
 readDuration(ms): 6060
@@ -64,12 +78,29 @@ Algorithm: merge
 Output sequence: [8, 2, 7, 5, 1, 4, 9, 3, 10, 6, ]
 /* 关键指标结构体 */
 ioCount: 10 
-algorithmRunningDuration(ms): 0.08 
+algorithmRunningDuration(ms): 0.16 
 memoryUse(ms): 0 
 addressingDuration(ms): 296958 
 readDuration(ms): 6060
 tapeBeltWear(times): 736541
 tapeMotorWear(times): 11 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: partition_scan
+
+best_scan_method=1 best_partition_size=15000
+
+Output sequence: [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
+/* 关键指标结构体 */
+ioCount: 10 
+algorithmRunningDuration(ms): 0.28 
+memoryUse(ms): 0 
+addressingDuration(ms): 293696 
+readDuration(ms): 6060
+tapeBeltWear(times): 692345
+tapeMotorWear(times): 15 
 errorIOCount: 0 
 
 
