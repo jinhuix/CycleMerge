@@ -1,242 +1,102 @@
-```shell
-[INFO]  07-26-2024 15:43:56   test.c:83   (tid=131974226904896): mycase:
-[INFO]  07-26-2024 15:43:56   test.c:94   (tid=131974226904896): seek from wrap 5, lpos 1000 to wrap 4, lpos 100
-[DEBUG] 07-26-2024 15:43:56   test.c:97   (tid=131974226904896): start.wrap: 5, start.lpos: 1000, start.status: 0
-[DEBUG] 07-26-2024 15:43:56   test.c:98   (tid=131974226904896): end.wrap: 4, end.lpos: 100, end.status: 1
-[DEBUG] 07-26-2024 15:43:56   test.c:102  (tid=131974226904896): seekT: 9070 ms, beltW: 1101 lpos, motorW: 2 lpos
-[INFO]  07-26-2024 15:43:56   test.c:110  (tid=131974226904896): read from wrap 4, lpos 100 to wrap 4, lpos 150
-[DEBUG] 07-26-2024 15:43:56   test.c:114  (tid=131974226904896): beltW: 51 lpos, motorW: 0 lpos
-[DEBUG] 07-26-2024 15:43:56   test.c:116  (tid=131974226904896): rwT: 10 ms
-```
+### 观察
 
-初始状态5-1000，寻址到4-100
+对wrap&lpos——seektime之间的关系进行绘图
 
-从初始状态寻址到第一个io的起始位置，花了9070ms，是状态转换花费了时间吗
-带体磨损为1101
-电机磨损为2，与一次掉头操作相匹配
+发现：
+* 当两个io请求的lpos之间相差过大时，其寻址时延几乎完全由lpos的差异主导
+* 换wrap的时延开销非常小
+* 掉头会出现较为固定的开销，但相较于lpos造成的时延是一个较小的量
 
-相比于寻址，读取操作从4-100读到4-150，只花了10ms
+同向wrap掉头：开销约为固定的17000ms
+异向wrap掉头：开销约为固定的12000ms
 
-```shell
-[INFO]  07-26-2024 15:43:56   test.c:94   (tid=131974226904896): seek from wrap 4, lpos 150 to wrap 125, lpos 58
-[DEBUG] 07-26-2024 15:43:56   test.c:97   (tid=131974226904896): start.wrap: 4, start.lpos: 150, start.status: 1
-[DEBUG] 07-26-2024 15:43:56   test.c:98   (tid=131974226904896): end.wrap: 125, end.lpos: 58, end.status: 1
-[DEBUG] 07-26-2024 15:43:56   test.c:102  (tid=131974226904896): seekT: 5882 ms, beltW: 12593 lpos, motorW: 2 lpos
-[INFO]  07-26-2024 15:43:56   test.c:110  (tid=131974226904896): read from wrap 125, lpos 58 to wrap 125, lpos 5
-[DEBUG] 07-26-2024 15:43:56   test.c:114  (tid=131974226904896): beltW: 54 lpos, motorW: 0 lpos
-[DEBUG] 07-26-2024 15:43:56   test.c:116  (tid=131974226904896): rwT: 10 ms
-```
+lpos差异最大达到730000时，寻址开销约为200000ms左右
 
-从4-150寻址到125-58
-寻址时间5882ms
-带体磨损12593，
-电机磨损2，说明只掉了一次头
+掉头的时间开销近似于进行10000~20000lpos的横向寻址的时间开销
 
-从io可以看出4的方向是顺着的
-150->endpos
-而125的方向是反着的
-endpos->58
+想法：对于scan，其默认最小化掉头开销，但若为了减少掉头开销，需要去支付额外的横向寻址开销，则得不偿失，应当在适当的时机使其进行掉头
 
-只掉了一次头
-wrap间寻址造成的带体磨损：
+### 优化SCAN算法
 
-```shell
-[INFO]  07-26-2024 15:43:56   test.c:94   (tid=131974226904896): seek from wrap 125, lpos 5 to wrap 9, lpos 90
-[DEBUG] 07-26-2024 15:43:56   test.c:97   (tid=131974226904896): start.wrap: 125, start.lpos: 5, start.status: 1
-[DEBUG] 07-26-2024 15:43:56   test.c:98   (tid=131974226904896): end.wrap: 9, end.lpos: 90, end.status: 1
-[DEBUG] 07-26-2024 15:43:56   test.c:102  (tid=131974226904896): seekT: 11365 ms, beltW: 12596 lpos, motorW: 4 lpos
-[INFO]  07-26-2024 15:43:56   test.c:110  (tid=131974226904896): read from wrap 9, lpos 90 to wrap 9, lpos 30
-[DEBUG] 07-26-2024 15:43:56   test.c:114  (tid=131974226904896): beltW: 61 lpos, motorW: 0 lpos
-[DEBUG] 07-26-2024 15:43:56   test.c:116  (tid=131974226904896): rwT: 10 ms
-```
+**SCAN算法的统一缺陷**：
+* 若在第一趟扫描时存在分布在lpos两端的点，为了扫描到这些点，需要支付寻址到这些点的往返开销；而若把末端的点留到最后处理，则不需要额外的返回开销
 
-125-5寻址到9-90
+例子：(0,0)、(0,7300000)、(1,360000)
+最优：(0,0)->(1,360000)->(0,7300000)，顺序处理过去
+SCAN：(0,0)->(0,7300000)->(1,360000)，处理完远端再扫描回来，支付了额外的返回开销
 
-寻址时间：11365ms
-带体磨损：12596ms
-电机磨损：4
+**两种SCAN方式的比较**：
+* SCAN1：只扫描两趟，每一趟处理一个方向的全部请求
+  * 优点：只需要两趟扫描
+  * 缺点：对于有重叠部分的io请求，从一个io请求尾部寻址到另一个io请求的头部，会导致同向掉头
+* SCAN2：扫描多趟，每一趟只处理当前方向上不会导致掉头的请求
+  * 优点：避免同向掉头，只在每趟扫描之间掉头
+  * 缺点：若点之间距离相差较远，为了避免掉头，会导致一些点需要在后续趟中被扫描，造成额外的返回寻址开销
+* 在**重叠请求较多且lpos相差不大的场景**中，SCAN2优于SCAN1；典型例子：10000个纯均匀随机io，最好的扫描方式是wrap 0、wrap 1、wrap 2...wrap 280 这样全部扫描一遍
 
----
+**理想情况**：
+* 识别出各个io请求簇，簇之间的lpos平均距离不小于20000，即簇之间的寻址开销大于掉头开销
+* 只在io请求簇内进行SCAN，依次处理每个簇
 
-### 1
+**聚类算法**：DBSCAN、K-Means(需要提前给定簇的数量，×)、...
+* 若在python中实现，由于需要调用c的库，10000的规模时计算距离矩阵开销过大，直接超时
+* 在c中实现需要重新实现一下聚类算法(还没实现)
 
-#### 同一wrap上的移动耗时
-同一wrap上的寻址和读取耗时相同，每100单位耗时20ms
+**分区扫描(partition scan)**：
+* 基于前面的观察，若不考虑掉头，换wrap的开销相较于lpos之间进行寻址的开销基本可以忽略不计，因此可以直接近似将其视为一个一维结构，按lpos的区间对io请求进行分组，对于每个区间内的请求，进行SCAN扫描
+* 参数
+  * 区间大小
+  * SCAN方式：SCAN1、SCAN2
 
-#### 不同wrap的相同位置间寻址造成的磨损
+区间大小直觉上设置为20000左右，但并不能在各个case上优于SCAN和最近邻
 
-从奇数到偶数wrap，且相同位置，寻址一次：带体磨损3，电机磨损2
+对于SCAN算法，预先将io请求按开始位置进行排序，时间复杂度$O(nlogn)$，然后进行扫描，复杂度近似$O(n)$，时间开销非常小，因此可以直接采取遍历参数值，搜索最优解的方式
 
-从奇数到奇数wrap，且相同位置，寻址一次：带体磨损12503，电机磨损4
+以5000为步长遍历，730000的lpos需要遍历200次左右，每次遍历时间复杂度O(n)，最终在10000规模的case上用时不超过1s
 
-从偶数到奇数wrap，且相同位置，寻址一次：带体磨损12501，电机磨损2
+### 最近邻和merge(视作旅行商问题来进行处理)
 
-从偶数到偶数wrap，且相同位置，寻址一次：带体磨损1,电机磨损0
+#### **最近邻**
 
-不同位置时，只需加上同一wrap不同位置间移动的带体磨损
+使用SeekTimeCalculate来计算每两个io之间的寻址时间
 
-#### 不同wrap的相同位置间寻址造成的耗时
+建立距离矩阵之后，问题直接就变成了不需要回到起点的旅行商问题，因为SeekTimeCalculate计算的寻址时间中已经包含了掉头、换wrap造成的时延
 
+**缺陷**：每次选取最近的io，可能会被一系列最近的io请求将磁头引导至端点位置，而有很多io请求没有被处理到，需要寻址返回去去对这些io请求进行处理，支付额外的横向寻址开销
 
-### 从静止状态到运动状态：
+#### **merge**
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 100 1
-请输入end.wrap, end.lpos, end.status: 1 0 1
-seekT: 20 ms, beltW: 101 lpos, motorW: 0 lpos
-rwT: 20 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 100 0
-请输入end.wrap, end.lpos, end.status: 1 0 1
-seekT: 6007 ms, beltW: 101 lpos, motorW: 0 lpos
-rwT: 20 ms
+一种启发式的想法：一旦确定两个io之间的连接顺序，就可以将这两个io直接合并成一个，把前一个io的起始位置作为合并io的起始位置，后一个io的位置作为合并io的末尾位置
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 1000 1
-请输入end.wrap, end.lpos, end.status: 1 0 1
-seekT: 197 ms, beltW: 1001 lpos, motorW: 0 lpos
-rwT: 200 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 1000 0
-请输入end.wrap, end.lpos, end.status: 1 0 1
-seekT: 5740 ms, beltW: 1001 lpos, motorW: 0 lpos
-rwT: 200 ms
+合并方式：每次选取最短的边连接的两个io进行合并
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 500 0
-请输入end.wrap, end.lpos, end.status: 1 0 1
-seekT: 5891 ms, beltW: 501 lpos, motorW: 0 lpos
-rwT: 100 ms
+**复杂度**
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 2 0
-请输入end.wrap, end.lpos, end.status: 1 1 1
-seekT: 6035 ms, beltW: 2 lpos, motorW: 0 lpos
-rwT: 0 ms
+计算每两两点之间的io距离：$O(n^2)$，共$O(n^2)$条边
 
----
+将边排序，复杂度：$O(n^2)\log n$
 
-### wrap间移动
+每次选取最短的那条边进行判断，若边上的点已经被连接过或者有环，则跳过。最好情况遍历n-1条边直接确定整个n个io序列的顺序，最坏情况需要将所有边遍历一遍
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 2 0 1
-seekT: 5503 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 3 0 1
-seekT: 11006 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 100 1
-请输入end.wrap, end.lpos, end.status: 2 100 1
-seekT: 5503 ms, beltW: 201 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 100 1
-请输入end.wrap, end.lpos, end.status: 3 100 1
-seekT: 11006 ms, beltW: 12701 lpos, motorW: 4 lpos
-rwT: 0 ms
+使用优先队列(堆)维护，复杂度$O(n^2)\log n$
 
----
+10000节点规模下，要进行$10^9$数量级的运算，时间30~80s左右
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 101 0 1
-seekT: 11300 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 100 0 1
-seekT: 5797 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 201 0 1
-seekT: 11600 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 200 0 1
-seekT: 6097 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
+**效果**
 
----
+在case2和case4上最优
+在生成的10000规模均匀随机序列上最优
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 100 100 1
-seekT: 5817 ms, beltW: 103 lpos, motorW: 2 lpos
-rwT: 20 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 101 100 1
-seekT: 11320 ms, beltW: 12603 lpos, motorW: 4 lpos
-rwT: 20 ms
+#### 其他方法
 
----
+最近邻和merge算法直接使用SeekTimeCalculate来计算两两io请求之间的寻址距离，若不考虑掉头的电机磨损，则问题直接就变为了旅行商问题
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 99 0 1
-请输入end.wrap, end.lpos, end.status: 2 0 1
-seekT: 5791 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 99 0 1
-请输入end.wrap, end.lpos, end.status: 1 0 1
-seekT: 11294 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 99 0 1
-请输入end.wrap, end.lpos, end.status: 2 300 1
-seekT: 5851 ms, beltW: 303 lpos, motorW: 2 lpos
-rwT: 60 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 99 0 1
-请输入end.wrap, end.lpos, end.status: 1 300 1
-seekT: 11354 ms, beltW: 12803 lpos, motorW: 4 lpos
-rwT: 60 ms
+[**Christofides算法**](https://zh.wikipedia.org/wiki/%E5%85%8B%E9%87%8C%E6%96%AF%E6%89%98%E8%8F%B2%E5%BE%B7%E6%96%AF%E7%AE%97%E6%B3%95)
 
----
+关于旅行商问题，类似于merge(处理方式类似于最小生成树)，Christofides算法是一个基于最小生成树的多项式时间复杂度的近似算法，保证相对最优哈密尔顿回路长度有3/2的近似比
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 2 0 1
-seekT: 5503 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 3 0 1
-seekT: 11006 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 4 0 1
-seekT: 5509 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 5 0 1
-seekT: 11012 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 6 0 1
-seekT: 5515 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 7 0 1
-seekT: 11018 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
+在一个[开源的实现](https://github.com/Retsediv/ChristofidesAlgorithm/blob/master/christofides.py)上试了一下，实际效果还不如merge，稳定劣于最近邻、SCAN以及merge
 
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 100 0 1
-seekT: 5797 ms, beltW: 3 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 1 0 1
-请输入end.wrap, end.lpos, end.status: 101 0 1
-seekT: 11300 ms, beltW: 12503 lpos, motorW: 4 lpos
-rwT: 0 ms
+[**LKH求解器**](http://webhotel4.ruc.dk/~keld/research/LKH/)
 
----
-
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 2 0 1
-请输入end.wrap, end.lpos, end.status: 3 0 1
-seekT: 5503 ms, beltW: 12501 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 2 0 1
-请输入end.wrap, end.lpos, end.status: 4 0 1
-seekT: 11006 ms, beltW: 1 lpos, motorW: 0 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 2 0 1
-请输入end.wrap, end.lpos, end.status: 5 0 1
-seekT: 5509 ms, beltW: 12501 lpos, motorW: 2 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 2 0 1
-请输入end.wrap, end.lpos, end.status: 6 0 1
-seekT: 11012 ms, beltW: 1 lpos, motorW: 0 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 2 0 1
-请输入end.wrap, end.lpos, end.status: 100 0 1
-seekT: 11294 ms, beltW: 1 lpos, motorW: 0 lpos
-rwT: 0 ms
-请输入start.wrap, start.lpos, start.status (或输入'q'退出): 2 0 1
-请输入end.wrap, end.lpos, end.status: 101 0 1
-seekT: 5797 ms, beltW: 12501 lpos, motorW: 2 lpos
-rwT: 0 ms
+求解速度太慢
