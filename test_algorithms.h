@@ -21,3 +21,15 @@ int32_t HillClimbing(const InputParam *input, OutputParam *output);
 int32_t GeneticAlgorithm(const InputParam *input, OutputParam *output);
 
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm);
+
+#ifdef _WIN32
+#ifdef BUILDING_DLL
+#define DLL_EXPORT __declspec(dllexport)
+#else
+#define DLL_EXPORT __declspec(dllimport)
+#endif
+#else
+#define DLL_EXPORT
+#endif
+
+DLL_EXPORT int32_t partition_scan_t(const InputParam *input, OutputParam *output, int partition_len, int *partitions, int p_num);
