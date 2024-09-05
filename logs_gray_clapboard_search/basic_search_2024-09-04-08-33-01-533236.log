@@ -1,0 +1,14 @@
+[2024-09-04 08:33:01,533][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-04-08-33-01-533236.log
+[2024-09-04 08:33:01,567][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: local_random.
+[2024-09-04 08:33:01,573][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-04-08-33-01-571257.html
+[2024-09-04 08:33:01,574][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [0.0].
+[2024-09-04 08:33:01,574][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [7.0].
+[2024-09-04 08:33:01,575][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [5.0].
+[2024-09-04 08:33:01,578][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [6.0].
+[2024-09-04 08:33:01,579][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [5.0].
+[2024-09-04 08:33:01,579][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [7.0].
+[2024-09-04 08:33:01,580][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [5.0].
+[2024-09-04 08:33:01,581][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [5.0].
+[2024-09-04 08:33:01,649][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [3.0].
+[2024-09-04 08:33:01,756][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [2.0].
+[2024-09-04 08:33:01,757][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-04-08-33-01-571257.html

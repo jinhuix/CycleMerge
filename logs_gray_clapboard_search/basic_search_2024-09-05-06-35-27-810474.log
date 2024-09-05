@@ -1,0 +1,15 @@
+[2024-09-05 06:35:27,810][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-05-06-35-27-810474.log
+[2024-09-05 06:35:27,847][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: local_random.
+[2024-09-05 06:35:27,852][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-05-06-35-27-850231.html
+[2024-09-05 06:35:27,853][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [1136356.0].
+[2024-09-05 06:35:27,854][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [1136356.0].
+[2024-09-05 06:35:27,854][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [1136356.0].
+[2024-09-05 06:35:27,858][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [1136356.0].
+[2024-09-05 06:35:27,859][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [1136356.0].
+[2024-09-05 06:35:27,859][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [1136356.0].
+[2024-09-05 06:35:27,860][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [1136356.0].
+[2024-09-05 06:35:27,861][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [1136356.0].
+[2024-09-05 06:35:27,927][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [1136356.0].
+[2024-09-05 06:35:27,994][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [1136356.0].
+[2024-09-05 06:35:27,995][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-05-06-35-27-850231.html
+[2024-09-05 06:35:27,999][basic_search][INFO][history.py:765] Too many incumbents in history. Only show 5/10 of them.

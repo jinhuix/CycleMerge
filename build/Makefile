@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named data_gen
+
+# Build rule for target.
+data_gen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 data_gen
+.PHONY : data_gen
+
+# fast build rule for target.
+data_gen/fast:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/build
+.PHONY : data_gen/fast
+
+#=============================================================================
 # Target rules for targets named xjh
 
 # Build rule for target.
@@ -122,6 +135,19 @@ xjh: cmake_check_build_system
 xjh/fast:
 	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/build
 .PHONY : xjh/fast
+
+#=============================================================================
+# Target rules for targets named test_algorithms
+
+# Build rule for target.
+test_algorithms: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_algorithms
+.PHONY : test_algorithms
+
+# fast build rule for target.
+test_algorithms/fast:
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/build
+.PHONY : test_algorithms/fast
 
 #=============================================================================
 # Target rules for targets named project_hw
@@ -163,13 +189,42 @@ algorithm/algorithm.c.s:
 	$(MAKE) -f CMakeFiles/project_hw.dir/build.make CMakeFiles/project_hw.dir/algorithm/algorithm.c.s
 .PHONY : algorithm/algorithm.c.s
 
+data_gen.o: data_gen.c.o
+
+.PHONY : data_gen.o
+
+# target to build an object file
+data_gen.c.o:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/data_gen.c.o
+.PHONY : data_gen.c.o
+
+data_gen.i: data_gen.c.i
+
+.PHONY : data_gen.i
+
+# target to preprocess a source file
+data_gen.c.i:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/data_gen.c.i
+.PHONY : data_gen.c.i
+
+data_gen.s: data_gen.c.s
+
+.PHONY : data_gen.s
+
+# target to generate assembly for a file
+data_gen.c.s:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/data_gen.c.s
+.PHONY : data_gen.c.s
+
 logging.o: logging.c.o
 
 .PHONY : logging.o
 
 # target to build an object file
 logging.c.o:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/logging.c.o
 	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/logging.c.o
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/logging.c.o
 .PHONY : logging.c.o
 
 logging.i: logging.c.i
@@ -178,7 +233,9 @@ logging.i: logging.c.i
 
 # target to preprocess a source file
 logging.c.i:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/logging.c.i
 	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/logging.c.i
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/logging.c.i
 .PHONY : logging.c.i
 
 logging.s: logging.c.s
@@ -187,7 +244,9 @@ logging.s: logging.c.s
 
 # target to generate assembly for a file
 logging.c.s:
+	$(MAKE) -f CMakeFiles/data_gen.dir/build.make CMakeFiles/data_gen.dir/logging.c.s
 	$(MAKE) -f CMakeFiles/xjh.dir/build.make CMakeFiles/xjh.dir/logging.c.s
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/logging.c.s
 .PHONY : logging.c.s
 
 main.o: main.c.o
@@ -216,6 +275,33 @@ main.s: main.c.s
 main.c.s:
 	$(MAKE) -f CMakeFiles/project_hw.dir/build.make CMakeFiles/project_hw.dir/main.c.s
 .PHONY : main.c.s
+
+test_algorithms.o: test_algorithms.c.o
+
+.PHONY : test_algorithms.o
+
+# target to build an object file
+test_algorithms.c.o:
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/test_algorithms.c.o
+.PHONY : test_algorithms.c.o
+
+test_algorithms.i: test_algorithms.c.i
+
+.PHONY : test_algorithms.i
+
+# target to preprocess a source file
+test_algorithms.c.i:
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/test_algorithms.c.i
+.PHONY : test_algorithms.c.i
+
+test_algorithms.s: test_algorithms.c.s
+
+.PHONY : test_algorithms.s
+
+# target to generate assembly for a file
+test_algorithms.c.s:
+	$(MAKE) -f CMakeFiles/test_algorithms.dir/build.make CMakeFiles/test_algorithms.dir/test_algorithms.c.s
+.PHONY : test_algorithms.c.s
 
 xjh_algorithms.o: xjh_algorithms.c.o
 
@@ -278,18 +364,26 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... data_gen"
 	@echo "... xjh"
+	@echo "... test_algorithms"
 	@echo "... edit_cache"
 	@echo "... project_hw"
 	@echo "... algorithm/algorithm.o"
 	@echo "... algorithm/algorithm.i"
 	@echo "... algorithm/algorithm.s"
+	@echo "... data_gen.o"
+	@echo "... data_gen.i"
+	@echo "... data_gen.s"
 	@echo "... logging.o"
 	@echo "... logging.i"
 	@echo "... logging.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... test_algorithms.o"
+	@echo "... test_algorithms.i"
+	@echo "... test_algorithms.s"
 	@echo "... xjh_algorithms.o"
 	@echo "... xjh_algorithms.i"
 	@echo "... xjh_algorithms.s"

@@ -1,0 +1,60 @@
+[2024-09-04 08:30:18,861][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-04-08-30-18-861556.log
+[2024-09-04 08:30:18,896][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: local_random.
+[2024-09-04 08:30:18,901][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-04-08-30-18-900097.html
+[2024-09-04 08:30:18,903][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [9.0].
+[2024-09-04 08:30:18,903][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [9.0].
+[2024-09-04 08:30:18,904][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [9.0].
+[2024-09-04 08:30:18,907][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [9.0].
+[2024-09-04 08:30:18,908][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [9.0].
+[2024-09-04 08:30:18,908][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [9.0].
+[2024-09-04 08:30:18,909][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [9.0].
+[2024-09-04 08:30:18,909][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [9.0].
+[2024-09-04 08:30:18,974][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [9.0].
+[2024-09-04 08:30:19,040][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [9.0].
+[2024-09-04 08:30:19,153][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [9.0].
+[2024-09-04 08:30:19,222][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [9.0].
+[2024-09-04 08:30:19,291][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [9.0].
+[2024-09-04 08:30:19,359][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [9.0].
+[2024-09-04 08:30:19,427][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [9.0].
+[2024-09-04 08:30:19,540][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [9.0].
+[2024-09-04 08:30:19,609][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [9.0].
+[2024-09-04 08:30:19,610][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-04 08:30:19,610][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [9.0].
+[2024-09-04 08:30:19,680][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [9.0].
+[2024-09-04 08:30:19,748][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [9.0].
+[2024-09-04 08:30:19,816][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [9.0].
+[2024-09-04 08:30:19,889][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [9.0].
+[2024-09-04 08:30:20,015][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [9.0].
+[2024-09-04 08:30:20,087][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [9.0].
+[2024-09-04 08:30:20,155][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [9.0].
+[2024-09-04 08:30:20,223][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [9.0].
+[2024-09-04 08:30:20,292][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [9.0].
+[2024-09-04 08:30:20,293][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-04 08:30:20,294][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [9.0].
+[2024-09-04 08:30:20,409][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [9.0].
+[2024-09-04 08:30:20,477][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [9.0].
+[2024-09-04 08:30:20,547][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [9.0].
+[2024-09-04 08:30:20,616][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [9.0].
+[2024-09-04 08:30:20,685][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [9.0].
+[2024-09-04 08:30:20,798][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [9.0].
+[2024-09-04 08:30:20,868][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [9.0].
+[2024-09-04 08:30:20,938][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [9.0].
+[2024-09-04 08:30:21,006][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [9.0].
+[2024-09-04 08:30:21,075][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [9.0].
+[2024-09-04 08:30:21,077][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-04 08:30:21,077][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [9.0].
+[2024-09-04 08:30:21,195][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [9.0].
+[2024-09-04 08:30:21,264][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [9.0].
+[2024-09-04 08:30:21,266][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-04 08:30:21,267][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [9.0].
+[2024-09-04 08:30:21,338][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [9.0].
+[2024-09-04 08:30:21,408][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [9.0].
+[2024-09-04 08:30:21,410][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-04 08:30:21,410][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [9.0].
+[2024-09-04 08:30:21,481][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [9.0].
+[2024-09-04 08:30:21,596][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [9.0].
+[2024-09-04 08:30:21,665][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [9.0].
+[2024-09-04 08:30:21,735][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [9.0].
+[2024-09-04 08:30:21,804][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [9.0].
+[2024-09-04 08:30:21,806][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-04-08-30-18-900097.html
+[2024-09-04 08:30:21,809][basic_search][INFO][history.py:765] Too many incumbents in history. Only show 5/50 of them.

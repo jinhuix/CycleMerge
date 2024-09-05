@@ -1,0 +1,56 @@
+[2024-08-29 07:08:18,047][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-08-29-07-08-18-046819.log
+[2024-08-29 07:08:18,163][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: random_scipy.
+[2024-08-29 07:08:18,169][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-08-29-07-08-18-167485.html
+[2024-08-29 07:08:18,176][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [643344.0].
+[2024-08-29 07:08:18,218][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [4069798.0].
+[2024-08-29 07:08:18,256][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [3958418.0].
+[2024-08-29 07:08:18,296][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [4017912.0].
+[2024-08-29 07:08:18,338][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [4150905.0].
+[2024-08-29 07:08:18,372][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [3604077.0].
+[2024-08-29 07:08:18,416][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [4396756.0].
+[2024-08-29 07:08:18,455][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [3943411.0].
+[2024-08-29 07:08:19,615][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [3955079.0].
+[2024-08-29 07:08:19,617][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-29 07:08:19,651][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [3470377.0].
+[2024-08-29 07:08:21,778][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [4641799.0].
+[2024-08-29 07:08:24,179][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [3498020.0].
+[2024-08-29 07:08:26,279][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [4216408.0].
+[2024-08-29 07:08:28,434][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [3429042.0].
+[2024-08-29 07:08:30,833][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [663312.0].
+[2024-08-29 07:08:33,568][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [1110707.0].
+[2024-08-29 07:08:35,631][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [1261567.0].
+[2024-08-29 07:08:37,825][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [1312199.0].
+[2024-08-29 07:08:40,628][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [1201049.0].
+[2024-08-29 07:08:42,744][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [1387273.0].
+[2024-08-29 07:08:44,791][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [1723449.0].
+[2024-08-29 07:08:47,192][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [1492812.0].
+[2024-08-29 07:08:47,195][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-08-29 07:08:47,230][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [3590485.0].
+[2024-08-29 07:08:49,824][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [1687672.0].
+[2024-08-29 07:08:51,679][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [964311.0].
+[2024-08-29 07:08:53,589][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [1816566.0].
+[2024-08-29 07:08:56,125][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [1203606.0].
+[2024-08-29 07:08:58,095][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [1031571.0].
+[2024-08-29 07:09:00,811][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [959940.0].
+[2024-08-29 07:09:03,200][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [1432984.0].
+[2024-08-29 07:09:05,519][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [2046994.0].
+[2024-08-29 07:09:07,613][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [985819.0].
+[2024-08-29 07:09:09,963][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [955309.0].
+[2024-08-29 07:09:12,118][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [1441601.0].
+[2024-08-29 07:09:14,437][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [1683734.0].
+[2024-08-29 07:09:16,516][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [1081949.0].
+[2024-08-29 07:09:18,686][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [1449550.0].
+[2024-08-29 07:09:20,996][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [1737448.0].
+[2024-08-29 07:09:23,937][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [1115037.0].
+[2024-08-29 07:09:26,421][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [1892755.0].
+[2024-08-29 07:09:28,877][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [2092540.0].
+[2024-08-29 07:09:31,215][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [971727.0].
+[2024-08-29 07:09:33,408][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [1294888.0].
+[2024-08-29 07:09:35,835][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [797568.0].
+[2024-08-29 07:09:38,243][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [1359986.0].
+[2024-08-29 07:09:40,448][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [1291687.0].
+[2024-08-29 07:09:43,358][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [1308483.0].
+[2024-08-29 07:09:45,626][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [1154539.0].
+[2024-08-29 07:09:47,709][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [1680649.0].
+[2024-08-29 07:09:49,988][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [945557.0].
+[2024-08-29 07:09:49,993][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-08-29-07-08-18-167485.html
