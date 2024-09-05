@@ -1,1 +1,0 @@
-/usr/bin/cc -g  -rdynamic CMakeFiles/xjh.dir/xjh_test.c.o CMakeFiles/xjh.dir/logging.c.o CMakeFiles/xjh.dir/xjh_algorithms.c.o  -o xjh  -Wl,-rpath,/gyc_data/fray_data/project_hw/lib ../lib/libseek_model.so -lm 

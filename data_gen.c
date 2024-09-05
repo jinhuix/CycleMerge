@@ -41,25 +41,59 @@ void generate_sample(int io_nums, const char *filename)
 
     // 打印IO请求
     fprintf(file, "[\"io\":\"id\",\"wrap\",\"startLpos\",\"endLpos\"]\n");
+
+    // 存储已生成的IO请求
+    uint32_t io_requests[io_count][4]; // [id, wrap, startLpos, endLpos]
+    uint32_t generated_count = 0;
+
     for (uint32_t i = 1; i <= io_count; ++i)
     {
-        uint32_t io_wrap = rand() % MAX_WRAP;
+        uint32_t io_wrap, io_startLpos, io_endLpos, data_length;
         uint32_t min_len = 10, max_len = 2000;
-        uint32_t io_startLpos = rand() % (MAX_LPOS - max_len);
-        uint32_t data_lenth = rand() % max_len;
-        uint32_t io_endLpos = io_startLpos + data_lenth < min_len ? min_len : data_lenth;
+        int valid = 0;
 
-        if (io_wrap % 2 == 0)
+        while (!valid)
         {
-            // 偶数wrap，结束位置大于起始位置
-            if (io_startLpos > io_endLpos)
+            io_wrap = rand() % MAX_WRAP;
+            io_startLpos = rand() % (MAX_LPOS - max_len);
+            data_length = rand() % max_len;
+            data_length = data_length < min_len ? min_len : data_length;
+            io_endLpos = io_startLpos + data_length;
+
+            if (io_wrap & 1)
             {
-                uint32_t temp = io_startLpos;
-                io_startLpos = io_endLpos;
-                io_endLpos = temp;
+                // 奇数wrap，起始位置大于结束位置
+                if (io_startLpos < io_endLpos)
+                {
+                    uint32_t temp = io_startLpos;
+                    io_startLpos = io_endLpos;
+                    io_endLpos = temp;
+                }
+            }
+
+            // 检查是否与之前生成的IO请求有重叠
+            valid = 1;
+            for (uint32_t j = 0; j < generated_count; ++j)
+            {
+                if (io_requests[j][1] == io_wrap &&
+                    ((io_startLpos >= io_requests[j][2] && io_startLpos <= io_requests[j][3]) ||
+                     (io_endLpos >= io_requests[j][2] && io_endLpos <= io_requests[j][3]) ||
+                     (io_startLpos <= io_requests[j][2] && io_endLpos >= io_requests[j][3])))
+                {
+                    valid = 0;
+                    break;
+                }
             }
         }
-        else
+
+        // 存储生成的IO请求
+        io_requests[generated_count][0] = i;
+        io_requests[generated_count][1] = io_wrap;
+        io_requests[generated_count][2] = io_startLpos;
+        io_requests[generated_count][3] = io_endLpos;
+        ++generated_count;
+
+        if (io_wrap & 1)
         {
             // 奇数wrap，起始位置大于结束位置
             if (io_startLpos < io_endLpos)
@@ -69,7 +103,18 @@ void generate_sample(int io_nums, const char *filename)
                 io_endLpos = temp;
             }
         }
+        else
+        {
+            // 偶数wrap，起始位置小于结束位置
+            if (io_startLpos > io_endLpos)
+            {
+                uint32_t temp = io_startLpos;
+                io_startLpos = io_endLpos;
+                io_endLpos = temp;
+            }
+        }
 
+        // 打印IO请求
         fprintf(file, "[%u,%u,%u,%u]\n", i, io_wrap, io_startLpos, io_endLpos);
     }
 
@@ -86,7 +131,7 @@ int main()
 
     for (int i = 1; i <= 5; i++)
     {
-        snprintf(filename, sizeof(filename), "../dataset/gen_case%u_io%u.txt", i, io_nums);
+        snprintf(filename, sizeof(filename), "../dataset/gen/gen_case%u_io%u.txt", i, io_nums);
         printf("Generating %s...\n", filename);
         generate_sample(io_nums, filename);
     }

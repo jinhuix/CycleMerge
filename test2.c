@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
     // char **algorithms = {"FCFS", "SSTF", "SCAN", "CSCAN", "LOOK", "CLOOK"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "HC", "GA", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "merge"};
-    char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge"};
+    char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge", "partition_scan"};
     // char *algorithms[] = {"merge"};
 
     char *save_path = "./metrics.txt";
