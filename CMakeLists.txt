@@ -17,27 +17,15 @@ set(SOURCES
     ${ALG_DIR}/algorithm.c
 )
 
-# set(TEST
-#     ${PROJECT_SOURCE_DIR}/test.c
-#     ${PROJECT_SOURCE_DIR}/logging.c
-# )
-
-# set(TEST2
-#     ${PROJECT_SOURCE_DIR}/test2.c
-#     ${PROJECT_SOURCE_DIR}/logging.c
-#     ${PROJECT_SOURCE_DIR}/test_algorithms.c
-# )
-
-set(test_algorithms
+set(TEST
+    ${PROJECT_SOURCE_DIR}/test.c
     ${PROJECT_SOURCE_DIR}/logging.c
-    ${PROJECT_SOURCE_DIR}/test_algorithms.h
-    ${PROJECT_SOURCE_DIR}/test_algorithms.c
 )
 
-set(XJH
-    ${PROJECT_SOURCE_DIR}/xjh_test.c
+set(TEST2
+    ${PROJECT_SOURCE_DIR}/test2.c
     ${PROJECT_SOURCE_DIR}/logging.c
-    ${PROJECT_SOURCE_DIR}/xjh_algorithms.c
+    ${PROJECT_SOURCE_DIR}/test_algorithms.c
 )
 
 set(test_algorithms
@@ -58,17 +46,11 @@ include_directories(${HEADER_DIRS})
 add_executable(project_hw  ${SOURCES})
 target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
-# add_executable(test  ${PROJECT_SOURCE_DIR}/test.c ${PROJECT_SOURCE_DIR}/logging.c)
-# target_link_libraries(test PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+add_executable(test  ${PROJECT_SOURCE_DIR}/test.c ${PROJECT_SOURCE_DIR}/logging.c)
+target_link_libraries(test PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
-# add_executable(test2  ${TEST2})
-# target_link_libraries(test2 PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
-
-add_library(test_algorithms SHARED ${test_algorithms})
-target_link_libraries(test_algorithms PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
-
-add_executable(xjh  ${XJH})
-target_link_libraries(xjh PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+add_executable(test2  ${TEST2})
+target_link_libraries(test2 PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
 add_library(test_algorithms SHARED ${test_algorithms})
 target_link_libraries(test_algorithms PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
@@ -84,6 +66,5 @@ find_library(M_LIB m)
 
 # 将数学库链接到你的目标
 target_link_libraries(project_hw ${M_LIB})
-# target_link_libraries(test ${M_LIB})
-# target_link_libraries(test2 ${M_LIB})
-target_link_libraries(xjh ${M_LIB})
+target_link_libraries(test ${M_LIB})
+target_link_libraries(test2 ${M_LIB})
