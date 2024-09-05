@@ -47,3 +47,43 @@ def read_input_param_from_file(file_path):
     input_param.headInfo.status = head_info[2]
     input_param.ioVec = IOVector(len=io_count, ioArray=io_array)
     return input_param
+
+# 初始化参数
+p_num = 4
+partition_len = 5000
+partitions = (c_int * p_num)()
+partitions[0] = 2
+partitions[1] = 4
+partitions[2] = 8
+partitions[3] = 133
+
+# 假设 ioVec 和 ioArray 已经初始化
+io_array = (IOUint * 10)()
+for i in range(10):
+    io_array[i].startLpos = i * 100
+
+# 从文件中读取 input_param
+input_param = read_input_param_from_file('./dataset/case_2.txt')
+
+output_param = OutputParam()
+output_param.sequence = (c_uint * 10)()  # 分配 c_uint 数组
+output_param.len = 10
+
+# 调用函数
+result = lib2.partition_scan_t(byref(input_param), byref(output_param), partition_len, partitions, p_num)
+
+print("Result:", result)
+print("Output sequence:", [output_param.sequence[i] for i in range(output_param.len)])
+
+# 计算总时间和磨损
+access_time = AccessTime()
+# 创建 TapeBeltSegWearInfo 实例
+seg_wear_info = TapeBeltSegWearInfo()
+
+lib.TotalAccessTime(byref(input_param), byref(output_param), byref(access_time))
+total_belt_wear_lib = lib.TotalTapeBeltWearTimes(byref(input_param), byref(output_param), byref(seg_wear_info))
+total_motor_wear_lib = lib.TotalMotorWearTimes(byref(input_param), byref(output_param))
+print(f"Total Addressing Duration (lib): {access_time.addressDuration} ms")
+print(f"Total Read Duration (lib): {access_time.readDuration} ms")
+print(f"Total Tape Belt Wear (lib): {total_belt_wear_lib} times")
+print(f"Total Motor Wear (lib): {total_motor_wear_lib} times")

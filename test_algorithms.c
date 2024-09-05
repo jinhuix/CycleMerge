@@ -1135,6 +1135,113 @@ int32_t merge(const InputParam *input, OutputParam *output)
     return RETURN_OK;
 }
 
+int32_t partition_scan_t(const InputParam *input, OutputParam *output, int partition_len, int *partitions, int p_num)
+{
+    // 复制 IO 请求数组并按 lpos 排序
+    IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
+    if (sortedIOs == NULL)
+    {
+        free(output->sequence);
+        return RETURN_ERROR;
+    }
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        sortedIOs[i] = input->ioVec.ioArray[i];
+    }
+
+    // 快速排序
+    int low = 0;
+    int high = input->ioVec.len - 1;
+    int stack[high - low + 1];
+    int top = -1;
+
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0)
+    {
+        // 从栈中弹出 high 和 low 值，表示当前需要排序的子数组的边界
+        high = stack[top--];
+        low = stack[top--];
+
+        // 选择子数组的最后一个元素作为枢轴（pivot），并初始化变量 i 为 low - 1
+        uint32_t pivot = sortedIOs[high].startLpos;
+        int i = low - 1;
+
+        // 遍历当前子数组
+        for (int j = low; j < high; ++j)
+        {
+            // 将所有小于枢轴的元素移到枢轴的左边
+            if (sortedIOs[j].startLpos < pivot)
+            {
+                ++i; // i 指向当前小于枢轴的元素的位置
+                IOUint temp = sortedIOs[i];
+                sortedIOs[i] = sortedIOs[j];
+                sortedIOs[j] = temp;
+            }
+        }
+
+        // 将枢轴元素放到正确的位置
+        IOUint temp = sortedIOs[i + 1];
+        sortedIOs[i + 1] = sortedIOs[high];
+        sortedIOs[high] = temp;
+
+        int pi = i + 1;
+        // 根据枢轴的位置 pi，将左子数组和右子数组的边界压入栈中
+        if (pi - 1 > low)
+        {
+            stack[++top] = low;
+            stack[++top] = pi - 1;
+        }
+
+        if (pi + 1 < high)
+        {
+            stack[++top] = pi + 1;
+            stack[++top] = high;
+        }
+    }
+
+    //----排序结束----
+
+    //----搜索最佳分割参数----
+
+    int best_scan_method = 1;
+    int temp_partition_num = (MAX_LPOS + partition_len - 1) / partition_len;
+    // p_num = 4;
+    // partitions[0] = 2, partitions[1] = 4, partitions[2] = 8, partitions[3] = temp_partition_num - 14;
+    // _partition_scan1(input, output, sortedIOs, partition_len, NULL, 0);
+    DEBUG("partition_len=%d, partition_num=%d\n", partition_len, p_num);
+    printf("partitions=[");
+    int tot = 0;
+    for (int i = 0; i < p_num; i++)
+    {
+        // printf("partitions[%d]=%d,", i, partitions[i]);
+        printf("%d,", partitions[i]);
+        tot += partitions[i];
+    }
+    if (tot != temp_partition_num)
+    {
+        ERROR("tot=%d, partition_num should be %d\n", tot, temp_partition_num);
+    }
+    printf("]\n");
+    _partition_scan1(input, output, sortedIOs, partition_len, partitions, p_num);
+    AccessTime accessTime = {0};
+    TotalAccessTime(input, output, &accessTime);
+    int time1 = accessTime.addressDuration;
+    DEBUG("time1=%d\n", time1);
+
+    // _partition_scan2(input, output, sortedIOs, partition_len, NULL, 0);
+    _partition_scan2(input, output, sortedIOs, partition_len, partitions, p_num);
+    TotalAccessTime(input, output, &accessTime);
+    int time2 = accessTime.addressDuration;
+    if (time2 < time1)
+    {
+        best_scan_method = 2;
+    }
+    DEBUG("best_scan_method=%d\n", best_scan_method);
+    return best_scan_method == 1 ? time1 : time2;
+}
+
 int32_t partition_scan(const InputParam *input, OutputParam *output)
 {
     // 复制 IO 请求数组并按 lpos 排序
@@ -1214,7 +1321,9 @@ int32_t partition_scan(const InputParam *input, OutputParam *output)
     for (int i = 5000; i <= 740000; i += 5000)
     {
         partition_len = i;
-        _partition_scan1(input, output, sortedIOs, partition_len);
+        int temp_partition_num = (MAX_LPOS + partition_len - 1) / partition_len;
+        int p_num = 4;
+        _partition_scan1(input, output, sortedIOs, partition_len, NULL, 0);
         AccessTime accessTime = {0};
         TotalAccessTime(input, output, &accessTime);
         int time = accessTime.addressDuration;
@@ -1228,7 +1337,7 @@ int32_t partition_scan(const InputParam *input, OutputParam *output)
                 best_sequence[j] = output->sequence[j];
             }
         }
-        _partition_scan2(input, output, sortedIOs, partition_len);
+        _partition_scan2(input, output, sortedIOs, partition_len, NULL, 0);
         TotalAccessTime(input, output, &accessTime);
         time = accessTime.addressDuration;
         if (time < min_time)
@@ -1251,7 +1360,7 @@ int32_t partition_scan(const InputParam *input, OutputParam *output)
     free(sortedIOs);
 }
 
-int32_t _partition_scan1(const InputParam *input, OutputParam *output, IOUint *sortedIOs, int partition_len)
+int32_t _partition_scan1(const InputParam *input, OutputParam *output, IOUint *sortedIOs, int partition_len, int *partitions, int p_num)
 {
     // 初始化输出参数
     output->len = input->ioVec.len;
@@ -1264,24 +1373,55 @@ int32_t _partition_scan1(const InputParam *input, OutputParam *output, IOUint *s
     int partition_num = (MAX_LPOS + partition_threshold - 1) / partition_threshold;
     int partition_io_num[1000] = {0};
     int partition_io_start[1000] = {0};
-    int partition_start_now = 0;
-    int now = 0;
-    for (int i = 0; i < input->ioVec.len; i++)
+    if (partitions != NULL)
     {
-        // printf("\n");
-        // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
-        if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+        partition_num = p_num;
+        int partition_start_now = 0;
+        int now = 0;
+        partition_threshold = partition_len * partitions[now];
+        // for (int i = 0; i < p_num; i++)
+        //     DEBUG("partitions %d=%d\n", i, partitions[i]);
+        for (int i = 0; i < input->ioVec.len; i++)
         {
-            // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
-            while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            // printf("\n");
+            // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+            if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
             {
-                partition_start_now += partition_threshold;
-                now++;
+                while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+                {
+                    partition_start_now += partition_threshold;
+                    now++;
+                    partition_threshold = partition_len * partitions[now];
+                    // DEBUG("partition len=%d\n", partition_len);
+                    // DEBUG("partition %d start at %d, len=%d , io_num=%d\n", now, partition_start_now, partition_threshold, partition_io_num[now]);
+                }
+                partition_io_start[now] = i;
             }
-            partition_io_start[now] = i;
+            // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+            partition_io_num[now]++;
         }
-        // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
-        partition_io_num[now]++;
+    }
+    else
+    {
+        int partition_start_now = 0;
+        int now = 0;
+        for (int i = 0; i < input->ioVec.len; i++)
+        {
+            // printf("\n");
+            // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+            if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            {
+                // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+                while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+                {
+                    partition_start_now += partition_threshold;
+                    now++;
+                }
+                partition_io_start[now] = i;
+            }
+            // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+            partition_io_num[now]++;
+        }
     }
 
     // 初始化当前头位置为输入的头状态
@@ -1366,7 +1506,7 @@ int32_t _partition_scan1(const InputParam *input, OutputParam *output, IOUint *s
     return RETURN_OK;
 }
 
-int32_t _partition_scan2(const InputParam *input, OutputParam *output, IOUint *sortedIOs, int partition_len)
+int32_t _partition_scan2(const InputParam *input, OutputParam *output, IOUint *sortedIOs, int partition_len, int *partitions, int p_num)
 {
     // 初始化输出参数
     output->len = input->ioVec.len;
@@ -1379,24 +1519,52 @@ int32_t _partition_scan2(const InputParam *input, OutputParam *output, IOUint *s
     int partition_num = (MAX_LPOS + partition_threshold - 1) / partition_threshold;
     int partition_io_num[1000] = {0};
     int partition_io_start[1000] = {0};
-    int partition_start_now = 0;
-    int now = 0;
-    for (int i = 0; i < input->ioVec.len; i++)
+    if (partitions != NULL)
     {
-        // printf("\n");
-        // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
-        if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+        partition_num = p_num;
+        int partition_start_now = 0;
+        int now = 0;
+        partition_threshold = partition_len * partitions[now];
+        for (int i = 0; i < input->ioVec.len; i++)
         {
-            // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
-            while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            // printf("\n");
+            // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+            if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
             {
-                partition_start_now += partition_threshold;
-                now++;
+                // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+                while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+                {
+                    partition_start_now += partition_threshold;
+                    now++;
+                    partition_threshold = partition_len * partitions[now];
+                }
+                partition_io_start[now] = i;
             }
-            partition_io_start[now] = i;
+            // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+            partition_io_num[now]++;
         }
-        // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
-        partition_io_num[now]++;
+    }
+    else
+    {
+        int partition_start_now = 0;
+        int now = 0;
+        for (int i = 0; i < input->ioVec.len; i++)
+        {
+            // printf("\n");
+            // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+            if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            {
+                // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+                while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+                {
+                    partition_start_now += partition_threshold;
+                    now++;
+                }
+                partition_io_start[now] = i;
+            }
+            // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+            partition_io_num[now]++;
+        }
     }
 
     // 初始化当前头位置为输入的头状态

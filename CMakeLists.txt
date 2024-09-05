@@ -40,6 +40,12 @@ set(XJH
     ${PROJECT_SOURCE_DIR}/xjh_algorithms.c
 )
 
+set(test_algorithms
+    ${PROJECT_SOURCE_DIR}/logging.c
+    ${PROJECT_SOURCE_DIR}/test_algorithms.h
+    ${PROJECT_SOURCE_DIR}/test_algorithms.c
+)
+
 set(DATA_GEN
     ${PROJECT_SOURCE_DIR}/data_gen.c
     ${PROJECT_SOURCE_DIR}/logging.c
@@ -63,6 +69,9 @@ target_link_libraries(test_algorithms PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_
 
 add_executable(xjh  ${XJH})
 target_link_libraries(xjh PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
+
+add_library(test_algorithms SHARED ${test_algorithms})
+target_link_libraries(test_algorithms PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
 add_executable(data_gen  ${DATA_GEN})
 
