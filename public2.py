@@ -12,13 +12,18 @@ import numpy as np
 #     print(s)
 
 # 加载共享库
-lib2 = ctypes.CDLL('./build/libtest_algorithms.so')
+# lib2 = ctypes.CDLL('./build/libtest_algorithms.so')
+lib2 = ctypes.CDLL('./lib/libtest_algorithms.so')
 
 
 
 # 定义函数原型
 lib2.partition_scan_t.argtypes = [POINTER(InputParam), POINTER(OutputParam), c_int, POINTER(c_int), c_int]
 lib2.partition_scan_t.restype = c_int32
+
+lib2.p_scan_t.argtypes = [POINTER(InputParam), POINTER(OutputParam), c_int, POINTER(c_int), c_int, POINTER(c_int)]
+lib2.p_scan_t.restype = c_int32
+
 
 # # 列出共享库中的所有符号
 # symbols = dir(lib2)
@@ -56,6 +61,11 @@ partitions[0] = 2
 partitions[1] = 4
 partitions[2] = 8
 partitions[3] = 133
+scan_method = (c_int * p_num)()
+scan_method[0] = 0
+scan_method[1] = 1
+scan_method[2] = 2
+scan_method[3] = 1
 
 # 假设 ioVec 和 ioArray 已经初始化
 io_array = (IOUint * 10)()
@@ -63,14 +73,15 @@ for i in range(10):
     io_array[i].startLpos = i * 100
 
 # 从文件中读取 input_param
-input_param = read_input_param_from_file('./dataset/case_2.txt')
+input_param = read_input_param_from_file('./dataset/case_5.txt')
 
 output_param = OutputParam()
 output_param.sequence = (c_uint * 10)()  # 分配 c_uint 数组
 output_param.len = 10
 
 # 调用函数
-result = lib2.partition_scan_t(byref(input_param), byref(output_param), partition_len, partitions, p_num)
+# result = lib2.partition_scan_t(byref(input_param), byref(output_param), partition_len, partitions, p_num)
+result = lib2.p_scan_t(byref(input_param), byref(output_param), partition_len, partitions, p_num, scan_method)
 
 print("Result:", result)
 print("Output sequence:", [output_param.sequence[i] for i in range(output_param.len)])

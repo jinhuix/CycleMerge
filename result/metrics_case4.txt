@@ -12,6 +12,19 @@ tapeBeltWear(times): 11946338
 tapeMotorWear(times): 97 
 errorIOCount: 0 
 
+/* 算法名称 */
+Algorithm: SORT
+
+Output sequence: [47, 39, 20, 1, 5, 8, 19, 17, 24, 32, 27, 35, 31, 18, 46, 38, 6, 2, 28, 30, 50, 43, 3, 45, 9, 22, 14, 25, 40, 11, 23, 26, 49, 12, 34, 48, 36, 16, 13, 29, 33, 10, 15, 41, 42, 4, 7, 21, 37, 44, ]
+/* 关键指标结构体 */
+ioCount: 50 
+algorithmRunningDuration(ms): 0.01 
+memoryUse(ms): 0 
+addressingDuration(ms): 706039 
+readDuration(ms): 50413
+tapeBeltWear(times): 916465
+tapeMotorWear(times): 85 
+errorIOCount: 0 
 
 /* 算法名称 */
 Algorithm: SCAN
@@ -76,7 +89,7 @@ errorIOCount: 0
 /* 算法名称 */
 Algorithm: partition_scan
 
-best_scan_method=1 best_partition_size=25000
+best_scan_method=2 best_partition_size=25000
 
 Output sequence: [47, 39, 20, 1, 17, 19, 8, 5, 24, 32, 27, 31, 35, 18, 46, 38, 2, 6, 28, 30, 50, 43, 3, 45, 9, 22, 14, 40, 25, 26, 23, 11, 49, 12, 34, 48, 36, 16, 13, 29, 33, 10, 15, 41, 42, 7, 4, 21, 37, 44, ]
 /* 关键指标结构体 */

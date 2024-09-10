@@ -37,6 +37,90 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
     return RETURN_OK;
 }
 
+int32_t SORT(const InputParam *input, OutputParam *output)
+{
+    // 初始化输出参数
+    output->len = input->ioVec.len;
+
+    // 复制 IO 请求数组并按 lpos 排序
+    IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
+    if (sortedIOs == NULL)
+    {
+        free(output->sequence);
+        return RETURN_ERROR;
+    }
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        sortedIOs[i] = input->ioVec.ioArray[i];
+    }
+
+    // 快速排序
+    int low = 0;
+    int high = input->ioVec.len - 1;
+    int stack[high - low + 1];
+    int top = -1;
+
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0)
+    {
+        // 从栈中弹出 high 和 low 值，表示当前需要排序的子数组的边界
+        high = stack[top--];
+        low = stack[top--];
+
+        // 选择子数组的最后一个元素作为枢轴（pivot），并初始化变量 i 为 low - 1
+        uint32_t pivot = sortedIOs[high].startLpos;
+        int i = low - 1;
+
+        // 遍历当前子数组
+        for (int j = low; j < high; ++j)
+        {
+            // 将所有小于枢轴的元素移到枢轴的左边
+            if (sortedIOs[j].startLpos < pivot)
+            {
+                ++i; // i 指向当前小于枢轴的元素的位置
+                IOUint temp = sortedIOs[i];
+                sortedIOs[i] = sortedIOs[j];
+                sortedIOs[j] = temp;
+            }
+        }
+
+        // 将枢轴元素放到正确的位置
+        IOUint temp = sortedIOs[i + 1];
+        sortedIOs[i + 1] = sortedIOs[high];
+        sortedIOs[high] = temp;
+
+        int pi = i + 1;
+        // 根据枢轴的位置 pi，将左子数组和右子数组的边界压入栈中
+        if (pi - 1 > low)
+        {
+            stack[++top] = low;
+            stack[++top] = pi - 1;
+        }
+
+        if (pi + 1 < high)
+        {
+            stack[++top] = pi + 1;
+            stack[++top] = high;
+        }
+    }
+
+    // --- 排序完毕 ---
+
+    // 初始化当前头位置为输入的头状态
+    // HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+    HeadInfo currentHead = {0, 0, 0};
+
+    for (uint32_t i = 0; i < input->ioVec.len; i++)
+    {
+        output->sequence[i] = sortedIOs[i].id;
+    }
+
+    free(sortedIOs);
+    return RETURN_OK;
+}
+
 int32_t SCAN(const InputParam *input, OutputParam *output)
 {
     // 初始化输出参数
@@ -1321,13 +1405,13 @@ int32_t partition_scan(const InputParam *input, OutputParam *output)
     for (int i = 5000; i <= 740000; i += 5000)
     {
         partition_len = i;
-        int temp_partition_num = (MAX_LPOS + partition_len - 1) / partition_len;
-        int p_num = 4;
+        // int temp_partition_num = (MAX_LPOS + partition_len - 1) / partition_len;
+        // int p_num = 4;
         _partition_scan1(input, output, sortedIOs, partition_len, NULL, 0);
         AccessTime accessTime = {0};
         TotalAccessTime(input, output, &accessTime);
         int time = accessTime.addressDuration;
-        if (time < min_time)
+        if (time <= min_time)
         {
             best_scan_method = 1;
             best_partition_size = i;
@@ -1340,7 +1424,7 @@ int32_t partition_scan(const InputParam *input, OutputParam *output)
         _partition_scan2(input, output, sortedIOs, partition_len, NULL, 0);
         TotalAccessTime(input, output, &accessTime);
         time = accessTime.addressDuration;
-        if (time < min_time)
+        if (time <= min_time)
         {
             best_scan_method = 2;
             best_partition_size = i;
@@ -1649,6 +1733,366 @@ int32_t _partition_scan2(const InputParam *input, OutputParam *output, IOUint *s
     return RETURN_OK;
 }
 
+int32_t p_scan(const InputParam *input, OutputParam *output)
+{
+    // 参数：const InputParam *input, OutputParam *output, int partition_len, int *partitions, int p_num, int *scan_method
+    // 当partitions为NULL时，后四个参数均可忽略，视为固定分区大小遍历搜索，并采用统一的SCAN1/SCAN2
+    // 当partitions不为NULL时，后四个参数必须传入
+    // partition_len为单位粒度，partitions为每个分区多少个单位大小，p_num为分区的数量，scan_method为每个分区采用的扫描方法
+    return partition_scan_new(input, output, 0, NULL, 0, NULL);
+    // int pnum = 4;
+    // int partition_len = 5000;
+    // int partitions[4] = {2, 4, 8, 133};
+    // int scan_method[4] = {0, 1, 2, 1};
+    // return partition_scan_new(input, output, partition_len, partitions, pnum, scan_method);
+}
+
+int32_t p_scan_t(const InputParam *input, OutputParam *output, int partition_len, int *partitions, int p_num, int *scan_method)
+{
+    // 参数：const InputParam *input, OutputParam *output, int partition_len, int *partitions, int p_num, int *scan_method
+    // 当partitions为NULL时，后四个参数均可忽略，视为固定分区大小遍历搜索，并采用统一的SCAN1/SCAN2
+    // 当partitions不为NULL时，后四个参数必须传入
+    // partition_len为单位粒度，partitions为每个分区多少个单位大小，p_num为分区的数量，scan_method为每个分区采用的扫描方法
+    partition_scan_new(input, output, partition_len, partitions, p_num, scan_method);
+    AccessTime accessTime = {0};
+    TotalAccessTime(input, output, &accessTime);
+    return accessTime.addressDuration;
+}
+
+int32_t partition_scan_new(const InputParam *input, OutputParam *output, int partition_len, int *partitions, int p_num, int *scan_method)
+{
+    // 复制 IO 请求数组并按 lpos 排序
+    IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
+    if (sortedIOs == NULL)
+    {
+        free(output->sequence);
+        return RETURN_ERROR;
+    }
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        sortedIOs[i] = input->ioVec.ioArray[i];
+    }
+
+    // 快速排序
+    int low = 0;
+    int high = input->ioVec.len - 1;
+    int stack[high - low + 1];
+    int top = -1;
+
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0)
+    {
+        // 从栈中弹出 high 和 low 值，表示当前需要排序的子数组的边界
+        high = stack[top--];
+        low = stack[top--];
+
+        // 选择子数组的最后一个元素作为枢轴（pivot），并初始化变量 i 为 low - 1
+        uint32_t pivot = sortedIOs[high].startLpos;
+        int i = low - 1;
+
+        // 遍历当前子数组
+        for (int j = low; j < high; ++j)
+        {
+            // 将所有小于枢轴的元素移到枢轴的左边
+            if (sortedIOs[j].startLpos < pivot)
+            {
+                ++i; // i 指向当前小于枢轴的元素的位置
+                IOUint temp = sortedIOs[i];
+                sortedIOs[i] = sortedIOs[j];
+                sortedIOs[j] = temp;
+            }
+        }
+
+        // 将枢轴元素放到正确的位置
+        IOUint temp = sortedIOs[i + 1];
+        sortedIOs[i + 1] = sortedIOs[high];
+        sortedIOs[high] = temp;
+
+        int pi = i + 1;
+        // 根据枢轴的位置 pi，将左子数组和右子数组的边界压入栈中
+        if (pi - 1 > low)
+        {
+            stack[++top] = low;
+            stack[++top] = pi - 1;
+        }
+
+        if (pi + 1 < high)
+        {
+            stack[++top] = pi + 1;
+            stack[++top] = high;
+        }
+    }
+
+    //----排序结束----
+
+    //----搜索最佳分割参数----
+    int min_time = 0x3f3f3f3f, best_partition_size = 5000;
+    // scan1为只按io请求的开始位置进行排序，可能会有同向掉头的情况
+    // scan2保证后一个请求的开始位置在前一个请求的结束位置之后，不会同向掉头，但可能需要扫描多次
+    int best_scan_method = 1;
+    int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
+    bool *vis = (bool *)malloc((input->ioVec.len + 1) * sizeof(bool));
+    int partition_io_num[1000] = {0};
+    int partition_io_start[1000] = {0};
+
+    // 按传入的参数进行分区
+    if (partitions != NULL)
+    {
+        //----检查----
+        int temp_partition_num = (MAX_LPOS + partition_len - 1) / partition_len;
+        DEBUG("partition_len=%d, partition_num=%d\n", partition_len, p_num);
+        printf("partitions=[");
+        int tot = 0;
+        for (int i = 0; i < p_num; i++)
+        {
+            // printf("partitions[%d]=%d,", i, partitions[i]);
+            printf("%d,", partitions[i]);
+            tot += partitions[i];
+        }
+        if (tot != temp_partition_num)
+        {
+            ERROR("tot=%d, partition_num should be %d\n", tot, temp_partition_num);
+        }
+        printf("]\n");
+        printf("SCAN method=[");
+        for (int i = 0; i < p_num; i++)
+        {
+            printf("%d,", scan_method[i]);
+        }
+        printf("]\n");
+        //----检查----
+
+        int partition_start_now = 0;
+        int now = 0;
+        int partition_threshold = partition_len * partitions[now];
+        for (int i = 0; i < input->ioVec.len; i++)
+        {
+            // printf("\n");
+            // DEBUG("i=%d startLpos=%d\n", i, sortedIOs[i].startLpos);
+            if (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+            {
+                // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+                while (sortedIOs[i].startLpos >= partition_start_now + partition_threshold)
+                {
+                    partition_start_now += partition_threshold;
+                    now++;
+                    partition_threshold = partition_len * partitions[now];
+                }
+                partition_io_start[now] = i;
+            }
+            // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+            partition_io_num[now]++;
+        }
+
+        for (int i = 0; i < input->ioVec.len + 1; i++)
+            vis[i] = 0;
+        for (int i = 0; i <= now; i++)
+        {
+            if (partition_io_num[i] == 0)
+                continue;
+            // DEBUG("partition %d start at %d, io_num=%d\n", i, partition_io_start[i], partition_io_num[i]);
+            _partition_scan_new(output, sortedIOs, vis, partition_io_start[i], partition_io_num[i], scan_method[i]);
+        }
+        // AccessTime accessTime = {0};
+        // TotalAccessTime(input, output, &accessTime);
+        // int time = accessTime.addressDuration;
+    }
+    else
+    {
+        // 按固定长度进行分区，对长度参数进行搜索
+        for (int i = 5000; i <= 740000; i += 5000)
+        {
+            int partition_start_now = 0;
+            int now = 0;
+            int partition_threshold = i;
+            memset(partition_io_start, 0, sizeof(partition_io_start));
+            memset(partition_io_num, 0, sizeof(partition_io_num));
+            for (int j = 0; j < input->ioVec.len; j++)
+            {
+                // printf("\n");
+                // DEBUG("j=%d startLpos=%d\n", j, sortedIOs[j].startLpos);
+                if (sortedIOs[j].startLpos >= partition_start_now + partition_threshold)
+                {
+                    while (sortedIOs[j].startLpos >= partition_start_now + partition_threshold)
+                    {
+                        partition_start_now += partition_threshold;
+                        now++;
+                    }
+                    partition_io_start[now] = j;
+                    // DEBUG("partition %d start at %d, io_num=%d\n", now, partition_start_now, partition_io_num[now]);
+                }
+                // DEBUG("partition_start_now=%d now=%d\n", partition_start_now, now);
+                partition_io_num[now]++;
+            }
+
+            // DEBUG("partition_len=%d, partition_num=%d\n", i, now);
+            // for (int j = 0; j <= now; j++)
+            // {
+            //     if (partition_io_num[j] != 0)
+            //         DEBUG("partition %d start at %d, io_num=%d\n", j, partition_io_start[j], partition_io_num[j]);
+            // }
+
+            for (int j = 0; j < input->ioVec.len + 1; j++)
+                vis[j] = 0;
+            for (int j = 0; j <= now; j++)
+            {
+                // DEBUG("partition %d start at %d, io_num=%d\n", j, partition_io_start[j], partition_io_num[j]);
+                if (partition_io_num[j] == 0)
+                    continue;
+                // for (int j = 0; j < input->ioVec.len; j++)
+                //     printf("vis[%d]=%d\n", sortedIOs[j].id, vis[sortedIOs[j].id]);
+                // printf("\n");
+                _partition_scan_new(output, sortedIOs, vis, partition_io_start[j], partition_io_num[j], 1);
+            }
+            AccessTime accessTime = {0};
+            TotalAccessTime(input, output, &accessTime);
+            int time = accessTime.addressDuration;
+            if (time <= min_time)
+            {
+                best_scan_method = 1;
+                best_partition_size = i;
+                min_time = time;
+                for (int j = 0; j < input->ioVec.len; j++)
+                {
+                    best_sequence[j] = output->sequence[j];
+                }
+            }
+            for (int j = 0; j < input->ioVec.len + 1; j++)
+                vis[j] = 0;
+            for (int j = 0; j < now; j++)
+            {
+                if (partition_io_num[j] == 0)
+                    continue;
+                _partition_scan_new(output, sortedIOs, vis, partition_io_start[j], partition_io_num[j], 2);
+            }
+            TotalAccessTime(input, output, &accessTime);
+            time = accessTime.addressDuration;
+            if (time <= min_time)
+            {
+                best_scan_method = 2;
+                best_partition_size = i;
+                min_time = time;
+                for (int j = 0; j < input->ioVec.len; j++)
+                {
+                    best_sequence[j] = output->sequence[j];
+                }
+            }
+        }
+        printf("best_scan_method=%d best_partition_size=%d\n", best_scan_method, best_partition_size);
+        for (int i = 0; i < input->ioVec.len; i++)
+        {
+            output->sequence[i] = best_sequence[i];
+        }
+    }
+    free(best_sequence);
+    free(sortedIOs);
+}
+
+int32_t _partition_scan_new(OutputParam *output, IOUint *sortedIOs, bool *vis, int partition_start, int partition_len, const int scan_method)
+{
+    uint32_t index = partition_start;
+    HeadInfo currentHead = {0, 0, 0};
+    // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
+    int direction = 1;
+    // DEBUG("partition_start=%d, partition_len=%d\n", partition_start, partition_len);
+    for (int i = partition_start; i < partition_start + partition_len; i++)
+    {
+        if (vis[sortedIOs[i].id])
+            ERROR("vis[%d]=1\n", sortedIOs[i].id);
+    }
+    if (scan_method > 2)
+    {
+        ERROR("unknown scan_method: %d\n", scan_method);
+    }
+    while (index < partition_start + partition_len)
+    {
+        if (scan_method == 0) // SORT
+        {
+            output->sequence[index] = sortedIOs[index].id;
+            index++;
+            continue;
+        }
+        // DEBUG("index=%d, direction=%d\n", index, direction);
+        if (direction == 1)
+        {
+            // 从 BOT 向 EOT 扫描
+            for (uint32_t i = partition_start;
+                 i < partition_start + partition_len; ++i)
+            {
+                // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
+                // DEBUG("partition_start=%d, partition_len=%d\n", partition_start, partition_len);
+                if (sortedIOs[i].wrap & 1 || vis[sortedIOs[i].id])
+                {
+                    continue;
+                }
+                if (scan_method == 1) // SCAN1，两趟扫描
+                {
+                    if (sortedIOs[i].startLpos >= currentHead.lpos)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        currentHead.lpos = sortedIOs[i].startLpos;
+                    }
+                }
+                else if (scan_method == 2) // SCAN2，多趟扫描
+                {
+                    if (sortedIOs[i].startLpos > currentHead.lpos || currentHead.lpos == 0)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        currentHead.lpos = sortedIOs[i].endLpos;
+                    }
+                }
+            }
+            direction = -1; // 改变扫描方向
+            // 赋值为最大值以保证下一轮扫描中大于当前位置的请求不会被忽略
+            currentHead.lpos = MAX_LPOS + 1;
+        }
+        else
+        {
+            // 从 EOT 向 BOT 扫描
+            for (int32_t i = partition_start + partition_len - 1;
+                 i >= partition_start; --i)
+            {
+                // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
+                if (!(sortedIOs[i].wrap & 1) || vis[sortedIOs[i].id])
+                {
+                    continue;
+                }
+                if (scan_method == 1) // SCAN1，两趟扫描
+                {
+                    if (sortedIOs[i].startLpos <= currentHead.lpos || currentHead.lpos == 0)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        currentHead.lpos = sortedIOs[i].startLpos;
+                    }
+                }
+                else if (scan_method == 2) // SCAN2，多趟扫描
+                {
+                    if (sortedIOs[i].startLpos < currentHead.lpos || currentHead.lpos == 0)
+                    {
+                        output->sequence[index++] = sortedIOs[i].id;
+                        vis[sortedIOs[i].id] = 1;
+                        currentHead.wrap = sortedIOs[i].wrap;
+                        currentHead.lpos = sortedIOs[i].endLpos;
+                    }
+                }
+            }
+            direction = 1; // 改变扫描方向
+            // 赋值为0以保证下一轮扫描中小于当前位置的请求不会被忽略
+            currentHead.lpos = 0;
+        }
+    }
+
+    return RETURN_OK;
+}
+
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm)
 {
     int32_t ret;
@@ -1656,6 +2100,10 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorit
     if (strcmp(algorithm, "FCFS") == 0)
     {
         ret = IOScheduleAlgorithm(input, output);
+    }
+    if (strcmp(algorithm, "SORT") == 0)
+    {
+        ret = SORT(input, output);
     }
     else if (strcmp(algorithm, "SCAN") == 0)
     {
@@ -1694,6 +2142,10 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorit
     else if (strcmp(algorithm, "partition_scan") == 0)
     {
         ret = partition_scan(input, output);
+    }
+    else if (strcmp(algorithm, "partition_scan_new") == 0)
+    {
+        ret = p_scan(input, output);
     }
     else
     {
