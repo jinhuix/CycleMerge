@@ -66,10 +66,24 @@ def plot_io_requests(io_map, seq, output_path):
         prev_end_lpos = end_lpos
         prev_wrap = wrap
 
-    partition_size = 20000
-    # 在图中每隔partition_size画一条竖直虚线
-    for i in range(0, int(max([io[2] for io in io_map.values()])), partition_size):
-        plt.axvline(x=i, color='r', linestyle='--', linewidth=0.5)
+    print(f'Output saved to {output_path}')
+    if(output_path=="dataimg/case_1_partition_scan.png"):
+        partition_size = 30000
+    elif(output_path=="dataimg/case_2_partition_scan.png"):
+        partition_size = 95000
+    elif(output_path=="dataimg/case_3_partition_scan.png"):
+        partition_size = 100000
+    elif(output_path=="dataimg/case_4_partition_scan.png"):
+        partition_size = 25000
+    elif(output_path=="dataimg/case_5_partition_scan.png"):
+        partition_size = 0
+    else:
+        partition_size = 0
+    if(partition_size!=0):
+        print("partition_size:",partition_size)
+        # 在图中每隔partition_size画一条竖直虚线
+        for i in range(0, int(max([io[2] for io in io_map.values()])), partition_size):
+            plt.axvline(x=i, color='r', linestyle='--', linewidth=0.5)
 
 
     plt.xlabel('Lpos')
@@ -78,7 +92,7 @@ def plot_io_requests(io_map, seq, output_path):
     plt.grid(True)
 
     # 保存图形到指定路径
-    plt.savefig(output_path, dpi=300)
+    plt.savefig(output_path, dpi=1000)
     plt.close()
 
 
