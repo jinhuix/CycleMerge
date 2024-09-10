@@ -1,0 +1,57 @@
+[2024-09-05 08:19:14,064][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-05-08-19-14-064422.log
+[2024-09-05 08:19:14,079][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: random_scipy.
+[2024-09-05 08:19:14,084][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-05-08-19-14-082749.html
+[2024-09-05 08:19:14,090][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [33299306.0].
+[2024-09-05 08:19:14,097][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [10983552.0].
+[2024-09-05 08:19:14,104][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [10983552.0].
+[2024-09-05 08:19:14,111][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [10983552.0].
+[2024-09-05 08:19:14,117][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [11095611.0].
+[2024-09-05 08:19:14,124][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [10983552.0].
+[2024-09-05 08:19:14,131][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [10983552.0].
+[2024-09-05 08:19:14,138][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [11178265.0].
+[2024-09-05 08:19:14,144][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [11036769.0].
+[2024-09-05 08:19:14,151][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [10983552.0].
+[2024-09-05 08:19:14,160][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [10983552.0].
+[2024-09-05 08:19:14,168][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [11752670.0].
+[2024-09-05 08:19:14,283][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [11141074.0].
+[2024-09-05 08:19:14,434][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [11175760.0].
+[2024-09-05 08:19:14,436][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-05 08:19:14,444][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [11035125.0].
+[2024-09-05 08:19:14,549][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [11028945.0].
+[2024-09-05 08:19:14,649][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [11170941.0].
+[2024-09-05 08:19:14,650][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-05 08:19:14,656][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [10983552.0].
+[2024-09-05 08:19:14,760][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [11114093.0].
+[2024-09-05 08:19:14,862][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [11096552.0].
+[2024-09-05 08:19:15,026][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [11074204.0].
+[2024-09-05 08:19:15,125][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [11153716.0].
+[2024-09-05 08:19:15,228][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [12669637.0].
+[2024-09-05 08:19:15,329][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [11088669.0].
+[2024-09-05 08:19:15,492][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [11257402.0].
+[2024-09-05 08:19:15,593][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [11110511.0].
+[2024-09-05 08:19:15,709][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [10992094.0].
+[2024-09-05 08:19:15,824][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [11250379.0].
+[2024-09-05 08:19:15,925][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [11225671.0].
+[2024-09-05 08:19:16,072][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [11031592.0].
+[2024-09-05 08:19:16,175][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [11044003.0].
+[2024-09-05 08:19:16,274][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [11002250.0].
+[2024-09-05 08:19:16,393][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [11070967.0].
+[2024-09-05 08:19:16,547][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [10929586.0].
+[2024-09-05 08:19:16,649][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [11036868.0].
+[2024-09-05 08:19:16,753][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [11037426.0].
+[2024-09-05 08:19:16,860][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [11285113.0].
+[2024-09-05 08:19:16,962][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [11028103.0].
+[2024-09-05 08:19:17,114][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [11106287.0].
+[2024-09-05 08:19:17,218][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [11310284.0].
+[2024-09-05 08:19:17,319][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [11214249.0].
+[2024-09-05 08:19:17,423][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [11290869.0].
+[2024-09-05 08:19:17,579][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [11329482.0].
+[2024-09-05 08:19:17,685][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [11109954.0].
+[2024-09-05 08:19:17,785][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [11120827.0].
+[2024-09-05 08:19:17,895][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [11291440.0].
+[2024-09-05 08:19:17,996][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [11103814.0].
+[2024-09-05 08:19:17,998][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-05 08:19:18,004][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [11029640.0].
+[2024-09-05 08:19:18,153][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [11159503.0].
+[2024-09-05 08:19:18,258][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [11156658.0].
+[2024-09-05 08:19:18,260][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-05-08-19-14-082749.html

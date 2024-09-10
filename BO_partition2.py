@@ -19,20 +19,25 @@ from public2 import lib2, read_input_param_from_file
 max_lpos=730994
 
 class Black_box():
-    def __init__(self, case_file='./dataset/case_5.txt'):
-        self.partition_len = 10000
+    def __init__(self, case_file='./dataset/case_3.txt'):
+        self.partition_len = 5000
         self.partition_number = (max_lpos+self.partition_len-1)//self.partition_len
         self.input_param = read_input_param_from_file(case_file)
         self.output_param = OutputParam()
         self.output_param.sequence = (c_uint * self.input_param.ioVec.len)()
 
-    def get_cost_from_partitions(self, partitions):
+    def get_cost_from_partitions(self, partition_size):
         partition_len=self.partition_len
-        p_num=len(partitions)
-        partitions_cpp = (c_int * p_num)()
-        for i in range(p_num):
+        p_num=(max_lpos+self.partition_len-1)//(self.partition_len*partition_size)
+        partitions = []
+        intact_partition_number = self.partition_number // partition_size
+        remain_partition = self.partition_number % partition_size
+        partitions = [partition_size] * intact_partition_number
+        partitions.append(remain_partition)
+        partitions_cpp = (c_int * len(partitions))()
+        for i in range(len(partitions)):
             partitions_cpp[i]=partitions[i]
-        cost=lib2.partition_scan_t(byref(self.input_param), byref(self.output_param), partition_len, partitions_cpp, p_num)
+        cost=lib2.partition_scan_t(byref(self.input_param), byref(self.output_param), partition_len, partitions_cpp, len(partitions))
         # print(partitions)
         # print("Result:", cost)
         # print("Output sequence:", [self.output_param.sequence[i] for i in range(self.output_param.len)])
@@ -40,15 +45,14 @@ class Black_box():
         return cost
 
 class Bo_process():
-    def __init__(self, black_box: Black_box = None , prf = True, max_runs = 30, random = False):
+    def __init__(self, black_box: Black_box = None , prf = True, max_runs = 50, random = False):
         self.black_box = black_box
         if self.black_box is None:
             self.black_box = Black_box()
         self.partition_number = self.black_box.partition_number
         space = sp.Space()
         space_config = []
-        for i in range(self.partition_number - 1):
-            space_config.append(sp.Categorical(f'x{i}', choices = [1, 0]))
+        space_config.append(sp.Int('x', lower = 1, upper = 300, default_value = 1))
         space.add_variables(space_config)
         self.opt = Optimizer(
                 objective_function = self.obj_func,
@@ -61,7 +65,7 @@ class Bo_process():
                 task_id = 'basic_search',
                 logging_dir = 'logs_gray_clapboard_search',
                 visualization = 'basic',
-                initial_runs = 12, 
+                initial_runs = 20, 
                 random_state = 168,
                 advisor_type = 'random' if random else 'default',
             )
@@ -78,17 +82,8 @@ class Bo_process():
     
     def get_partitions_from_config(self, config: sp.Configuration):
         partitions = []
-        partition_size = 1
-        for i in range(self.partition_number - 1):
-            if config[f'x{i}'] == 0:
-                partition_size += 1
-            elif config[f'x{i}'] == 1:
-                partitions.append(partition_size)
-                partition_size = 1
-            else:
-                assert 1, "wrong value"
-        partitions.append(partition_size)
-        return partitions
+        partition_size = 1 * config['x']
+        return partition_size
     
     
     def run(self):

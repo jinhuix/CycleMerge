@@ -74,7 +74,7 @@ class Bo_process():
                 task_id = 'basic_search',
                 logging_dir = 'logs_gray_clapboard_search',
                 visualization = 'basic',
-                initial_runs = 8, 
+                initial_runs = 10, 
                 random_state = 999,
                 advisor_type = 'random' if random else 'default',
             )
