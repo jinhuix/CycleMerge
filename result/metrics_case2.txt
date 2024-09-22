@@ -56,6 +56,21 @@ errorIOCount: 0
 
 
 /* 算法名称 */
+Algorithm: MPSCAN
+
+Output sequence: [8, 2, 5, 7, 1, 4, 3, 9, 10, 6, ]
+/* 关键指标结构体 */
+ioCount: 10 
+algorithmRunningDuration(ms): 0.12 
+memoryUse(ms): 0 
+addressingDuration(ms): 304643 
+readDuration(ms): 6060
+tapeBeltWear(times): 691325
+tapeMotorWear(times): 19 
+errorIOCount: 0 
+
+
+/* 算法名称 */
 Algorithm: SCAN2
 
 Output sequence: [8, 2, 1, 4, 10, 6, 9, 3, 7, 5, ]

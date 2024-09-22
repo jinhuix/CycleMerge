@@ -57,6 +57,21 @@ errorIOCount: 0
 
 
 /* 算法名称 */
+Algorithm: MPSCAN
+
+Output sequence: [7, 4, 1, 12, 13, 11, 2, 9, 5, 8, 10, 6, 3, ]
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.03 
+memoryUse(ms): 0 
+addressingDuration(ms): 460216 
+readDuration(ms): 12253
+tapeBeltWear(times): 1343909
+tapeMotorWear(times): 3 
+errorIOCount: 0 
+
+
+/* 算法名称 */
 Algorithm: Nearest
 
 Output sequence: [3, 7, 6, 4, 10, 8, 5, 1, 9, 2, 12, 13, 11, ]
