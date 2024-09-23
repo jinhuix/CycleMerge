@@ -1,9 +1,12 @@
 {
     "files.associations": {
+        "*.json": "jsonc",
+        "*.py": "python",
         "algorithm.h": "c",
         "public.h": "c",
         "stdint.h": "c",
         "test_algorithms.h": "c",
-        "const.h": "c"
+        "const.h": "c",
+        "logging.h": "c"
     }
 }

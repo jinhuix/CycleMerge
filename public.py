@@ -80,3 +80,5 @@ def read_case_file(file_path):
     io_list = [list(map(int, line.strip()[1:-1].split(','))) for line in lines[5:5+io_count]]
     
     return head_info, io_list
+
+

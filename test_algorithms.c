@@ -132,6 +132,7 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
     {
         if (direction == 1)
         {
+            printf("\nBOT->EOT: ");
             // 从 BOT 向 EOT 扫描，wrap 为偶数
             for (uint32_t i = 0; i < input->ioVec.len; ++i)
             {
@@ -141,6 +142,7 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
                 }
                 if (sortedIOs[i].startLpos >= currentHead.lpos)
                 {
+                    printf("%d ", sortedIOs[i].id);
                     output->sequence[index++] = sortedIOs[i].id;
                     vis[sortedIOs[i].id] = 1;
                     currentHead.wrap = sortedIOs[i].wrap;
@@ -153,6 +155,7 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
         }
         else
         {
+            printf("\nEOT->BOT: ");
             // 从 EOT 向 BOT 扫描
             for (int32_t i = input->ioVec.len - 1; i >= 0; --i)
             {
@@ -162,6 +165,7 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
                 }
                 if (sortedIOs[i].startLpos <= currentHead.lpos)
                 {
+                    printf("%d ", sortedIOs[i].id);
                     output->sequence[index++] = sortedIOs[i].id;
                     vis[sortedIOs[i].id] = 1;
                     currentHead.wrap = sortedIOs[i].wrap;
@@ -175,7 +179,8 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
     free(sortedIOs);
 
     // 将最后一轮扫描插入前面
-    OutputParam *tmp;
+    // OutputParam *tmp;
+    OutputParam *tmp = (OutputParam *)malloc(sizeof(OutputParam));
     tmp->len = input->ioVec.len;
     tmp->sequence = (uint32_t *)malloc(input->ioVec.len * sizeof(uint32_t));
     memcpy(tmp->sequence, output->sequence, input->ioVec.len * sizeof(int));
@@ -184,33 +189,39 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
     while(true) {
         // 最后一轮扫描在 output 中的下标范围为 [idx+1, output->len - 1]
         int32_t io_len = 0, idx = output->len-1;
-        while(idx >= 0 && input->ioVec.ioArray[output->sequence[idx]-1].wrap == 1){
+        while(idx >= 1 && (input->ioVec.ioArray[output->sequence[idx]-1].wrap & 1) && 
+            input->ioVec.ioArray[output->sequence[idx]-1].startLpos < input->ioVec.ioArray[output->sequence[idx-1]-1].startLpos){    // 奇数
             idx--;
         }
-        while(idx >= 0 && input->ioVec.ioArray[output->sequence[idx]-1].wrap == 0){
+        while(idx >= 1 && !(input->ioVec.ioArray[output->sequence[idx]-1].wrap & 1) &&
+            input->ioVec.ioArray[output->sequence[idx]-1].startLpos > input->ioVec.ioArray[output->sequence[idx-1]-1].startLpos){    // 偶数
             idx--;
         }
         if(idx < 0) break;  // 当前已经是最后一轮扫描
+        // printf("\n%d:", output->sequence[idx]);
 
         // 遍历最后一轮的每个 IO
-        for(int i = idx + 1; i < output->len; ++i){ 
+        for(int i = idx; i < output->len; ++i){ 
+            // printf("\ni = %d , ", output->sequence[i]);
             int32_t minTime = INT32_MAX;
             int32_t best_pos = -1;
             HeadInfo z = {input->ioVec.ioArray[output->sequence[i]-1].wrap, input->ioVec.ioArray[output->sequence[i]-1].startLpos, HEAD_RW};
             
             // 寻找插入的最佳位置
-            for(int j = 0; j < i - 1; ++j){ 
-                if(input->ioVec.ioArray[output->sequence[j]-1].wrap != input->ioVec.ioArray[output->sequence[i]-1].wrap 
-                    && input->ioVec.ioArray[output->sequence[j+1]-1].wrap != input->ioVec.ioArray[output->sequence[i]-1].wrap)
-                    continue;
+            for(int j = 0; j < i - 1; ++j){
+                // if(input->ioVec.ioArray[output->sequence[j]-1].wrap != input->ioVec.ioArray[output->sequence[i]-1].wrap)
+                //     continue;
                 HeadInfo x = {input->ioVec.ioArray[output->sequence[j]-1].wrap, input->ioVec.ioArray[output->sequence[j]-1].startLpos, HEAD_RW};
                 HeadInfo y = {input->ioVec.ioArray[output->sequence[j+1]-1].wrap, input->ioVec.ioArray[output->sequence[j+1]-1].startLpos, HEAD_RW};
                 int32_t seekTime = SeekTimeCalculate(&x, &z) + SeekTimeCalculate(&z, &y) - SeekTimeCalculate(&x, &y);
+                // printf("seekTime = %d, minTime = %d ", seekTime, minTime);
                 if(seekTime < minTime){
                     best_pos = j;
                     minTime = seekTime;
                 }
             }
+
+            // printf("best_pos = %d , ", best_pos);
 
             // 将当前 IO 插入到 best_pos 后面
             for(int j = i; j > best_pos + 1; --j){
@@ -221,7 +232,20 @@ int32_t MPSCAN(const InputParam *input, OutputParam *output)
 
         AccessTime tmpTime;
         TotalAccessTime(input, tmp, &tmpTime);
+
+        printf("\ntmp[ ");
+        for(int i = 0; i < tmp->len; ++i) {
+            printf("%d ", tmp->sequence[i]);
+        }
+        printf("]\nout[ ");
+        for(int i = 0; i < output->len; ++i) {
+            printf("%d ", output->sequence[i]);
+        }
+        printf("]\ntmp: %d, output: %d\n", tmpTime.addressDuration, accessTime.addressDuration);
+
+
         if(tmpTime.addressDuration < accessTime.addressDuration){
+            accessTime.addressDuration = tmpTime.addressDuration;
             memcpy(output->sequence, tmp->sequence, input->ioVec.len * sizeof(int));
         } else {
             break;
