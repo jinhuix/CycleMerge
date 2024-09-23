@@ -1,0 +1,219 @@
+[2024-09-11 08:12:51,904][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-11-08-12-51-904572.log
+[2024-09-11 08:12:52,256][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: local_random.
+[2024-09-11 08:12:52,262][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-11-08-12-52-260442.html
+[2024-09-11 08:12:52,263][basic_search][ERROR][generic_smbo.py:290] Exception in objective function:
+Traceback (most recent call last):
+  File "/gyc_data/fray_data/py38hwvenv/lib/python3.8/site-packages/openbox/utils/limit.py", line 62, in run_without_time_limit
+    ret = obj_func(*obj_args, **obj_kwargs)
+  File "/gyc_data/fray_data/project_hw/BO_partition3.py", line 99, in obj_func
+    cost = self.black_box.get_cost_from_partitions(partitions, scan_method)
+  File "/gyc_data/fray_data/project_hw/BO_partition3.py", line 60, in get_cost_from_partitions
+    scan_method_cpp[i] = scan_method[i]
+IndexError: list index out of range
+
+config: Configuration(values={
+  's_0': 0,
+  's_1': 0,
+  's_10': 0,
+  's_100': 0,
+  's_101': 0,
+  's_102': 0,
+  's_103': 0,
+  's_104': 0,
+  's_105': 0,
+  's_106': 0,
+  's_107': 0,
+  's_108': 0,
+  's_109': 0,
+  's_11': 0,
+  's_110': 0,
+  's_111': 0,
+  's_112': 0,
+  's_113': 0,
+  's_114': 0,
+  's_115': 0,
+  's_116': 0,
+  's_117': 0,
+  's_118': 0,
+  's_119': 0,
+  's_12': 0,
+  's_120': 0,
+  's_121': 0,
+  's_122': 0,
+  's_123': 0,
+  's_124': 0,
+  's_125': 0,
+  's_126': 0,
+  's_127': 0,
+  's_128': 0,
+  's_129': 0,
+  's_13': 0,
+  's_130': 0,
+  's_131': 0,
+  's_132': 0,
+  's_133': 0,
+  's_134': 0,
+  's_135': 0,
+  's_136': 0,
+  's_137': 0,
+  's_138': 0,
+  's_139': 0,
+  's_14': 0,
+  's_140': 0,
+  's_141': 0,
+  's_142': 0,
+  's_143': 0,
+  's_144': 0,
+  's_145': 0,
+  's_146': 0,
+  's_15': 0,
+  's_16': 0,
+  's_17': 0,
+  's_18': 0,
+  's_19': 0,
+  's_2': 0,
+  's_20': 0,
+  's_21': 0,
+  's_22': 0,
+  's_23': 0,
+  's_24': 0,
+  's_25': 0,
+  's_26': 0,
+  's_27': 0,
+  's_28': 0,
+  's_29': 0,
+  's_3': 0,
+  's_30': 0,
+  's_31': 0,
+  's_32': 0,
+  's_33': 0,
+  's_34': 0,
+  's_35': 0,
+  's_36': 0,
+  's_37': 0,
+  's_38': 0,
+  's_39': 0,
+  's_4': 0,
+  's_40': 0,
+  's_41': 0,
+  's_42': 0,
+  's_43': 0,
+  's_44': 0,
+  's_45': 0,
+  's_46': 0,
+  's_47': 0,
+  's_48': 0,
+  's_49': 0,
+  's_5': 0,
+  's_50': 0,
+  's_51': 0,
+  's_52': 0,
+  's_53': 0,
+  's_54': 0,
+  's_55': 0,
+  's_56': 0,
+  's_57': 0,
+  's_58': 0,
+  's_59': 0,
+  's_6': 0,
+  's_60': 0,
+  's_61': 0,
+  's_62': 0,
+  's_63': 0,
+  's_64': 0,
+  's_65': 0,
+  's_66': 0,
+  's_67': 0,
+  's_68': 0,
+  's_69': 0,
+  's_7': 0,
+  's_70': 0,
+  's_71': 0,
+  's_72': 0,
+  's_73': 0,
+  's_74': 0,
+  's_75': 0,
+  's_76': 0,
+  's_77': 0,
+  's_78': 0,
+  's_79': 0,
+  's_8': 0,
+  's_80': 0,
+  's_81': 0,
+  's_82': 0,
+  's_83': 0,
+  's_84': 0,
+  's_85': 0,
+  's_86': 0,
+  's_87': 0,
+  's_88': 0,
+  's_89': 0,
+  's_9': 0,
+  's_90': 0,
+  's_91': 0,
+  's_92': 0,
+  's_93': 0,
+  's_94': 0,
+  's_95': 0,
+  's_96': 0,
+  's_97': 0,
+  's_98': 0,
+  's_99': 0,
+  'x': 1,
+})
+
+[2024-09-11 08:12:52,264][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [inf].
+[2024-09-11 08:12:52,265][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [1186925.0].
+[2024-09-11 08:12:52,266][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [893201.0].
+[2024-09-11 08:12:52,434][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [893201.0].
+[2024-09-11 08:12:52,462][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [1019297.0].
+[2024-09-11 08:12:52,466][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [893201.0].
+[2024-09-11 08:12:52,470][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [1148683.0].
+[2024-09-11 08:12:52,473][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [1186925.0].
+[2024-09-11 08:12:52,476][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [893201.0].
+[2024-09-11 08:12:52,479][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [1022399.0].
+[2024-09-11 08:12:52,482][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [1186925.0].
+[2024-09-11 08:12:52,486][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [1056204.0].
+[2024-09-11 08:12:52,490][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [1186925.0].
+[2024-09-11 08:12:52,494][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [1070107.0].
+[2024-09-11 08:12:52,499][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [893201.0].
+[2024-09-11 08:12:52,503][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [1175427.0].
+[2024-09-11 08:12:52,508][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [1186925.0].
+[2024-09-11 08:12:52,513][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [893201.0].
+[2024-09-11 08:12:52,519][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [893201.0].
+[2024-09-11 08:12:52,525][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [1186925.0].
+[2024-09-11 08:12:52,531][basic_search][WARNING][generic_advisor.py:467] No enough successful initial trials! Sample random configuration.
+[2024-09-11 08:12:52,535][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [1186925.0].
+[2024-09-11 08:12:55,178][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [893201.0].
+[2024-09-11 08:12:57,801][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [893201.0].
+[2024-09-11 08:13:00,730][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [893201.0].
+[2024-09-11 08:13:03,521][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [893201.0].
+[2024-09-11 08:13:06,021][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [893201.0].
+[2024-09-11 08:13:08,404][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [893201.0].
+[2024-09-11 08:13:11,131][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [893201.0].
+[2024-09-11 08:13:13,424][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [893201.0].
+[2024-09-11 08:13:15,853][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [893201.0].
+[2024-09-11 08:13:18,022][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [893201.0].
+[2024-09-11 08:13:20,439][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [893201.0].
+[2024-09-11 08:13:22,914][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [893201.0].
+[2024-09-11 08:13:25,505][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [893201.0].
+[2024-09-11 08:13:27,719][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [1075280.0].
+[2024-09-11 08:13:29,839][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [893201.0].
+[2024-09-11 08:13:32,574][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [893201.0].
+[2024-09-11 08:13:32,584][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 08:13:32,588][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [1126161.0].
+[2024-09-11 08:13:34,339][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [893201.0].
+[2024-09-11 08:13:36,438][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [893201.0].
+[2024-09-11 08:13:38,039][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [893201.0].
+[2024-09-11 08:13:40,010][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [893201.0].
+[2024-09-11 08:13:41,706][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [893201.0].
+[2024-09-11 08:13:41,767][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 08:13:41,776][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [893201.0].
+[2024-09-11 08:13:43,925][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [893201.0].
+[2024-09-11 08:13:45,559][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [893201.0].
+[2024-09-11 08:13:47,649][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [893201.0].
+[2024-09-11 08:13:49,790][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [893201.0].
+[2024-09-11 08:13:51,707][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [893201.0].
+[2024-09-11 08:13:53,404][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [893201.0].
+[2024-09-11 08:13:53,442][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-11-08-12-52-260442.html
+[2024-09-11 08:13:53,449][basic_search][INFO][history.py:765] Too many incumbents in history. Only show 5/34 of them.

@@ -1,0 +1,453 @@
+[2024-09-11 08:49:57,617][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-11-08-49-57-616922.log
+[2024-09-11 08:49:57,661][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,704][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,747][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,790][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,833][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,877][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,921][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:57,966][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,009][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,052][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,096][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,139][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,183][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,226][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,270][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,314][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,358][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,401][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,445][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,488][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,534][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,579][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,623][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,667][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,710][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,754][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,797][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,841][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,885][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,928][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:58,972][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,016][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,059][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,103][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,147][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,190][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,234][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,277][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,321][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,365][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,409][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,453][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,496][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,541][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,584][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,628][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,671][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,714][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,758][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,801][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,845][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,888][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,932][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:49:59,975][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,018][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,062][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,105][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,148][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,192][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,235][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,278][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,322][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,365][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,409][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,453][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,505][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,549][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,593][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,636][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,679][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,723][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,766][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,809][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,853][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,896][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,940][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:00,983][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,026][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,072][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,115][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,159][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,202][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,245][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,289][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,332][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,376][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,420][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,463][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,506][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,549][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,593][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,637][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,680][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,724][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,767][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,811][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,857][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,900][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:01,903][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: local_random.
+[2024-09-11 08:50:01,910][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-11-08-50-01-908872.html
+[2024-09-11 08:50:01,912][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [1186925.0].
+[2024-09-11 08:50:01,913][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [893201.0].
+[2024-09-11 08:50:01,914][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,914][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,914][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [893201.0].
+[2024-09-11 08:50:01,914][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,914][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,915][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [893201.0].
+[2024-09-11 08:50:01,915][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,915][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,915][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [893201.0].
+[2024-09-11 08:50:01,916][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,916][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,916][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [893201.0].
+[2024-09-11 08:50:01,916][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,917][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,917][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [893201.0].
+[2024-09-11 08:50:01,917][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,917][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,917][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [893201.0].
+[2024-09-11 08:50:01,918][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,918][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,918][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [893201.0].
+[2024-09-11 08:50:01,919][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,919][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,919][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [893201.0].
+[2024-09-11 08:50:01,919][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,920][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,920][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [893201.0].
+[2024-09-11 08:50:01,920][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,921][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,921][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [893201.0].
+[2024-09-11 08:50:01,921][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,921][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,922][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [893201.0].
+[2024-09-11 08:50:01,922][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,922][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,922][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [893201.0].
+[2024-09-11 08:50:01,923][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,923][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,923][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [893201.0].
+[2024-09-11 08:50:01,924][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,924][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,924][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [893201.0].
+[2024-09-11 08:50:01,925][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,925][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,925][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [893201.0].
+[2024-09-11 08:50:01,926][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,926][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,926][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [893201.0].
+[2024-09-11 08:50:01,927][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,927][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,927][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [893201.0].
+[2024-09-11 08:50:01,928][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:01,928][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:01,928][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [893201.0].
+[2024-09-11 08:50:01,994][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,038][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,040][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:02,041][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,041][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [893201.0].
+[2024-09-11 08:50:02,104][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,147][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,150][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:02,150][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,150][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [1186925.0].
+[2024-09-11 08:50:02,283][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,326][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,329][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:02,330][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,330][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [1186925.0].
+[2024-09-11 08:50:02,396][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,439][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,442][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:02,442][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,442][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [893201.0].
+[2024-09-11 08:50:02,508][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,553][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,556][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:02,557][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,557][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [893201.0].
+[2024-09-11 08:50:02,558][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 08:50:02,602][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,602][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:02,602][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,602][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [1186925.0].
+[2024-09-11 08:50:02,669][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,713][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,715][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:02,716][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,716][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [893201.0].
+[2024-09-11 08:50:02,783][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,826][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,828][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:02,828][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,828][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [893201.0].
+[2024-09-11 08:50:02,945][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:02,988][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:02,991][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:02,992][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:02,992][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [1186925.0].
+[2024-09-11 08:50:03,055][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,099][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,101][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:03,102][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,102][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [893201.0].
+[2024-09-11 08:50:03,167][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,210][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,213][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:03,213][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,213][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [893201.0].
+[2024-09-11 08:50:03,214][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 08:50:03,258][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,258][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:03,258][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,258][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [1186925.0].
+[2024-09-11 08:50:03,324][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,367][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,370][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:03,370][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,370][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [1186925.0].
+[2024-09-11 08:50:03,436][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,480][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,483][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:03,483][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,483][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [893201.0].
+[2024-09-11 08:50:03,626][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,670][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,673][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:03,673][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,673][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [893201.0].
+[2024-09-11 08:50:03,675][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 08:50:03,717][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,718][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:03,718][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,718][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [1186925.0].
+[2024-09-11 08:50:03,785][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,828][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,830][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:03,831][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,831][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [893201.0].
+[2024-09-11 08:50:03,897][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:03,941][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:03,943][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:03,943][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:03,944][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [1186925.0].
+[2024-09-11 08:50:04,010][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,053][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,056][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:04,056][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,056][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [893201.0].
+[2024-09-11 08:50:04,123][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,166][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,168][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:04,169][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,169][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [893201.0].
+[2024-09-11 08:50:04,236][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,279][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,282][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:04,282][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,282][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [893201.0].
+[2024-09-11 08:50:04,402][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,446][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,449][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:04,450][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,450][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [893201.0].
+[2024-09-11 08:50:04,518][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,562][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,564][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:04,565][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,565][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [893201.0].
+[2024-09-11 08:50:04,633][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,676][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,679][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:04,679][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,679][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [1186925.0].
+[2024-09-11 08:50:04,747][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,790][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,793][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:04,793][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,793][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [893201.0].
+[2024-09-11 08:50:04,861][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:04,904][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:04,907][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:04,907][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:04,907][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [1186925.0].
+[2024-09-11 08:50:05,028][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:05,072][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:05,074][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:05,074][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:05,074][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [1186925.0].
+[2024-09-11 08:50:05,076][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 08:50:05,119][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:05,119][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:05,119][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:05,119][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [1186925.0].
+[2024-09-11 08:50:05,188][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:05,232][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:05,234][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 0,
+})
+
+[2024-09-11 08:50:05,235][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:05,235][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [1186925.0].
+[2024-09-11 08:50:05,304][basic_search][WARNING][generic_advisor.py:536] Cannot get non duplicate configuration from BO candidates (len=5000). Sample random config.
+[2024-09-11 08:50:05,347][basic_search][WARNING][base_advisor.py:163] Cannot sample non duplicate configuration after 1000 iterations.
+[2024-09-11 08:50:05,350][basic_search][WARNING][generic_smbo.py:268] Evaluating duplicated configuration: Configuration(values={
+  's_0': 1,
+})
+
+[2024-09-11 08:50:05,350][basic_search][WARNING][history.py:242] Duplicate configuration detected!
+[2024-09-11 08:50:05,350][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [893201.0].
+[2024-09-11 08:50:05,352][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-11-08-50-01-908872.html
+[2024-09-11 08:50:05,355][basic_search][INFO][history.py:765] Too many incumbents in history. Only show 5/36 of them.

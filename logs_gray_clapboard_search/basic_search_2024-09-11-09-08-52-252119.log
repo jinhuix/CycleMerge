@@ -1,0 +1,56 @@
+[2024-09-11 09:08:52,252][basic_search][INFO][color_logger.py:203] Logfile: /gyc_data/fray_data/project_hw/logs_gray_clapboard_search/basic_search_2024-09-11-09-08-52-252119.log
+[2024-09-11 09:08:52,619][basic_search][INFO][generic_advisor.py:231] [BO auto selection]  acq_type: ei. acq_optimizer_type: local_random.
+[2024-09-11 09:08:52,625][basic_search][INFO][html_visualizer.py:462] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-11-09-08-52-623583.html
+[2024-09-11 09:08:52,628][basic_search][INFO][generic_smbo.py:310] Iter 1, objectives: [1186925.0].
+[2024-09-11 09:08:52,629][basic_search][INFO][generic_smbo.py:310] Iter 2, objectives: [1060842.0].
+[2024-09-11 09:08:52,689][basic_search][INFO][generic_smbo.py:310] Iter 3, objectives: [1065369.0].
+[2024-09-11 09:08:52,834][basic_search][INFO][generic_smbo.py:310] Iter 4, objectives: [1079787.0].
+[2024-09-11 09:08:52,899][basic_search][INFO][generic_smbo.py:310] Iter 5, objectives: [1063708.0].
+[2024-09-11 09:08:52,981][basic_search][INFO][generic_smbo.py:310] Iter 6, objectives: [1041698.0].
+[2024-09-11 09:08:53,035][basic_search][INFO][generic_smbo.py:310] Iter 7, objectives: [1199225.0].
+[2024-09-11 09:08:53,232][basic_search][INFO][generic_smbo.py:310] Iter 8, objectives: [1066800.0].
+[2024-09-11 09:08:53,332][basic_search][INFO][generic_smbo.py:310] Iter 9, objectives: [1073034.0].
+[2024-09-11 09:08:53,421][basic_search][INFO][generic_smbo.py:310] Iter 10, objectives: [979178.0].
+[2024-09-11 09:08:53,550][basic_search][INFO][generic_smbo.py:310] Iter 11, objectives: [1133784.0].
+[2024-09-11 09:08:53,690][basic_search][INFO][generic_smbo.py:310] Iter 12, objectives: [1204474.0].
+[2024-09-11 09:08:53,786][basic_search][INFO][generic_smbo.py:310] Iter 13, objectives: [1102321.0].
+[2024-09-11 09:08:53,971][basic_search][INFO][generic_smbo.py:310] Iter 14, objectives: [1074742.0].
+[2024-09-11 09:08:54,058][basic_search][INFO][generic_smbo.py:310] Iter 15, objectives: [1063752.0].
+[2024-09-11 09:08:54,137][basic_search][INFO][generic_smbo.py:310] Iter 16, objectives: [1144745.0].
+[2024-09-11 09:08:54,216][basic_search][INFO][generic_smbo.py:310] Iter 17, objectives: [1139625.0].
+[2024-09-11 09:08:54,315][basic_search][INFO][generic_smbo.py:310] Iter 18, objectives: [1081111.0].
+[2024-09-11 09:08:54,500][basic_search][INFO][generic_smbo.py:310] Iter 19, objectives: [1145430.0].
+[2024-09-11 09:08:54,611][basic_search][INFO][generic_smbo.py:310] Iter 20, objectives: [1183205.0].
+[2024-09-11 09:08:57,965][basic_search][INFO][generic_smbo.py:310] Iter 21, objectives: [1066800.0].
+[2024-09-11 09:09:00,856][basic_search][INFO][generic_smbo.py:310] Iter 22, objectives: [979178.0].
+[2024-09-11 09:09:03,680][basic_search][INFO][generic_smbo.py:310] Iter 23, objectives: [1168141.0].
+[2024-09-11 09:09:06,590][basic_search][INFO][generic_smbo.py:310] Iter 24, objectives: [1207912.0].
+[2024-09-11 09:09:09,601][basic_search][INFO][generic_smbo.py:310] Iter 25, objectives: [979178.0].
+[2024-09-11 09:09:12,998][basic_search][INFO][generic_smbo.py:310] Iter 26, objectives: [1051247.0].
+[2024-09-11 09:09:15,738][basic_search][INFO][generic_smbo.py:310] Iter 27, objectives: [1046743.0].
+[2024-09-11 09:09:15,782][basic_search][INFO][generic_advisor.py:457] Sample random config. rand_prob=0.100000.
+[2024-09-11 09:09:15,792][basic_search][INFO][generic_smbo.py:310] Iter 28, objectives: [1144404.0].
+[2024-09-11 09:09:18,883][basic_search][INFO][generic_smbo.py:310] Iter 29, objectives: [1057003.0].
+[2024-09-11 09:09:21,496][basic_search][INFO][generic_smbo.py:310] Iter 30, objectives: [1030915.0].
+[2024-09-11 09:09:24,493][basic_search][INFO][generic_smbo.py:310] Iter 31, objectives: [1073034.0].
+[2024-09-11 09:09:27,179][basic_search][INFO][generic_smbo.py:310] Iter 32, objectives: [979178.0].
+[2024-09-11 09:09:30,093][basic_search][INFO][generic_smbo.py:310] Iter 33, objectives: [979178.0].
+[2024-09-11 09:09:33,096][basic_search][INFO][generic_smbo.py:310] Iter 34, objectives: [1137962.0].
+[2024-09-11 09:09:36,261][basic_search][INFO][generic_smbo.py:310] Iter 35, objectives: [992296.0].
+[2024-09-11 09:09:39,319][basic_search][INFO][generic_smbo.py:310] Iter 36, objectives: [1052948.0].
+[2024-09-11 09:09:42,052][basic_search][INFO][generic_smbo.py:310] Iter 37, objectives: [1093129.0].
+[2024-09-11 09:09:45,100][basic_search][INFO][generic_smbo.py:310] Iter 38, objectives: [979178.0].
+[2024-09-11 09:09:48,225][basic_search][INFO][generic_smbo.py:310] Iter 39, objectives: [979178.0].
+[2024-09-11 09:09:51,080][basic_search][INFO][generic_smbo.py:310] Iter 40, objectives: [1099008.0].
+[2024-09-11 09:09:53,682][basic_search][INFO][generic_smbo.py:310] Iter 41, objectives: [1051247.0].
+[2024-09-11 09:09:56,393][basic_search][INFO][generic_smbo.py:310] Iter 42, objectives: [1092371.0].
+[2024-09-11 09:09:59,592][basic_search][INFO][generic_smbo.py:310] Iter 43, objectives: [1079787.0].
+[2024-09-11 09:10:02,382][basic_search][INFO][generic_smbo.py:310] Iter 44, objectives: [1092371.0].
+[2024-09-11 09:10:05,938][basic_search][INFO][generic_smbo.py:310] Iter 45, objectives: [979178.0].
+[2024-09-11 09:10:08,198][basic_search][INFO][generic_smbo.py:310] Iter 46, objectives: [979178.0].
+[2024-09-11 09:10:11,392][basic_search][INFO][generic_smbo.py:310] Iter 47, objectives: [1015506.0].
+[2024-09-11 09:10:14,538][basic_search][INFO][generic_smbo.py:310] Iter 48, objectives: [979178.0].
+[2024-09-11 09:10:18,589][basic_search][INFO][generic_smbo.py:310] Iter 49, objectives: [1015506.0].
+[2024-09-11 09:10:22,256][basic_search][INFO][generic_smbo.py:310] Iter 50, objectives: [1082308.0].
+[2024-09-11 09:10:22,270][basic_search][INFO][html_visualizer.py:96] Please open the html file to view visualization result: file:///gyc_data/fray_data/project_hw/logs_gray_clapboard_search/history/basic_search/basic_search_2024-09-11-09-08-52-623583.html
+[2024-09-11 09:10:22,274][basic_search][INFO][history.py:765] Too many incumbents in history. Only show 5/10 of them.

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "public.h"
 
+#define MAX_SCANS 100   // 最大扫描来回次数
+
 /**
  * @brief  算法接口
  * @param  input            输入参数
@@ -19,6 +21,8 @@ int32_t TabuSearch(const InputParam *input, OutputParam *output);
 int32_t HillClimbing(const InputParam *input, OutputParam *output);
 
 int32_t GeneticAlgorithm(const InputParam *input, OutputParam *output);
+
+int32_t MPSCAN(const InputParam *input, OutputParam *output);
 
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm);
 

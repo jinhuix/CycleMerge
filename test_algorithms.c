@@ -37,6 +37,201 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
     return RETURN_OK;
 }
 
+
+int32_t MPSCAN(const InputParam *input, OutputParam *output)
+{
+    // 初始化输出参数
+    output->len = input->ioVec.len;
+
+    // 复制 IO 请求数组并按 lpos 排序
+    IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
+    if (sortedIOs == NULL)
+    {
+        free(output->sequence);
+        return RETURN_ERROR;
+    }
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        sortedIOs[i] = input->ioVec.ioArray[i];
+    }
+
+    // 快速排序
+    int low = 0;
+    int high = input->ioVec.len - 1;
+    int stack[high - low + 1];
+    int top = -1;
+
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0)
+    {
+        // 从栈中弹出 high 和 low 值，表示当前需要排序的子数组的边界
+        high = stack[top--];
+        low = stack[top--];
+
+        // 选择子数组的最后一个元素作为枢轴（pivot），并初始化变量 i 为 low - 1
+        uint32_t pivot = sortedIOs[high].startLpos;
+        int i = low - 1;
+
+        // 遍历当前子数组
+        for (int j = low; j < high; ++j)
+        {
+            // 将所有小于枢轴的元素移到枢轴的左边
+            if (sortedIOs[j].startLpos < pivot)
+            {
+                ++i; // i 指向当前小于枢轴的元素的位置
+                IOUint temp = sortedIOs[i];
+                sortedIOs[i] = sortedIOs[j];
+                sortedIOs[j] = temp;
+            }
+        }
+
+        // 将枢轴元素放到正确的位置
+        IOUint temp = sortedIOs[i + 1];
+        sortedIOs[i + 1] = sortedIOs[high];
+        sortedIOs[high] = temp;
+
+        int pi = i + 1;
+        // 根据枢轴的位置 pi，将左子数组和右子数组的边界压入栈中
+        if (pi - 1 > low)
+        {
+            stack[++top] = low;
+            stack[++top] = pi - 1;
+        }
+
+        if (pi + 1 < high)
+        {
+            stack[++top] = pi + 1;
+            stack[++top] = high;
+        }
+    }
+
+    for (int i = 0; i < input->ioVec.len; i++)
+    {
+        // printf("%d ", sortedIOs[i].startLpos);
+        if (i + 1 == input->ioVec.len)
+            break;
+        if (sortedIOs[i + 1].startLpos < sortedIOs[i].startLpos)
+        {
+            printf("sort error!\n");
+            abort();
+        }
+    }
+
+    // 初始化当前头位置为输入的头状态
+    HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+
+    // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
+    int direction = 1;
+    uint32_t index = 0;
+
+    bool vis[input->ioVec.len + 1];
+    memset(vis, 0, sizeof(vis));
+    while (index < input->ioVec.len)
+    {
+        if (direction == 1)
+        {
+            // 从 BOT 向 EOT 扫描，wrap 为偶数
+            for (uint32_t i = 0; i < input->ioVec.len; ++i)
+            {
+                if (sortedIOs[i].wrap & 1 || vis[sortedIOs[i].id])
+                {
+                    continue;
+                }
+                if (sortedIOs[i].startLpos >= currentHead.lpos)
+                {
+                    output->sequence[index++] = sortedIOs[i].id;
+                    vis[sortedIOs[i].id] = 1;
+                    currentHead.wrap = sortedIOs[i].wrap;
+                    currentHead.lpos = sortedIOs[i].endLpos;
+                    // currentHead.lpos = sortedIOs[i].startLpos;
+                }
+            }
+            direction = -1; // 改变扫描方向
+            currentHead.lpos = MAX_LPOS;
+        }
+        else
+        {
+            // 从 EOT 向 BOT 扫描
+            for (int32_t i = input->ioVec.len - 1; i >= 0; --i)
+            {
+                if (!(sortedIOs[i].wrap & 1) || vis[sortedIOs[i].id])
+                {
+                    continue;
+                }
+                if (sortedIOs[i].startLpos <= currentHead.lpos)
+                {
+                    output->sequence[index++] = sortedIOs[i].id;
+                    vis[sortedIOs[i].id] = 1;
+                    currentHead.wrap = sortedIOs[i].wrap;
+                    currentHead.lpos = sortedIOs[i].endLpos;
+                }
+            }
+            direction = 1; // 改变扫描方向
+            currentHead.lpos = 0;
+        }
+    }
+    free(sortedIOs);
+
+    // 将最后一轮扫描插入前面
+    OutputParam *tmp;
+    tmp->len = input->ioVec.len;
+    tmp->sequence = (uint32_t *)malloc(input->ioVec.len * sizeof(uint32_t));
+    memcpy(tmp->sequence, output->sequence, input->ioVec.len * sizeof(int));
+    AccessTime accessTime;
+    TotalAccessTime(input, output, &accessTime);
+    while(true) {
+        // 最后一轮扫描在 output 中的下标范围为 [idx+1, output->len - 1]
+        int32_t io_len = 0, idx = output->len-1;
+        while(idx >= 0 && input->ioVec.ioArray[output->sequence[idx]-1].wrap == 1){
+            idx--;
+        }
+        while(idx >= 0 && input->ioVec.ioArray[output->sequence[idx]-1].wrap == 0){
+            idx--;
+        }
+        if(idx < 0) break;  // 当前已经是最后一轮扫描
+
+        // 遍历最后一轮的每个 IO
+        for(int i = idx + 1; i < output->len; ++i){ 
+            int32_t minTime = INT32_MAX;
+            int32_t best_pos = -1;
+            HeadInfo z = {input->ioVec.ioArray[output->sequence[i]-1].wrap, input->ioVec.ioArray[output->sequence[i]-1].startLpos, HEAD_RW};
+            
+            // 寻找插入的最佳位置
+            for(int j = 0; j < i - 1; ++j){ 
+                if(input->ioVec.ioArray[output->sequence[j]-1].wrap != input->ioVec.ioArray[output->sequence[i]-1].wrap 
+                    && input->ioVec.ioArray[output->sequence[j+1]-1].wrap != input->ioVec.ioArray[output->sequence[i]-1].wrap)
+                    continue;
+                HeadInfo x = {input->ioVec.ioArray[output->sequence[j]-1].wrap, input->ioVec.ioArray[output->sequence[j]-1].startLpos, HEAD_RW};
+                HeadInfo y = {input->ioVec.ioArray[output->sequence[j+1]-1].wrap, input->ioVec.ioArray[output->sequence[j+1]-1].startLpos, HEAD_RW};
+                int32_t seekTime = SeekTimeCalculate(&x, &z) + SeekTimeCalculate(&z, &y) - SeekTimeCalculate(&x, &y);
+                if(seekTime < minTime){
+                    best_pos = j;
+                    minTime = seekTime;
+                }
+            }
+
+            // 将当前 IO 插入到 best_pos 后面
+            for(int j = i; j > best_pos + 1; --j){
+                tmp->sequence[j] = tmp->sequence[j - 1];
+            }
+            tmp->sequence[best_pos + 1] = output->sequence[i];   // 更新该处的 IO 序号
+        }
+
+        AccessTime tmpTime;
+        TotalAccessTime(input, tmp, &tmpTime);
+        if(tmpTime.addressDuration < accessTime.addressDuration){
+            memcpy(output->sequence, tmp->sequence, input->ioVec.len * sizeof(int));
+        } else {
+            break;
+        }
+    }
+
+    return RETURN_OK;
+}
+
+
 int32_t SORT(const InputParam *input, OutputParam *output)
 {
     // 初始化输出参数
@@ -212,6 +407,7 @@ int32_t SCAN(const InputParam *input, OutputParam *output)
 
     bool vis[input->ioVec.len + 1];
     memset(vis, 0, sizeof(vis));
+    int cnt = 0;
     while (index < input->ioVec.len)
     {
         if (direction == 1)
@@ -234,6 +430,7 @@ int32_t SCAN(const InputParam *input, OutputParam *output)
             }
             direction = -1; // 改变扫描方向
             currentHead.lpos = MAX_LPOS;
+            cnt++;
         }
         else
         {
@@ -259,6 +456,7 @@ int32_t SCAN(const InputParam *input, OutputParam *output)
     }
 
     free(sortedIOs);
+    DEBUG("SCAN 扫描了来回%d趟\n", cnt);
     return RETURN_OK;
 }
 
@@ -2146,6 +2344,10 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorit
     else if (strcmp(algorithm, "partition_scan_new") == 0)
     {
         ret = p_scan(input, output);
+    }
+    else if (strcmp(algorithm, "MPSCAN") == 0)
+    {
+        ret = MPSCAN(input, output);
     }
     else
     {
