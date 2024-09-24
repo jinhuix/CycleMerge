@@ -35,7 +35,7 @@ set(test_algorithms
 )
 
 set(DATA_GEN
-    ${PROJECT_SOURCE_DIR}/data_gen.c
+    ${PROJECT_SOURCE_DIR}/data_gen.cpp
     ${PROJECT_SOURCE_DIR}/logging.c
 )
 
