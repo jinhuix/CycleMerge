@@ -4,26 +4,22 @@
 
 #define MAX_SCANS 100 // 最大扫描来回次数
 
-typedef struct
-{
+typedef struct {
     int id;
     struct req_node *next;
 } req_node;
 
-typedef struct
-{
+typedef struct {
     req_node *head;
     req_node *tail;
     int len;
 } req_list;
 
-typedef struct
-{
+typedef struct {
     int x, y, dis;
 } Node;
 
-typedef struct
-{
+typedef struct {
     Node *nodes;
     int size;
     int capacity;
@@ -33,8 +29,7 @@ typedef struct
 typedef int32_t (*AlgorithmFunc)(const InputParam *input, OutputParam *output);
 
 // 定义算法名称与对应函数的映射
-typedef struct
-{
+typedef struct {
     const char *name;
     AlgorithmFunc func;
 } AlgorithmMap;
@@ -57,7 +52,11 @@ int32_t HillClimbing(const InputParam *input, OutputParam *output);
 
 int32_t GeneticAlgorithm(const InputParam *input, OutputParam *output);
 
-int32_t MPSCAN(const InputParam *input, OutputParam *output);
+int32_t MPScan(const InputParam *input, OutputParam *output);
+
+int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, int partition_start, int partition_end);
+
+int32_t MPScanPartition(const InputParam *input, OutputParam *output);
 
 AlgorithmFunc get_algorithm_function(const char *algorithm); // 获取算法函数的封装函数
 

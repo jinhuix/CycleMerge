@@ -132,3 +132,16 @@ tapeMotorWear(times): 15
 errorIOCount: 0 
 
 
+/* 算法名称 */
+Algorithm: MPScanPartition
+
+Output sequence: [8, 2, 5, 7, 1, 4, 9, 3, 10, 6, ]
+/* 关键指标结构体 */
+ioCount: 10 
+algorithmRunningDuration(ms): 2.21 
+memoryUse(ms): 0 
+addressingDuration(ms): 293696 
+readDuration(ms): 6060
+tapeBeltWear(times): 692345
+tapeMotorWear(times): 15 
+errorIOCount: 0 
