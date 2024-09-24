@@ -1063,6 +1063,16 @@ Node *extractMin(MinHeap *heap)
     return &heap->nodes[heap->size];
 }
 
+Node *getMin(MinHeap *heap) // 弹出最小值
+{
+    if (heap->size == 0)
+    {
+        return NULL;
+    }
+
+    return &heap->nodes[0];
+}
+
 void insertHeap(MinHeap *heap, Node node)
 {
     if (heap->size == heap->capacity)
@@ -1131,36 +1141,26 @@ int32_t merge(const InputParam *input, OutputParam *output)
         output->sequence[i] = input->ioVec.ioArray[i].id;
     }
 
-    // int dis[maxn][maxn];
+    MinHeap *heap_array[maxn + 1];
 
-    // int **dis;
-    // // 分配指针数组
-    // dis = (int **)malloc(maxn * sizeof(int *));
-    // if (dis == NULL)
-    // {
-    //     perror("Failed to allocate memory");
-    //     exit(EXIT_FAILURE);
-    // }
+    for(int i = 0; i <= maxn; i++){
+        heap_array[i] = createMinHeap(maxn + 1);
+    }
 
-    // // 分配每一行的数组
-    // for (int i = 0; i < maxn; i++)
-    // {
-    //     dis[i] = (int *)malloc(maxn * sizeof(int));
-    //     if (dis[i] == NULL)
-    //     {
-    //         perror("Failed to allocate memory");
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
+    // struct timeval start, end;
+    // gettimeofday(&start, NULL);
 
-    MinHeap *heap = createMinHeap(maxn * maxn);
+    
+    int selected_value_sum = 0;
+    
 
     // 初始化当前头位置为输入的头状态
     HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
     for (int i = 0; i < input->ioVec.len; i++)
     {
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
-        insertHeap(heap, (Node){0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)});
+        insertHeap(heap_array[i + 1], (Node){0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)});
+        
         for (int j = 0; j < input->ioVec.len; j++)
         {
             if (i == j)
@@ -1168,42 +1168,63 @@ int32_t merge(const InputParam *input, OutputParam *output)
             // printf("i=%d j=%d\n", i, j);
             HeadInfo status1 = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].endLpos, HEAD_RW};
             HeadInfo status2 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].startLpos, HEAD_RW};
-
-            insertHeap(heap, (Node){i + 1, j + 1, SeekTimeCalculate(&status1, &status2)});
-            // dis[i][j] = SeekTimeCalculate(&status1, &status2);
-            // printf("wrap=%d lpos=%d status=%d\n", status1.wrap, status1.lpos, status1.status);
-            // printf("wrap=%d lpos=%d status=%d\n", status2.wrap, status2.lpos, status2.status);
-            // printf("i=%d j=%d dis=%d\n", i, j, dis[i][j]);
+            insertHeap(heap_array[j + 1], (Node){i + 1, j + 1, SeekTimeCalculate(&status1, &status2)});
         }
     }
+    
+
+    // gettimeofday(&end, NULL); // 记录结束时间
+    // long seconds, useconds;   // 秒数和微秒数
+    // seconds = end.tv_sec - start.tv_sec;
+    // useconds = end.tv_usec - start.tv_usec;
+
+    // double matrix_duration = ((seconds) * 1000000 + useconds) / 1000.0;
+    // printf("matrix_duration: %.3f\n", matrix_duration);
 
     int nex[maxn], vis[maxn];
     memset(nex, 0, sizeof(nex));
     memset(vis, 0, sizeof(vis));
     initUnionSet();
-    while (heap->size)
+    while (sz[0] != input->ioVec.len + 1)
     {
-        if (sz[0] == input->ioVec.len + 1)
+        if (sz[0] == input->ioVec.len + 1){
             break;
+        }
         // printf("size=%d\n", heap->size);
-        Node *node = extractMin(heap);
-        // printf("x=%d y=%d dis=%d\n", node->x, node->y, node->dis);
-        // printf("nex[%d]=%d\n", node->x, nex[node->x]);
-        if (nex[node->x] == 0 && nex[node->y] != node->x && vis[node->y] == 0)
+        
+        int min_value = INT32_MAX;
+        int min_heap_idx = -1;
+        for(int i = 0; i < input->ioVec.len; i++){
+            int node_idx = i + 1;
+            if(vis[node_idx]) continue;
+            Node *node = getMin(heap_array[node_idx]);
+            if(node == NULL){
+                break;
+            }
+            if(node->dis < min_value){
+                min_value = node->dis;
+                min_heap_idx = node_idx;
+            }
+        }
+        if(min_heap_idx == -1){
+            break;
+        }
+        Node *node = extractMin(heap_array[min_heap_idx]);
+
+
+        if (nex[node->x] == 0 && ( node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0)
         {
             if (find(node->x) == find(node->y))
                 continue;
             unite(node->x, node->y);
             nex[node->x] = node->y;
             vis[node->y] = 1;
+            selected_value_sum += node->dis;
+            // printf("%d\n", node->y);
         }
+        
     }
-
-    // for (int i = 0; i <= input->ioVec.len; i++)
-    // {
-    //     printf("nex[%d]=%d\n", i, nex[i]);
-    // }
-
+    // printf("selected_value_sum: %d\n", selected_value_sum);
     // printf("sz[0]=%d\n", sz[0]);
     int now = nex[0], cnt = 0;
     while (cnt < input->ioVec.len)
