@@ -1,0 +1,41 @@
+Running algorithm: MPScanPartition
+best_partition_size=740000
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        2350.687 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              11588615 (ms)
+        readDuration:                    10893034 (ms)
+        tapeBeltWear:                    25219342
+        tapeMotorWear:                   116
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: partition_scan
+best_scan_method=2 best_partition_size=185000
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        815.949 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              11770823 (ms)
+        readDuration:                    10893034 (ms)
+        tapeBeltWear:                    24213686
+        tapeMotorWear:                   294
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt
+Running algorithm: MPScan
+
+Key Metrics:
+        ioCount:                         10000
+        algorithmRunningDuration:        39.185 (ms)
+        memoryUse:                       0 (KB)
+        addressingDuration:              11731719 (ms)
+        readDuration:                    10893034 (ms)
+        tapeBeltWear:                    23532401
+        tapeMotorWear:                   248
+        errorIOCount:                    0
+
+指标写入文件 ./metrics.txt

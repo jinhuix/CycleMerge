@@ -326,8 +326,8 @@ int main(int argc, char *argv[])
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "HC", "GA", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge", "partition_scan"};
-    char *algorithms[] = {"MPSCAN"};
-
+    char *algorithms[] = {"MPScanPartition","partition_scan","MPScan"};
+    char *operator_optimization[] = {"SIMPLE"};
     char *save_path = "./metrics.txt";
     FILE *temp = fopen(save_path, "w");
     fclose(temp);
@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
         gettimeofday(&start, NULL);
 
         /* 算法执行 */
-        ret = AlgorithmRun(inputParam, output, algorithms[i]);
+        ret = AlgorithmRun(inputParam, output, algorithms[i], operator_optimization[0]);
 
         gettimeofday(&end, NULL); // 记录结束时间
         long seconds, useconds;   // 秒数和微秒数

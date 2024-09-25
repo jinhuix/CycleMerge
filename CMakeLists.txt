@@ -26,6 +26,9 @@ set(TEST2
     ${PROJECT_SOURCE_DIR}/test2.c
     ${PROJECT_SOURCE_DIR}/logging.c
     ${PROJECT_SOURCE_DIR}/test_algorithms.c
+    ${PROJECT_SOURCE_DIR}/interface.c
+    ${PROJECT_SOURCE_DIR}/operator_optimization.c
+
 )
 
 set(test_algorithms
@@ -35,7 +38,7 @@ set(test_algorithms
 )
 
 set(DATA_GEN
-    ${PROJECT_SOURCE_DIR}/data_gen.c
+    ${PROJECT_SOURCE_DIR}/data_gen.cpp
     ${PROJECT_SOURCE_DIR}/logging.c
 )
 
