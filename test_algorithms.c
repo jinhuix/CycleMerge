@@ -1,5 +1,7 @@
 #include "test_algorithms.h"
 #include "logging.h"
+#include "interface.h"
+#include "operator_optimization.h"
 
 /**
  * @brief  算法接口
@@ -11,7 +13,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
 {
     int32_t ret;
 
-    /* 算法示例：先入先出算法 */
+    /* Step1：先入先出算法 */
     output->len = input->ioVec.len;
     for (uint32_t i = 0; i < output->len; i++)
     {
@@ -21,18 +23,16 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
     /* 调用公共函数示例：调用电机寻址、带体磨损、电机磨损函数 */
     HeadInfo start = {input->ioVec.ioArray[0].wrap, input->ioVec.ioArray[0].endLpos, HEAD_RW};
     HeadInfo end = {input->ioVec.ioArray[1].wrap, input->ioVec.ioArray[1].endLpos, HEAD_RW};
-    int32_t seekT = 0;
-    int32_t beltW = 0;
-    int32_t motorW = 0;
+    int32_t cost = 0;
+
+    TapeBeltSegWearInfo segWearInfo = {0};
     for (uint32_t i = 0; i < 10000; i++)
     {
-        seekT = SeekTimeCalculate(&start, &end);
-        beltW = BeltWearTimes(&start, &end, NULL);
-        motorW = MotorWearTimes(&start, &end);
+        cost = CostCalculate(&start, &end, &segWearInfo);
     }
 
-    /* 调用公共函数示例：调用IO读写时间函数 */
-    uint32_t rwT = ReadTimeCalculate(abs(input->ioVec.ioArray[0].endLpos - input->ioVec.ioArray[0].startLpos));
+    /* 调用加权接口函数 */
+    uint32_t total_cost = TotalCostCalculate(input, output, &segWearInfo);
 
     return RETURN_OK;
 }
@@ -2317,61 +2317,61 @@ int32_t _partition_scan_new(OutputParam *output, IOUint *sortedIOs, bool *vis, i
 
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm)
 {
-    int32_t ret;
+    int32_t ret1 = RETURN_ERROR, ret2 = RETURN_ERROR;
 
     if (strcmp(algorithm, "FCFS") == 0)
     {
-        ret = IOScheduleAlgorithm(input, output);
+        ret1 = IOScheduleAlgorithm(input, output);
     }
     if (strcmp(algorithm, "SORT") == 0)
     {
-        ret = SORT(input, output);
+        ret1 = SORT(input, output);
     }
     else if (strcmp(algorithm, "SCAN") == 0)
     {
-        ret = SCAN(input, output);
+        ret1 = SCAN(input, output);
     }
     else if (strcmp(algorithm, "SCAN2") == 0)
     {
-        ret = SCAN2(input, output);
+        ret1 = SCAN2(input, output);
     }
     else if (strcmp(algorithm, "Nearest") == 0)
     {
-        ret = NearestNeighborAlgorithm(input, output);
+        ret1 = NearestNeighborAlgorithm(input, output);
     }
     else if (strcmp(algorithm, "SA") == 0)
     {
-        ret = SimulatedAnnealing(input, output);
+        ret1 = SimulatedAnnealing(input, output);
     }
     else if (strcmp(algorithm, "TS") == 0)
     {
         // ret = TabuSearch(input, output);
-        ret = IOScheduleAlgorithm(input, output);
+        ret1 = IOScheduleAlgorithm(input, output);
     }
     else if (strcmp(algorithm, "HC") == 0)
     {
-        ret = HillClimbing(input, output);
+        ret1 = HillClimbing(input, output);
     }
     else if (strcmp(algorithm, "GA") == 0)
     {
         // ret = GeneticAlgorithm(input, output);
-        ret = IOScheduleAlgorithm(input, output);
+        ret1 = IOScheduleAlgorithm(input, output);
     }
     else if (strcmp(algorithm, "merge") == 0)
     {
-        ret = merge(input, output);
+        ret1 = merge(input, output);
     }
     else if (strcmp(algorithm, "partition_scan") == 0)
     {
-        ret = partition_scan(input, output);
+        ret1 = partition_scan(input, output);
     }
     else if (strcmp(algorithm, "partition_scan_new") == 0)
     {
-        ret = p_scan(input, output);
+        ret1 = p_scan(input, output);
     }
     else if (strcmp(algorithm, "MPSCAN") == 0)
     {
-        ret = MPSCAN(input, output);
+        ret1 = MPSCAN(input, output);
     }
     else
     {
@@ -2379,11 +2379,16 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorit
         return RETURN_ERROR;
     }
 
-    // for (uint32_t i = 0; i < output->len; i++)
-    // {
-    //     printf("%d ", output->sequence[i]);
-    // }
-    // printf("\n");
+    printf("Finished Seeking Algorithm\n");
+    if(ret1 == RETURN_OK){
+        // step2: 优化算子
+        ret2 = SimpleOperatorOptimization(input, output);
+    }
+    printf("Finished Operator Optimization\n");
+    if(ret1 == RETURN_OK & ret2 == RETURN_OK){
+        // step1, step2都成功
+        return RETURN_OK;
+    }
+    return RETURN_ERROR;
 
-    return RETURN_OK;
 }
