@@ -207,7 +207,7 @@ int32_t MPScanPartition(const InputParam *input, OutputParam *output) {
         // }
 
         for (int j = 0; j < input->ioVec.len + 1; j++) vis[j] = 0;
-        for (int j = 0; j < now; j++) {
+        for (int j = 0; j <= now; j++) {
             // DEBUG("partition %d start at %d, io_num=%d\n", j, partition_io_start[j], partition_io_num[j]);
             if (partition_io_num[j] == 0) continue;
             // for (int j = 0; j < input->ioVec.len; j++)
@@ -283,15 +283,17 @@ int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint 
     while (true) {
         // 最后一轮扫描在 output 中的下标范围为 [idx+1, output->len - 1]
         int32_t idx = partition_end - 1;
-        while (idx > partition_start && (input->ioVec.ioArray[output->sequence[idx] - 1].wrap & 1) &&
-               input->ioVec.ioArray[output->sequence[idx] - 1].startLpos < input->ioVec.ioArray[output->sequence[idx - 1] - 1].startLpos) { // 奇数
-            idx--;
-        }
-        while (idx > partition_start && !(input->ioVec.ioArray[output->sequence[idx] - 1].wrap & 1) &&
-               input->ioVec.ioArray[output->sequence[idx] - 1].startLpos > input->ioVec.ioArray[output->sequence[idx - 1] - 1].startLpos) { // 偶数
-            idx--;
-        }
-        if (idx < partition_start) break;   // 当前已经是最后一轮扫描
+        if(input->ioVec.ioArray[output->sequence[idx] - 1].wrap & 1)
+            while (idx > partition_start && (input->ioVec.ioArray[output->sequence[idx-1] - 1].wrap & 1) &&
+                input->ioVec.ioArray[output->sequence[idx] - 1].startLpos < input->ioVec.ioArray[output->sequence[idx - 1] - 1].startLpos) { // 奇数
+                idx--;
+            }
+        if(!(input->ioVec.ioArray[output->sequence[idx] - 1].wrap & 1))
+            while (idx > partition_start && !(input->ioVec.ioArray[output->sequence[idx-1] - 1].wrap & 1) &&
+                input->ioVec.ioArray[output->sequence[idx] - 1].startLpos > input->ioVec.ioArray[output->sequence[idx - 1] - 1].startLpos) { // 偶数
+                idx--;
+            }
+        if (idx == partition_start) break;   // 当前已经是最后一轮扫描
 
         // printf("\n%d:", output->sequence[idx]);
         // 遍历最后一轮的每个 IO
@@ -313,6 +315,9 @@ int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint 
             }
 
             // printf("best_pos = %d , ", best_pos);
+            if(best_pos==-1) {
+                continue;
+            }
             // 将当前 IO 插入到 best_pos 后面
             for (int j = i; j > best_pos + 1; --j) tmp->sequence[j] = tmp->sequence[j - 1];
             tmp->sequence[best_pos + 1] = output->sequence[i]; // 更新该处的 IO 序号
@@ -330,6 +335,8 @@ int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint 
         //     printf("%d ", output->sequence[i]);
         // }
         // printf("]\ntmp: %d, output: %d\n", tmpTime.addressDuration, accessTime.addressDuration);
+
+        
 
         if (tmpTime.addressDuration < accessTime.addressDuration) {
             accessTime.addressDuration = tmpTime.addressDuration;
@@ -1827,8 +1834,8 @@ int32_t partition_scan(const InputParam *input, OutputParam *output)
         }
         // 分区处理方法，SORT、SCAN1、SCAN2、MPScan*
         // int scan_method[] = {0, 1, 2, 3};
-        // int scan_method[] = {0, 1, 2};
-        int scan_method[] = {3};
+        int scan_method[] = {0, 1, 2};
+        // int scan_method[] = {3};
         int method_num = sizeof(scan_method) / sizeof(scan_method[0]);
         // DEBUG("method_num=%d\n", method_num);
         for (int method_idx = 0; method_idx < method_num; method_idx++)
