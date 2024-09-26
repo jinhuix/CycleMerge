@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "interface.h"
+#include "public.h"
 
 
 #define W1 1

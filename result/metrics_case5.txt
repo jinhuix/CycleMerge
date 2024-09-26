@@ -118,3 +118,16 @@ tapeMotorWear(times): 26
 errorIOCount: 0 
 
 
+/* 算法名称 */
+Algorithm: MPScanPartition
+
+Output sequence: [72, 10, 12, 23, 66, 60, 80, 37, 44, 36, 70, 14, 30, 33, 2, 68, 35, 64, 38, 49, 6, 15, 79, 40, 62, 59, 26, 41, 69, 71, 56, 5, 16, 39, 82, 21, 51, 55, 18, 58, 28, 52, 13, 65, 4, 73, 34, 89, 42, 54, 20, 24, 32, 83, 86, 67, 17, 8, 27, 63, 90, 75, 25, 11, 53, 57, 88, 48, 50, 29, 85, 87, 47, 45, 31, 74, 1, 81, 22, 43, 3, 84, 77, 61, 19, 46, 76, 7, 78, 9, ]
+/* 关键指标结构体 */
+ioCount: 90 
+algorithmRunningDuration(ms): 29.25 
+memoryUse(ms): 0 
+addressingDuration(ms): 1030596 
+readDuration(ms): 71972
+tapeBeltWear(times): 1543558
+tapeMotorWear(times): 76 
+errorIOCount: 0 

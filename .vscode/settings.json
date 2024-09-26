@@ -7,6 +7,8 @@
         "stdint.h": "c",
         "test_algorithms.h": "c",
         "const.h": "c",
-        "logging.h": "c"
+        "logging.h": "c",
+        "operator_optimization.h": "c",
+        "interface.h": "c"
     }
 }

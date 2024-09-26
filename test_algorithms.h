@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "public.h"
 
-#define MAX_SCANS 100 // 最大扫描来回次数
+#define MAX_SCANS 100  // 最大扫描来回次数
 
 typedef struct
 {
@@ -65,11 +66,15 @@ int32_t HillClimbing(const InputParam *input, OutputParam *output);
 
 int32_t GeneticAlgorithm(const InputParam *input, OutputParam *output);
 
-int32_t MPSCAN(const InputParam *input, OutputParam *output);
+int32_t MPScan(const InputParam *input, OutputParam *output);
 
-AlgorithmFunc get_algorithm_function(const char *algorithm); // 获取算法函数的封装函数
+int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end);
 
-int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm);
+int32_t MPScanPartition(const InputParam *input, OutputParam *output);
+
+AlgorithmFunc get_algorithm_function(const char *algorithm);  // 获取算法函数的封装函数
+
+int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm, char *operator_optimization);
 
 #ifdef _WIN32
 #ifdef BUILDING_DLL
