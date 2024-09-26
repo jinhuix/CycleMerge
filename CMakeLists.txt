@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 
 set(LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(ALG_DIR ${PROJECT_SOURCE_DIR}/algorithm)

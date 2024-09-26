@@ -1069,6 +1069,7 @@ Node *getMin(MinHeap *heap) // 弹出最小值
     {
         return NULL;
     }
+    
 
     return &heap->nodes[0];
 }
@@ -1090,6 +1091,84 @@ void insertHeap(MinHeap *heap, Node node)
     {
         swap(&heap->nodes[i], &heap->nodes[(i - 1) / 2]);
         i = (i - 1) / 2;
+    }
+}
+
+int getValueInHeapArray(MinHeapArray * arr, int idx){
+    return getMin(arr->heap_array[idx])->dis;
+}
+
+int getMinValueInHeapArray(MinHeapArray * arr){
+    int value = getMin(arr->heap_array[0])->dis;
+    return value;
+}
+
+void swapInHeapArray(MinHeapArray * arr, int idx1, int idx2){
+    MinHeap * tmp = arr->heap_array[idx1];
+    arr->heap_array[idx1] = arr->heap_array[idx2];
+    arr->heap_array[idx2] = tmp;
+}
+
+
+void insertHeapInHeapArray(MinHeapArray * arr, MinHeap * heap){
+    arr->heap_array[arr->size++] = heap;
+    int i = arr->size - 1;
+    while (i != 0 && getValueInHeapArray(arr, (i - 1) / 2) >= getValueInHeapArray(arr, i))
+    {
+        swapInHeapArray(arr, i, (i - 1) / 2);
+        i = (i - 1) / 2;
+    }
+}
+
+
+Node * getNodeInHeapArray(MinHeapArray * arr){
+    return getMin(arr->heap_array[0]);
+}
+
+Node * popNodeInHeapArray(MinHeapArray * arr){
+    if (arr->size == 0)
+    {
+        return NULL;
+    }
+    Node * tmp = extractMin(arr->heap_array[0]);
+    minHeapArrayHeapify(arr, 0);
+    return tmp;
+}
+
+MinHeap * popHeapInHeapArray(MinHeapArray * arr){
+    if (arr->size == 0)
+    {
+        return NULL;
+    }
+    MinHeap * tmp = arr->heap_array[0];
+    arr->heap_array[0] = arr->heap_array[arr->size - 1];
+    arr->heap_array[arr->size - 1] = tmp;
+    arr->size--;
+
+    minHeapArrayHeapify(arr, 0);
+
+    return arr->heap_array[arr->size];
+}
+
+void minHeapArrayHeapify(MinHeapArray * arr, int idx)
+{
+    // return ;
+    int smallest = idx;
+    int left = 2 * idx + 1;
+    int right = 2 * idx + 2;
+    
+    if (left < arr->size && getValueInHeapArray(arr, left) < getValueInHeapArray(arr, smallest))
+        smallest = left;
+
+    if (right < arr->size && getValueInHeapArray(arr, right) < getValueInHeapArray(arr, smallest))
+        smallest = right;
+    
+    
+
+    if (smallest != idx)
+    {
+        swapInHeapArray(arr, idx, smallest);
+        minHeapArrayHeapify(arr, smallest);
     }
 }
 
@@ -1134,6 +1213,7 @@ void unite(int x, int y)
     }
 }
 
+
 int32_t merge(const InputParam *input, OutputParam *output)
 {
     for (uint32_t i = 0; i < input->ioVec.len; ++i)
@@ -1141,13 +1221,8 @@ int32_t merge(const InputParam *input, OutputParam *output)
         output->sequence[i] = input->ioVec.ioArray[i].id;
     }
 
-    MinHeap *heap_array[maxn + 1];
-
-    for(int i = 0; i <= maxn; i++){
-        heap_array[i] = createMinHeap(maxn + 1);
-    }
-
-    // struct timeval start, end;
+    MinHeapArray heap_array = {maxn, 0, (MinHeap **)malloc(maxn * sizeof(MinHeap *))};
+    struct timeval start, end;
     // gettimeofday(&start, NULL);
 
     
@@ -1158,28 +1233,22 @@ int32_t merge(const InputParam *input, OutputParam *output)
     HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
     for (int i = 0; i < input->ioVec.len; i++)
     {
+        MinHeap * tmp_heap = createMinHeap(maxn + 1);
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
-        insertHeap(heap_array[i + 1], (Node){0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)});
+        insertHeap(tmp_heap, (Node){0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)});
         
         for (int j = 0; j < input->ioVec.len; j++)
         {
             if (i == j)
                 continue;
-            // printf("i=%d j=%d\n", i, j);
-            HeadInfo status1 = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].endLpos, HEAD_RW};
-            HeadInfo status2 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].startLpos, HEAD_RW};
-            insertHeap(heap_array[j + 1], (Node){i + 1, j + 1, SeekTimeCalculate(&status1, &status2)});
+            HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
+            HeadInfo status2 = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
+            insertHeap(tmp_heap, (Node){j + 1, i + 1, SeekTimeCalculate(&status1, &status2)});
         }
+        
+        insertHeapInHeapArray(&heap_array, tmp_heap);
     }
     
-
-    // gettimeofday(&end, NULL); // 记录结束时间
-    // long seconds, useconds;   // 秒数和微秒数
-    // seconds = end.tv_sec - start.tv_sec;
-    // useconds = end.tv_usec - start.tv_usec;
-
-    // double matrix_duration = ((seconds) * 1000000 + useconds) / 1000.0;
-    // printf("matrix_duration: %.3f\n", matrix_duration);
 
     int nex[maxn], vis[maxn];
     memset(nex, 0, sizeof(nex));
@@ -1190,53 +1259,34 @@ int32_t merge(const InputParam *input, OutputParam *output)
         if (sz[0] == input->ioVec.len + 1){
             break;
         }
-        // printf("size=%d\n", heap->size);
         
         int min_value = INT32_MAX;
         int min_heap_idx = -1;
-        for(int i = 0; i < input->ioVec.len; i++){
-            int node_idx = i + 1;
-            if(vis[node_idx]) continue;
-            Node *node = getMin(heap_array[node_idx]);
-            if(node == NULL){
-                break;
-            }
-            if(node->dis < min_value){
-                min_value = node->dis;
-                min_heap_idx = node_idx;
-            }
-        }
-        if(min_heap_idx == -1){
-            break;
-        }
-        Node *node = extractMin(heap_array[min_heap_idx]);
+        Node *node = getNodeInHeapArray(&heap_array);
 
-
-        if (nex[node->x] == 0 && ( node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0)
+        if (nex[node->x] == 0 && ( node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0 && find(node->x) != find(node->y))
         {
-            if (find(node->x) == find(node->y))
-                continue;
             unite(node->x, node->y);
             nex[node->x] = node->y;
             vis[node->y] = 1;
             selected_value_sum += node->dis;
-            // printf("%d\n", node->y);
+            popHeapInHeapArray(&heap_array);
         }
-        
+        else{
+            popNodeInHeapArray(&heap_array);
+        }
     }
-    // printf("selected_value_sum: %d\n", selected_value_sum);
-    // printf("sz[0]=%d\n", sz[0]);
     int now = nex[0], cnt = 0;
     while (cnt < input->ioVec.len)
     {
         output->sequence[cnt++] = now;
-        // printf("cnt=%d now=%d\n", cnt, now);
         now = nex[now];
     }
 
     // free(dis);
     return RETURN_OK;
 }
+
 
 int32_t p_scan(const InputParam *input, OutputParam *output)
 {

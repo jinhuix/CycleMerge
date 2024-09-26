@@ -29,6 +29,14 @@ typedef struct
     int capacity;
 } MinHeap;
 
+
+typedef struct{
+    int capacity;
+    int size;
+    MinHeap **heap_array;
+}MinHeapArray;
+
+
 // 函数指针类型
 typedef int32_t (*AlgorithmFunc)(const InputParam *input, OutputParam *output);
 
