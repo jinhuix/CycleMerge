@@ -20,7 +20,8 @@ typedef struct
 
 typedef struct
 {
-    int x, y, dis;
+    int16_t x, y;
+    int dis;
 } Node;
 
 typedef struct
