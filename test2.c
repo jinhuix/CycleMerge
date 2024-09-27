@@ -483,6 +483,11 @@ int main(int argc, char *argv[])
 
         closedir(dp);
     }
+    else
+    {
+        // 如果是文件，直接处理
+        ret = process(file);
+    }
     
     return 0;
 }

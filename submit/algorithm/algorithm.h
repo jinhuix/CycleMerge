@@ -33,12 +33,11 @@ typedef struct
     int capacity;
 } MinHeap;
 
-
-typedef struct{
+typedef struct {
     int capacity;
     int size;
     MinHeap **heap_array;
-}MinHeapArray;
+} MinHeapArray;
 
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output);
 
@@ -56,18 +55,11 @@ void heapify(MinHeap *heap, int idx);
 Node *extractMin(MinHeap *heap);
 Node *getMin(MinHeap *heap);
 void insertHeap(MinHeap *heap, Node node);
-int getValueInHeapArray(MinHeapArray * arr, int idx);
-int getMinValueInHeapArray(MinHeapArray * arr);
-void swapInHeapArray(MinHeapArray * arr, int idx1, int idx2);
-void insertHeapInHeapArray(MinHeapArray * arr, MinHeap * heap);
-Node * getNodeInHeapArray(MinHeapArray * arr);
-Node * popNodeInHeapArray(MinHeapArray * arr);
-MinHeap * popHeapInHeapArray(MinHeapArray * arr);
-void minHeapArrayHeapify(MinHeapArray * arr, int idx);
 void initUnionSet();
 void freeUnionSet();
 int find(int x);
 void unite(int x, int y);
+void destoryMinHeap(MinHeap *heap);
 int32_t merge(const InputParam *input, OutputParam *output);
 
 #ifdef __cplusplus
