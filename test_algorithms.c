@@ -22,19 +22,6 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
         output->sequence[i] = input->ioVec.ioArray[i].id;
     }
 
-    /* 调用公共函数示例：调用电机寻址、带体磨损、电机磨损函数 */
-    HeadInfo start = {input->ioVec.ioArray[0].wrap, input->ioVec.ioArray[0].endLpos, HEAD_RW};
-    HeadInfo end = {input->ioVec.ioArray[1].wrap, input->ioVec.ioArray[1].endLpos, HEAD_RW};
-    int32_t cost = 0;
-
-    TapeBeltSegWearInfo segWearInfo = {0};
-    for (uint32_t i = 0; i < 10000; i++) {
-        cost = CostCalculate(&start, &end, &segWearInfo);
-    }
-
-    /* 调用加权接口函数 */
-    uint32_t total_cost = TotalCostCalculate(input, output, &segWearInfo);
-
     return RETURN_OK;
 }
 
@@ -442,7 +429,7 @@ int32_t SCAN(const InputParam *input, OutputParam *output) {
     }
 
     free(sortedIOs);
-    DEBUG("SCAN 扫描了来回%d趟\n", cnt);
+    // DEBUG("SCAN 扫描了来回%d趟\n", cnt);
     return RETURN_OK;
 }
 
@@ -1864,6 +1851,7 @@ AlgorithmFunc get_operator_optimization_function(const char *operator_optimizati
 }
 
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output, char *algorithm, char *operator_optimization) {
+    printf("algorithm=%s, operator_optimization=%s\n", algorithm, operator_optimization);
     AlgorithmFunc selected_algorithm = get_algorithm_function(algorithm);  // 获取对应的算法函数
     AlgorithmFunc selected_operator_optimization = get_operator_optimization_function(operator_optimization);
     if (!selected_algorithm) {

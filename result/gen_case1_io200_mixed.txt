@@ -1,0 +1,117 @@
+/* 算法名称 */
+Algorithm: FCFS
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 0.00 
+memoryUse(ms): 0 
+addressingDuration(ms): 9492670 
+readDuration(ms): 217133
+tapeBeltWear(times): 26212062
+tapeMotorWear(times): 502 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: SORT
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 0.01 
+memoryUse(ms): 0 
+addressingDuration(ms): 3040370 
+readDuration(ms): 217133
+tapeBeltWear(times): 2273553
+tapeMotorWear(times): 638 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: SCAN
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 0.01 
+memoryUse(ms): 0 
+addressingDuration(ms): 2567931 
+readDuration(ms): 217133
+tapeBeltWear(times): 2427477
+tapeMotorWear(times): 422 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: SCAN2
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 0.04 
+memoryUse(ms): 0 
+addressingDuration(ms): 2167182 
+readDuration(ms): 217133
+tapeBeltWear(times): 3026523
+tapeMotorWear(times): 218 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: Nearest
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 0.73 
+memoryUse(ms): 0 
+addressingDuration(ms): 2136378 
+readDuration(ms): 217133
+tapeBeltWear(times): 2403764
+tapeMotorWear(times): 296 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MPScanPartition
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 55.53 
+memoryUse(ms): 0 
+addressingDuration(ms): 2076231 
+readDuration(ms): 217133
+tapeBeltWear(times): 2609165
+tapeMotorWear(times): 226 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: partition_scan
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 64.41 
+memoryUse(ms): 0 
+addressingDuration(ms): 2076231 
+readDuration(ms): 217133
+tapeBeltWear(times): 2609165
+tapeMotorWear(times): 226 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MPScan
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 0.24 
+memoryUse(ms): 0 
+addressingDuration(ms): 2167182 
+readDuration(ms): 217133
+tapeBeltWear(times): 3026523
+tapeMotorWear(times): 218 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: merge
+/* 关键指标结构体 */
+ioCount: 200 
+algorithmRunningDuration(ms): 2.46 
+memoryUse(ms): 0 
+addressingDuration(ms): 2096178 
+readDuration(ms): 217133
+tapeBeltWear(times): 2583351
+tapeMotorWear(times): 274 
+errorIOCount: 0 
+
+
