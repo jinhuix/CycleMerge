@@ -8,10 +8,12 @@
 #include <sys/time.h>
 #include "test_algorithms.h"
 #include <pthread.h>
+#include <dirent.h>
 #include <sys/resource.h>
 #include <sys/types.h>
 #include <sys/sysinfo.h>
 #include <bits/getopt_core.h>
+#include <sys/stat.h>
 
 #define MAX_PATH_LENGTH 256
 
@@ -78,12 +80,12 @@ void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics, char 
     fprintf(file, "/* 算法名称 */\n");
     fprintf(file, "Algorithm: %s\n", algo);
 
-    fprintf(file, "\nOutput sequence: [");
-    for (uint32_t i = 0; i < output->len; i++)
-    {
-        fprintf(file, "%u, ", output->sequence[i]);
-    }
-    fprintf(file, "]\n");
+    // fprintf(file, "\nOutput sequence: [");
+    // for (uint32_t i = 0; i < output->len; i++)
+    // {
+    //     fprintf(file, "%u, ", output->sequence[i]);
+    // }
+    // fprintf(file, "]\n");
 
     fprintf(file, "/* 关键指标结构体 */\n");
     fprintf(file, "ioCount: %u \n", metrics->ioCount);
@@ -276,61 +278,69 @@ int parseFile(const char *filename, HeadInfo *headInfo, IOVector *ioVector)
     return RETURN_OK;
 }
 
-int main(int argc, char *argv[])
+int process(char *file)
 {
-    printf("\n\nWelcome to HW project.\n\n");
-
-    /* 输入dataset文件地址 */
-    int opt;
-    char *file = NULL;
-    pthread_t thread;
-    int ret;
-
-    /* 使用 getopt 解析命令行参数 */
-    while ((opt = getopt(argc, argv, "f:")) != -1)
-    {
-        switch (opt)
-        {
-        case 'f':
-            file = optarg;
-            break;
-        default:
-            fprintf(stderr, "Usage: %s -f filename. [example: ./main -f /heme/case_1.txt] \n", argv[0]);
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    if (file == NULL)
-    {
-        fprintf(stderr, "Usage: %s -f filename. [example: ./main -f /heme/case_1.txt] \n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("The file path is: %s\n", file);
-
     /* 获取输入参数 */
     InputParam *inputParam = (InputParam *)malloc(sizeof(InputParam));
-    ret = parseFile(file, &inputParam->headInfo, &inputParam->ioVec);
+    int ret = parseFile(file, &inputParam->headInfo, &inputParam->ioVec);
     if (ret < 0)
     {
         printf("InputParam error\n");
         return RETURN_ERROR;
     }
 
+    // 提取文件名
+    char *filename = strrchr(file, '/');
+    if (filename != NULL)
+    {
+        filename++; // 跳过 '/'
+    }
+    else
+    {
+        filename = file; // 如果没有 '/'，则文件名就是整个路径
+    }
+    printf("filename: %s\n", filename);
+
+    char save_path[256] = "../result/";
+    // 将文件名附加到 save_path
+    strcat(save_path, filename);
+    printf("Save path: %s\n", save_path);
+
+    // 提取目录路径
+    char dir_path[256];
+    strcpy(dir_path, save_path);
+    char *last_slash = strrchr(dir_path, '/');
+    if (last_slash != NULL)
+    {
+        *last_slash = '\0'; // 去掉文件名，保留目录路径
+    }
+
+    // 检查目录是否存在
+    struct stat st = {0};
+    if (stat(dir_path, &st) == -1)
+    {
+        // 目录不存在，创建目录
+        if (mkdir(dir_path, 0700) != 0)
+        {
+            perror("Failed to create directory");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // 刷新txt内容
+    FILE *temp = fopen(save_path, "w");
+    fclose(temp);
+
     /* 定初始化输出参数 */
     OutputParam *output = (OutputParam *)malloc(sizeof(OutputParam));
     output->len = inputParam->ioVec.len;
     output->sequence = (uint32_t *)malloc(output->len * sizeof(uint32_t));
 
-    // char **algorithms = {"FCFS", "SSTF", "SCAN", "CSCAN", "LOOK", "CLOOK"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "HC", "GA", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge", "partition_scan"};
-    char *algorithms[] = {"MPScanPartition","partition_scan","MPScan","merge"};
+    char *algorithms[] = {"FCFS", "SORT", "SCAN", "SCAN2", "Nearest", "MPScanPartition", "partition_scan", "MPScan", "merge"};
     char *operator_optimization[] = {"SIMPLE"};
-    char *save_path = "./metrics.txt";
-    FILE *temp = fopen(save_path, "w");
-    fclose(temp);
 
     int numAlgorithms = sizeof(algorithms) / sizeof(algorithms[0]);
     for (int i = 0; i < numAlgorithms; i++)
@@ -407,4 +417,72 @@ int main(int argc, char *argv[])
     free(output);
 
     return RETURN_OK;
+}
+
+
+int main(int argc, char *argv[])
+{
+    printf("\n\nWelcome to HW project.\n\n");
+
+    /* 输入dataset文件地址 */
+    int opt;
+    char *file = NULL;
+    pthread_t thread;
+    int ret;
+
+    /* 使用 getopt 解析命令行参数 */
+    while ((opt = getopt(argc, argv, "f:")) != -1)
+    {
+        switch (opt)
+        {
+        case 'f':
+            file = optarg;
+            break;
+        default:
+            fprintf(stderr, "Usage: %s -f filename. [example: ./main -f /heme/case_1.txt] \n", argv[0]);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    if (file == NULL)
+    {
+        fprintf(stderr, "Usage: %s -f filename. [example: ./main -f /heme/case_1.txt] \n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("The file path is: %s\n", file);
+
+    struct stat path_stat;
+    stat(file, &path_stat);
+
+    if (S_ISDIR(path_stat.st_mode))
+    {
+        // 如果是文件夹，遍历其中的所有 .txt 文件
+        struct dirent *entry;
+        DIR *dp = opendir(file);
+
+        if (dp == NULL)
+        {
+            perror("opendir");
+            return EXIT_FAILURE;
+        }
+
+        while ((entry = readdir(dp)))
+        {
+            if (entry->d_type == DT_REG)
+            {
+                char *ext = strrchr(entry->d_name, '.');
+                if (ext && strcmp(ext, ".txt") == 0)
+                {
+                    char file_path[1024];
+                    snprintf(file_path, sizeof(file_path), "%s/%s", file, entry->d_name);
+                    ret = process(file_path);
+                }
+            }
+        }
+
+        closedir(dp);
+    }
+    
+    return 0;
 }
