@@ -17,7 +17,10 @@ def parse_file(file_path):
     for match in matches:
         if(match[0] == 'FCFS'):
             continue
-        algorithms.append(match[0])
+        if(match[0] == 'MPScanStar'):
+            algorithms.append('MPScan*')
+        else:
+            algorithms.append(match[0])
         addressing_durations.append(int(match[1]))
 
     return algorithms, addressing_durations

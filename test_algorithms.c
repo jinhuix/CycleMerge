@@ -1809,22 +1809,44 @@ int32_t partition_scan(const InputParam *input, OutputParam *output) {
     free(sortedIOs);
 }
 
+int32_t FAST(const InputParam *input, OutputParam *output) {
+    int min_time = 0x3f3f3f3f;
+    int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
+    partition_scan(input, output);
+    AccessTime accessTime = {0};
+    TotalAccessTime(input, output, &accessTime);
+    if (accessTime.addressDuration < min_time) {
+        min_time = accessTime.addressDuration;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    }
+    merge(input, output);
+    TotalAccessTime(input, output, &accessTime);
+    if (accessTime.addressDuration < min_time) {
+        min_time = accessTime.addressDuration;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    }
+    memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+
+    return RETURN_OK;
+}
+
 // 封装调度算法映射表
 AlgorithmMap algorithms[] = {
     {"FCFS", IOScheduleAlgorithm},
-    {"SORT", SORT},
-    {"SCAN", SCAN},
-    {"SCAN2", SCAN2},
+    {"Sort", SORT},
+    {"Scan", SCAN},
+    {"MPScan", SCAN2},
     {"Nearest", NearestNeighborAlgorithm},
     {"SA", SimulatedAnnealing},
     {"TS", IOScheduleAlgorithm},  // TabuSearch
     {"HC", HillClimbing},
     {"GA", IOScheduleAlgorithm},  // GeneticAlgorithm
-    {"merge", merge},
-    {"partition_scan", partition_scan},
+    {"Merge", merge},
+    {"PartitionScan", partition_scan},
     {"partition_scan_new", p_scan},
-    {"MPScan", MPScan},
-    {"MPScanPartition", MPScanPartition}};
+    {"MPScanStar", MPScan},
+    {"MPScanPartition", MPScanPartition},
+    {"FAST", FAST}};
 
 AlgorithmMap operator_optimizations[] = {
     {"SIMPLE", SimpleOperatorOptimization},
