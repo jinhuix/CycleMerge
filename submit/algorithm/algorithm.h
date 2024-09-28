@@ -45,9 +45,9 @@ void QuickSort(IOUint *a, int len);
 
 int32_t partition_scan(const InputParam *input, OutputParam *output);
 
-int32_t _partition_scan_new(OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_len, const int scan_method);
+int32_t Sort_Scan_MPScan_Perpartition(OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_len, const int scan_method);
 
-int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end);
+int32_t MPScan_star_PerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end);
 
 MinHeap *createMinHeap(int capacity);
 void swap(Node *a, Node *b);

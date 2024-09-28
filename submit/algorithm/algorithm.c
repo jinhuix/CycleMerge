@@ -117,7 +117,6 @@ int32_t partition_scan(const InputParam *input, OutputParam *output) {
     QuickSort(sortedIOs, input->ioVec.len);
 
     for (int i = 0; i < input->ioVec.len; i++) {
-        // printf("%d ", sortedIOs[i].startLpos);
         if (i + 1 == input->ioVec.len)
             break;
         if (sortedIOs[i + 1].startLpos < sortedIOs[i].startLpos) {
@@ -154,7 +153,7 @@ int32_t partition_scan(const InputParam *input, OutputParam *output) {
             }
             partition_io_num[now]++;
         }
-        // 分区处理方法，SORT、SCAN1、SCAN2、MPScan*
+        // 分区处理方法，SORT、SCAN、MPScan、MPScan*
         int scan_method[] = {0, 1, 2, 3};
         // int scan_method[] = {0, 1, 2};
         // int scan_method[] = {3};
@@ -173,10 +172,9 @@ int32_t partition_scan(const InputParam *input, OutputParam *output) {
                 if (partition_io_num[j] == 0)
                     continue;
                 if (scan_method[method_idx] < 3)
-                    _partition_scan_new(output, sortedIOs, vis, &head, partition_io_start[j], partition_io_num[j], scan_method[method_idx]);
+                    Sort_Scan_MPScan_Perpartition(output, sortedIOs, vis, &head, partition_io_start[j], partition_io_num[j], scan_method[method_idx]);
                 else if (scan_method[method_idx] == 3) {
-                    // _partition_mpscan(output, sortedIOs, &head, vis, partition_io_start[j], partition_io_num[j]);
-                    MPScanPerPartition(input, output, sortedIOs, vis, &head, partition_io_start[j], partition_io_start[j] + partition_io_num[j]);
+                    MPScan_star_PerPartition(input, output, sortedIOs, vis, &head, partition_io_start[j], partition_io_start[j] + partition_io_num[j]);
                 }
                 head.wrap = sortedIOs[partition_io_start[j] + partition_io_num[j] - 1].wrap;
                 head.lpos = sortedIOs[partition_io_start[j] + partition_io_num[j] - 1].endLpos;
@@ -203,31 +201,19 @@ int32_t partition_scan(const InputParam *input, OutputParam *output) {
     free(sortedIOs);
 }
 
-int32_t _partition_scan_new(OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_len, const int scan_method) {
+int32_t Sort_Scan_MPScan_Perpartition(OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_len, const int scan_method) {
     uint32_t index = partition_start;
     HeadInfo currentHead = *head;
     int direction = 1;  // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
-    // DEBUG("partition_start=%d, partition_len=%d\n", partition_start, partition_len);
-    for (int i = partition_start; i < partition_start + partition_len; i++) {
-        if (vis[sortedIOs[i].id]) {
-            // ERROR("vis[%d]=1\n", sortedIOs[i].id);
-        }
-    }
-    if (scan_method > 2) {
-        // ERROR("unknown scan_method: %d\n", scan_method);
-    }
     while (index < partition_start + partition_len) {
         if (scan_method == 0) {  // SORT
             output->sequence[index] = sortedIOs[index].id;
             index++;
             continue;
         }
-        // DEBUG("index=%d, direction=%d\n", index, direction);
         if (direction == 1) {
             // 从 BOT 向 EOT 扫描
             for (uint32_t i = partition_start; i < partition_start + partition_len; ++i) {
-                // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
-                // DEBUG("partition_start=%d, partition_len=%d\n", partition_start, partition_len);
                 if (sortedIOs[i].wrap & 1 || vis[sortedIOs[i].id]) {
                     continue;
                 }
@@ -253,7 +239,6 @@ int32_t _partition_scan_new(OutputParam *output, IOUint *sortedIOs, bool *vis, H
         } else {
             // 从 EOT 向 BOT 扫描
             for (int32_t i = partition_start + partition_len - 1; i >= partition_start; --i) {
-                // DEBUG("i=%d, wrap=%d, vis=%d, startLpos=%d, currentHead.lpos=%d\n", i, sortedIOs[i].wrap, vis[sortedIOs[i].id], sortedIOs[i].startLpos, currentHead.lpos);
                 if (!(sortedIOs[i].wrap & 1) || vis[sortedIOs[i].id]) {
                     continue;
                 }
@@ -282,16 +267,10 @@ int32_t _partition_scan_new(OutputParam *output, IOUint *sortedIOs, bool *vis, H
 }
 
 // 用MPScan处理每个分区内部
-int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end) {
+int32_t MPScan_star_PerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end) {
     uint32_t index = partition_start;
     HeadInfo currentHead = *head;
     int direction = 1;  // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
-
-    // DEBUG("partition_start=%d, partition_end=%d\n", partition_start, partition_end);
-    // for (int i = partition_start; i < partition_end; i++) {
-    //     if (vis[sortedIOs[i].id])
-    //         ERROR("vis[%d]=1\n", sortedIOs[i].id);
-    // }
 
     while (index < partition_end) {
         if (direction == 1) {
@@ -348,10 +327,8 @@ int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint 
         if (idx == partition_start)
             break;  // 当前已经是最后一轮扫描
 
-        // printf("\n%d:", output->sequence[idx]);
         // 遍历最后一轮的每个 IO
         for (int i = idx; i < partition_end; ++i) {
-            // printf("\ni = %d , ", output->sequence[i]);
             int32_t minTime = INT32_MAX;
             int32_t best_pos = -1;
             HeadInfo z = {input->ioVec.ioArray[output->sequence[i] - 1].wrap, input->ioVec.ioArray[output->sequence[i] - 1].startLpos, HEAD_RW};
@@ -367,7 +344,6 @@ int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint 
                 }
             }
 
-            // printf("best_pos = %d , ", best_pos);
             if (best_pos == -1) {
                 continue;
             }
@@ -379,16 +355,6 @@ int32_t MPScanPerPartition(const InputParam *input, OutputParam *output, IOUint 
 
         AccessTime tmpTime;
         TotalAccessTime(input, tmp, &tmpTime);
-
-        // printf("\ntmp[ ");
-        // for (int i = 0; i < tmp->len; ++i) {
-        //     printf("%d ", tmp->sequence[i]);
-        // }
-        // printf("]\nout[ ");
-        // for (int i = 0; i < output->len; ++i) {
-        //     printf("%d ", output->sequence[i]);
-        // }
-        // printf("]\ntmp: %d, output: %d\n", tmpTime.addressDuration, accessTime.addressDuration);
 
         if (tmpTime.addressDuration < accessTime.addressDuration) {
             accessTime.addressDuration = tmpTime.addressDuration;
@@ -440,8 +406,6 @@ Node *extractMin(MinHeap *heap) {  // 弹出最小值
         return NULL;
     }
 
-    // Node root = heap->nodes[0];
-    // heap->nodes[0] = heap->nodes[heap->size - 1];
     swap(&heap->nodes[0], &heap->nodes[heap->size - 1]);
     heap->size--;
     heapify(heap, 0);
@@ -527,7 +491,6 @@ MinHeap *popHeapInHeapArray(MinHeapArray *arr) {
 }
 
 void minHeapArrayHeapify(MinHeapArray *arr, int idx) {
-    // return ;
     int smallest = idx;
     int left = 2 * idx + 1;
     int right = 2 * idx + 2;
@@ -591,11 +554,7 @@ int32_t merge(const InputParam *input, OutputParam *output) {
         output->sequence[i] = input->ioVec.ioArray[i].id;
     }
 
-    // return RETURN_OK;
-
     MinHeapArray heap_array = {maxn, 0, (MinHeap **)malloc(maxn * sizeof(MinHeap *))};
-    struct timeval start, end;
-    // gettimeofday(&start, NULL);
     MinHeap *heap = createMinHeap(maxn + 1);
 
     int selected_value_sum = 0;
@@ -644,10 +603,8 @@ int32_t merge(const InputParam *input, OutputParam *output) {
             vis[node->y] = 1;
             selected_value_sum += node->dis;
             set_num--;
-            // printf("%d\n", set_num);
         } else {
             int target_id = node->y;
-            // printf("target_id: %d, source_id: %d, %d, %d, %d, %d, %d, %d\n", target_id, node->x, nex[node->x], vis[node->x], vis[node->y], nex[node->y] ,find(node->x) ,find(node->y));
             HeadInfo status_tmp = {input->ioVec.ioArray[target_id - 1].wrap, input->ioVec.ioArray[target_id - 1].startLpos, HEAD_RW};
             Node min_node;
             min_node.dis = INT32_MAX;
@@ -674,6 +631,5 @@ int32_t merge(const InputParam *input, OutputParam *output) {
     }
     destoryMinHeap(heap);
 
-    // free(dis);
     return RETURN_OK;
 }
