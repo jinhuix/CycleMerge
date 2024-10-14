@@ -7,3 +7,5 @@
  * @return int32_t          返回成功或者失败，RETURN_OK 或 RETURN_ERROR
  */
 int32_t SimpleOperatorOptimization(const InputParam *input, OutputParam *output);
+
+int32_t DeepOperatorOptimization(const InputParam *input, OutputParam *output);
