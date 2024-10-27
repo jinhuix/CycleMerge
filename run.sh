@@ -3,4 +3,4 @@ mkdir build
 cd build
 cmake ..
 make
-./test2 -f ../dataset/case_5.txt
+./test2 -f ../dataset/gen/gen_case1_io5000_gaussian.txt

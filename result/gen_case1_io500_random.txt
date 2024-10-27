@@ -12,7 +12,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SORT
+Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 500 
 algorithmRunningDuration(ms): 0.03 
@@ -25,7 +25,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN
+Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 500 
 algorithmRunningDuration(ms): 0.03 
@@ -38,7 +38,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN2
+Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 500 
 algorithmRunningDuration(ms): 0.04 
@@ -47,6 +47,19 @@ addressingDuration(ms): 2479199
 readDuration(ms): 535265
 tapeBeltWear(times): 4529307
 tapeMotorWear(times): 16 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MPScanStar
+/* 关键指标结构体 */
+ioCount: 500 
+algorithmRunningDuration(ms): 0.55 
+memoryUse(ms): 0 
+addressingDuration(ms): 2415783 
+readDuration(ms): 535265
+tapeBeltWear(times): 4248027
+tapeMotorWear(times): 22 
 errorIOCount: 0 
 
 
@@ -64,10 +77,10 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: MPScanPartition
+Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 500 
-algorithmRunningDuration(ms): 109.75 
+algorithmRunningDuration(ms): 129.26 
 memoryUse(ms): 0 
 addressingDuration(ms): 2415330 
 readDuration(ms): 535265
@@ -77,36 +90,23 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: partition_scan
+Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 500 
-algorithmRunningDuration(ms): 128.73 
+algorithmRunningDuration(ms): 10.35 
 memoryUse(ms): 0 
-addressingDuration(ms): 2415330 
+addressingDuration(ms): 2228553 
 readDuration(ms): 535265
-tapeBeltWear(times): 4173425
-tapeMotorWear(times): 28 
+tapeBeltWear(times): 3252896
+tapeMotorWear(times): 108 
 errorIOCount: 0 
 
 
 /* 算法名称 */
-Algorithm: MPScan
+Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 500 
-algorithmRunningDuration(ms): 0.56 
-memoryUse(ms): 0 
-addressingDuration(ms): 2415783 
-readDuration(ms): 535265
-tapeBeltWear(times): 4248027
-tapeMotorWear(times): 22 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: merge
-/* 关键指标结构体 */
-ioCount: 500 
-algorithmRunningDuration(ms): 14.44 
+algorithmRunningDuration(ms): 139.43 
 memoryUse(ms): 0 
 addressingDuration(ms): 2228553 
 readDuration(ms): 535265

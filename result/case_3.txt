@@ -12,7 +12,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SORT
+Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 13 
 algorithmRunningDuration(ms): 0.00 
@@ -25,7 +25,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN
+Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 13 
 algorithmRunningDuration(ms): 0.00 
@@ -38,10 +38,23 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN2
+Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 13 
 algorithmRunningDuration(ms): 0.00 
+memoryUse(ms): 0 
+addressingDuration(ms): 460216 
+readDuration(ms): 12253
+tapeBeltWear(times): 1343909
+tapeMotorWear(times): 3 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MPScanStar
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 460216 
 readDuration(ms): 12253
@@ -64,20 +77,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: MPScanPartition
-/* 关键指标结构体 */
-ioCount: 13 
-algorithmRunningDuration(ms): 1.59 
-memoryUse(ms): 0 
-addressingDuration(ms): 355182 
-readDuration(ms): 12253
-tapeBeltWear(times): 795178
-tapeMotorWear(times): 23 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: partition_scan
+Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 13 
 algorithmRunningDuration(ms): 1.99 
@@ -90,28 +90,28 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: MPScan
+Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 13 
-algorithmRunningDuration(ms): 0.01 
-memoryUse(ms): 0 
-addressingDuration(ms): 460216 
-readDuration(ms): 12253
-tapeBeltWear(times): 1343909
-tapeMotorWear(times): 3 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: merge
-/* 关键指标结构体 */
-ioCount: 13 
-algorithmRunningDuration(ms): 0.09 
+algorithmRunningDuration(ms): 0.10 
 memoryUse(ms): 0 
 addressingDuration(ms): 445878 
 readDuration(ms): 12253
 tapeBeltWear(times): 1155066
 tapeMotorWear(times): 21 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: FAST
+/* 关键指标结构体 */
+ioCount: 13 
+algorithmRunningDuration(ms): 2.09 
+memoryUse(ms): 0 
+addressingDuration(ms): 355182 
+readDuration(ms): 12253
+tapeBeltWear(times): 795178
+tapeMotorWear(times): 23 
 errorIOCount: 0 
 
 

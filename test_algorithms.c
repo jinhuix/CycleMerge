@@ -1039,6 +1039,32 @@ Node *extractMin(MinHeap *heap) {  // 弹出最小值
     return &heap->nodes[heap->size];
 }
 
+Node *randomExtractMin(MinHeap *heap) {  // 弹出最小值
+    if (heap->size == 0) {
+        return NULL;
+    }
+
+     int random_choice = rand() % 100;  // 生成 0 到 99 的随机数
+
+    if (random_choice < 90) {
+        // 90% 的概率选择堆中的最小节点（堆顶）
+        swap(&heap->nodes[0], &heap->nodes[heap->size - 1]);
+    } else {
+        // 10% 的概率随机选择堆中的其他节点
+        if (heap->size > 1) {
+            int random_index = (rand() % (heap->size - 1)/2) + 1;  // 生成 1 到 heap->size - 1 的随机索引
+            swap(&heap->nodes[random_index], &heap->nodes[heap->size - 1]);  // 将随机节点与最后一个节点交换
+        } else {
+            swap(&heap->nodes[0], &heap->nodes[heap->size - 1]);
+        }
+    }
+
+    heap->size--;  // 减少堆大小
+    heapify(heap, 0);  // 对堆进行堆化，维护堆的特性
+
+    return &heap->nodes[heap->size];  // 返回被弹出的节点
+}
+
 Node *getMin(MinHeap *heap)  // 弹出最小值
 {
     if (heap->size == 0) {
@@ -1246,6 +1272,107 @@ int32_t merge(const InputParam *input, OutputParam *output)
         int min_value = INT32_MAX;
         int min_heap_idx = -1;
         Node *node = extractMin(heap);
+        
+
+        if (nex[node->x] == 0 && ( node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0 && find(node->x) != find(node->y))
+        {
+            unite(node->x, node->y);
+            nex[node->x] = node->y;
+            vis[node->y] = 1;
+            selected_value_sum += node->dis;
+            set_num --;
+            // printf("%d\n", set_num);
+        }
+        else{
+            int target_id = node->y;
+            // printf("target_id: %d, source_id: %d, %d, %d, %d, %d, %d, %d\n", target_id, node->x, nex[node->x], vis[node->x], vis[node->y], nex[node->y] ,find(node->x) ,find(node->y));
+            HeadInfo status_tmp = {input->ioVec.ioArray[target_id-1].wrap, input->ioVec.ioArray[target_id-1].startLpos, HEAD_RW};
+            Node min_node;
+            min_node.dis = INT32_MAX;
+            if(nex[0] == 0){
+                Node tmp_node = {0, target_id, SeekTimeCalculate(&currentHead, &status_tmp)};
+                min_node = tmp_node;
+            }
+            for (int source_id = 1; source_id < input->ioVec.len + 1; source_id++)
+            {
+                if (target_id == source_id || nex[source_id] != 0 || find(source_id) == find(target_id))
+                    continue;
+                HeadInfo status1 = {input->ioVec.ioArray[source_id-1].wrap, input->ioVec.ioArray[source_id - 1].endLpos, HEAD_RW};
+                Node tmp_node = {source_id, target_id, SeekTimeCalculate(&status1, &status_tmp)};
+                if(tmp_node.dis < min_node.dis){
+                    min_node = tmp_node;
+                }
+            }
+            insertHeap(heap, min_node);
+        }
+    }
+    int now = nex[0], cnt = 0;
+    while (cnt < input->ioVec.len) {
+        output->sequence[cnt++] = now;
+        now = nex[now];
+    }
+    destoryMinHeap(heap);
+
+    // free(dis);
+    return RETURN_OK;
+}
+
+int32_t merge_random(const InputParam *input, OutputParam *output)
+{
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        output->sequence[i] = input->ioVec.ioArray[i].id;
+    }
+
+    // return RETURN_OK;
+
+    MinHeapArray heap_array = {maxn, 0, (MinHeap **)malloc(maxn * sizeof(MinHeap *))};
+    struct timeval start, end;
+    // gettimeofday(&start, NULL);
+    MinHeap * heap = createMinHeap(maxn + 1);
+
+    int selected_value_sum = 0;
+
+    // 初始化当前头位置为输入的头状态
+    int max_edge_num = 8*1024*1024/8; // 假设最多分配8MB的内存给节点
+    int edge_per_node = max_edge_num/(input->ioVec.len + 1);
+    if(edge_per_node > input->ioVec.len + 1){
+        edge_per_node = input->ioVec.len + 1;
+    }
+    HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+    for (int i = 0; i < input->ioVec.len; i++)
+    {
+        HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
+        Node min_node = {0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)};
+        
+        for (int j = 0; j < input->ioVec.len; j++)
+        {
+            if (i == j)
+                continue;
+            HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
+            
+            Node tmp_node = {j + 1, i + 1, SeekTimeCalculate(&status1, &status_tmp)};
+            if(tmp_node.dis < min_node.dis){
+                min_node = tmp_node;
+            }
+        }
+        insertHeap(heap, min_node);
+        
+    }
+
+    int nex[maxn], vis[maxn];
+    memset(nex, 0, sizeof(nex));
+    memset(vis, 0, sizeof(vis));
+    initUnionSet();
+    int set_num = input->ioVec.len + 1;
+    while (sz[0] != input->ioVec.len + 1) {
+        if (sz[0] == input->ioVec.len + 1) {
+            break;
+        }
+        
+        int min_value = INT32_MAX;
+        int min_heap_idx = -1;
+        Node *node = randomExtractMin(heap);
         
 
         if (nex[node->x] == 0 && ( node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0 && find(node->x) != find(node->y))
@@ -1809,22 +1936,45 @@ int32_t partition_scan(const InputParam *input, OutputParam *output) {
     free(sortedIOs);
 }
 
+int32_t FAST(const InputParam *input, OutputParam *output) {
+    int min_time = 0x3f3f3f3f;
+    int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
+    partition_scan(input, output);
+    AccessTime accessTime = {0};
+    TotalAccessTime(input, output, &accessTime);
+    if (accessTime.addressDuration < min_time) {
+        min_time = accessTime.addressDuration;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    }
+    merge(input, output);
+    TotalAccessTime(input, output, &accessTime);
+    if (accessTime.addressDuration < min_time) {
+        min_time = accessTime.addressDuration;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    }
+    memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+
+    return RETURN_OK;
+}
+
 // 封装调度算法映射表
 AlgorithmMap algorithms[] = {
     {"FCFS", IOScheduleAlgorithm},
-    {"SORT", SORT},
-    {"SCAN", SCAN},
-    {"SCAN2", SCAN2},
+    {"Sort", SORT},
+    {"Scan", SCAN},
+    {"MPScan", SCAN2},
     {"Nearest", NearestNeighborAlgorithm},
     {"SA", SimulatedAnnealing},
     {"TS", IOScheduleAlgorithm},  // TabuSearch
     {"HC", HillClimbing},
     {"GA", IOScheduleAlgorithm},  // GeneticAlgorithm
-    {"merge", merge},
-    {"partition_scan", partition_scan},
+    {"Merge", merge},
+    {"MergeRandom", merge_random},
+    {"PartitionScan", partition_scan},
     {"partition_scan_new", p_scan},
-    {"MPScan", MPScan},
-    {"MPScanPartition", MPScanPartition}};
+    {"MPScanStar", MPScan},
+    {"MPScanPartition", MPScanPartition},
+    {"FAST", FAST}};
 
 AlgorithmMap operator_optimizations[] = {
     {"SIMPLE", SimpleOperatorOptimization},

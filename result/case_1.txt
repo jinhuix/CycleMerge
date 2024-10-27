@@ -12,7 +12,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SORT
+Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 15 
 algorithmRunningDuration(ms): 0.00 
@@ -25,7 +25,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN
+Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 15 
 algorithmRunningDuration(ms): 0.00 
@@ -38,15 +38,28 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN2
+Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 15 
-algorithmRunningDuration(ms): 0.01 
+algorithmRunningDuration(ms): 0.00 
 memoryUse(ms): 0 
 addressingDuration(ms): 475715 
 readDuration(ms): 9090
 tapeBeltWear(times): 1370337
 tapeMotorWear(times): 3 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MPScanStar
+/* 关键指标结构体 */
+ioCount: 15 
+algorithmRunningDuration(ms): 0.02 
+memoryUse(ms): 0 
+addressingDuration(ms): 375561 
+readDuration(ms): 9090
+tapeBeltWear(times): 802265
+tapeMotorWear(times): 27 
 errorIOCount: 0 
 
 
@@ -64,10 +77,10 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: MPScanPartition
+Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 15 
-algorithmRunningDuration(ms): 1.87 
+algorithmRunningDuration(ms): 2.33 
 memoryUse(ms): 0 
 addressingDuration(ms): 354295 
 readDuration(ms): 9090
@@ -77,33 +90,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: partition_scan
-/* 关键指标结构体 */
-ioCount: 15 
-algorithmRunningDuration(ms): 2.31 
-memoryUse(ms): 0 
-addressingDuration(ms): 354295 
-readDuration(ms): 9090
-tapeBeltWear(times): 746675
-tapeMotorWear(times): 27 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: MPScan
-/* 关键指标结构体 */
-ioCount: 15 
-algorithmRunningDuration(ms): 0.02 
-memoryUse(ms): 0 
-addressingDuration(ms): 375561 
-readDuration(ms): 9090
-tapeBeltWear(times): 802265
-tapeMotorWear(times): 27 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: merge
+Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 15 
 algorithmRunningDuration(ms): 0.11 
@@ -112,6 +99,19 @@ addressingDuration(ms): 437260
 readDuration(ms): 9090
 tapeBeltWear(times): 1106330
 tapeMotorWear(times): 21 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: FAST
+/* 关键指标结构体 */
+ioCount: 15 
+algorithmRunningDuration(ms): 2.41 
+memoryUse(ms): 0 
+addressingDuration(ms): 354295 
+readDuration(ms): 9090
+tapeBeltWear(times): 746675
+tapeMotorWear(times): 27 
 errorIOCount: 0 
 
 

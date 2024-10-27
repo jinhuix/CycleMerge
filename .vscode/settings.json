@@ -9,6 +9,7 @@
         "const.h": "c",
         "logging.h": "c",
         "operator_optimization.h": "c",
-        "interface.h": "c"
+        "interface.h": "c",
+        "algorithm": "c"
     }
 }

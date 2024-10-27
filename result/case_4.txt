@@ -12,7 +12,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SORT
+Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 50 
 algorithmRunningDuration(ms): 0.00 
@@ -25,10 +25,10 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN
+Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 50 
-algorithmRunningDuration(ms): 0.00 
+algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 643344 
 readDuration(ms): 50413
@@ -38,7 +38,7 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: SCAN2
+Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 50 
 algorithmRunningDuration(ms): 0.01 
@@ -46,6 +46,19 @@ memoryUse(ms): 0
 addressingDuration(ms): 734430 
 readDuration(ms): 50413
 tapeBeltWear(times): 1682131
+tapeMotorWear(times): 7 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MPScanStar
+/* 关键指标结构体 */
+ioCount: 50 
+algorithmRunningDuration(ms): 0.14 
+memoryUse(ms): 0 
+addressingDuration(ms): 643344 
+readDuration(ms): 50413
+tapeBeltWear(times): 1363744
 tapeMotorWear(times): 7 
 errorIOCount: 0 
 
@@ -64,10 +77,10 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: MPScanPartition
+Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 50 
-algorithmRunningDuration(ms): 12.04 
+algorithmRunningDuration(ms): 13.45 
 memoryUse(ms): 0 
 addressingDuration(ms): 639254 
 readDuration(ms): 50413
@@ -77,36 +90,23 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: partition_scan
+Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 50 
-algorithmRunningDuration(ms): 13.57 
+algorithmRunningDuration(ms): 0.21 
 memoryUse(ms): 0 
-addressingDuration(ms): 639254 
+addressingDuration(ms): 637650 
 readDuration(ms): 50413
-tapeBeltWear(times): 976947
-tapeMotorWear(times): 53 
+tapeBeltWear(times): 1114905
+tapeMotorWear(times): 37 
 errorIOCount: 0 
 
 
 /* 算法名称 */
-Algorithm: MPScan
+Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 50 
-algorithmRunningDuration(ms): 0.14 
-memoryUse(ms): 0 
-addressingDuration(ms): 643344 
-readDuration(ms): 50413
-tapeBeltWear(times): 1363744
-tapeMotorWear(times): 7 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: merge
-/* 关键指标结构体 */
-ioCount: 50 
-algorithmRunningDuration(ms): 0.27 
+algorithmRunningDuration(ms): 13.63 
 memoryUse(ms): 0 
 addressingDuration(ms): 637650 
 readDuration(ms): 50413
