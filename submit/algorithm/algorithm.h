@@ -8,6 +8,17 @@
 extern "C" {
 #endif
 
+
+typedef struct{
+    struct timeval start;
+} TimeRecord;
+
+static TimeRecord g_TimeRecord;
+
+void startRecordTime();
+
+int32_t getDurationMicroseconds();
+
 typedef struct
 {
     int id;

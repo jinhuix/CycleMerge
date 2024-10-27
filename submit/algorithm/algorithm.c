@@ -3,6 +3,16 @@
 #include <string.h>
 #include "algorithm.h"
 
+void startRecordTime(){
+    gettimeofday(&g_TimeRecord.start, NULL);
+}
+
+int32_t getDurationMicroseconds(){
+    struct timeval end;
+    gettimeofday(&end, NULL);
+    return (end.tv_sec - g_TimeRecord.start.tv_sec) * 1000000 + end.tv_usec - g_TimeRecord.start.tv_usec;
+}
+
 /**
  * @brief  算法接口
  * @param  input            输入参数
@@ -41,11 +51,17 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
  */
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
 {
-    int32_t ret;
+    int32_t ret, duration_us;
+
+    startRecordTime();
 
     ret = IOScheduleAlgorithm(input, output);
 
     ret = operator_optimization(input, output);
+
+    duration_us = getDurationMicroseconds();
+
+    // printf("duration_us=%d\n", duration_us);
 
     return RETURN_OK;
 }
