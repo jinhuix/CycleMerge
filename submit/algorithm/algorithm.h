@@ -3,6 +3,7 @@
 #define ALGORITHM_H
 
 #include "../public.h"
+#include <sys/time.h>
 
 #ifdef __cplusplus
 extern "C"
