@@ -79,6 +79,7 @@ extern "C"
     Node *randomExtractMin(MinHeap *heap);
     int32_t merge_random(const InputParam *input, OutputParam *output);
 
+    int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
 #ifdef __cplusplus
 }
 #endif

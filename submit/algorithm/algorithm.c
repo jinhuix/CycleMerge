@@ -24,7 +24,8 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
 {
     int min_time = 0x3f3f3f3f;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-    if (input->ioVec.len > 1000)
+
+    if (input->ioVec.len > 1000) // 请求数量大于1000时，跑两种merge
     {
         // int flag = 1;
         AccessTime accessTime = {0};
@@ -47,7 +48,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
         // printf("flag=%d\n", flag);
     }
-    else
+    else // 请求数量小于1000时，全部跑
     {
         // int flag = 3;
         partition_scan(input, output);
@@ -115,7 +116,9 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
 
 int32_t operator_optimization(const InputParam *input, OutputParam *output)
 {
-    SimpleOperatorOptimization(input, output);
+    // SimpleOperatorOptimization(input, output);
+
+    SimulatedAnnealing(input, output);
     return RETURN_OK;
 }
 
@@ -127,6 +130,129 @@ int32_t SimpleOperatorOptimization(const InputParam *input, OutputParam *output)
     // {
     //     output->sequence[i] = input->ioVec.ioArray[i].id;
     // }
+    return RETURN_OK;
+}
+
+int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
+{
+    int32_t ret;
+
+    // 初始化参数
+    double initialTemperature = 1000;
+    double coolingRate = 0.995;
+    double minTemperature = 1;
+    int maxIterations = 10000000;
+
+    AccessTime accessTime;
+    TotalAccessTime(input, output, &accessTime);
+    printf("accessTime before search:%d\n", accessTime.addressDuration);
+
+    int32_t currentCost = accessTime.addressDuration;
+    int32_t bestCost = currentCost;
+    uint32_t bestSequence[input->ioVec.len];
+
+    // 当前求到的初始解
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+        bestSequence[i] = output->sequence[i];
+
+    // 用于存放邻域解
+    OutputParam *temp_output;
+    temp_output = (OutputParam *)malloc(sizeof(OutputParam));
+    temp_output->len = input->ioVec.len;
+    temp_output->sequence = (uint32_t *)malloc(input->ioVec.len * sizeof(uint32_t));
+
+    // 模拟退火过程
+    double temperature = initialTemperature;
+    int iteration = 0;
+
+    while (temperature > minTemperature && iteration < maxIterations)
+    {
+        // 生成邻域解
+        for (uint32_t i = 0; i < input->ioVec.len; ++i)
+            temp_output->sequence[i] = output->sequence[i];
+
+        double randValue = (double)rand() / RAND_MAX;
+        if (randValue < 0.33)
+        {
+            // 交换两个点
+            uint32_t i = rand() % input->ioVec.len;
+            uint32_t j = rand() % input->ioVec.len;
+            uint32_t temp = temp_output->sequence[i];
+            temp_output->sequence[i] = temp_output->sequence[j];
+            temp_output->sequence[j] = temp;
+        }
+        else if (randValue < 0.66)
+        {
+            // 反转一段区间
+            uint32_t start = rand() % input->ioVec.len;
+            uint32_t end = rand() % input->ioVec.len;
+            if (start > end)
+            {
+                uint32_t temp = start;
+                start = end;
+                end = temp;
+            }
+            while (start < end)
+            {
+                uint32_t temp = temp_output->sequence[start];
+                temp_output->sequence[start] = temp_output->sequence[end];
+                temp_output->sequence[end] = temp;
+                start++;
+                end--;
+            }
+        }
+        else
+        {
+            // 将一个点插入另一个位置
+            uint32_t from = rand() % input->ioVec.len;
+            uint32_t to = rand() % input->ioVec.len;
+            uint32_t temp = temp_output->sequence[from];
+            if (from < to)
+                for (uint32_t i = from; i < to; ++i)
+                    temp_output->sequence[i] = temp_output->sequence[i + 1];
+            else
+                for (uint32_t i = from; i > to; --i)
+                    temp_output->sequence[i] = temp_output->sequence[i - 1];
+            temp_output->sequence[to] = temp;
+        }
+
+        // 计算邻域解的总时延
+        TotalAccessTime(input, temp_output, &accessTime);
+        int32_t neighborCost = accessTime.addressDuration;
+
+        // 接受邻域解的条件，比当前解好或温度条件满足接受一个更劣的解
+        if (neighborCost < currentCost || ((double)rand() / RAND_MAX) < exp((currentCost - neighborCost) / temperature))
+        {
+            // 接受邻域解
+            for (uint32_t i = 0; i < input->ioVec.len; ++i)
+                output->sequence[i] = temp_output->sequence[i];
+
+            currentCost = neighborCost;
+
+            // 若当前解比最优解好，则更新最优解
+            if (currentCost < bestCost)
+            {
+                for (uint32_t i = 0; i < input->ioVec.len; ++i)
+                    bestSequence[i] = output->sequence[i];
+                bestCost = currentCost;
+            }
+        }
+
+        // 降低温度
+        temperature *= coolingRate;
+        ++iteration;
+    }
+
+    // 将最优解复制到输出参数
+    output->len = input->ioVec.len;
+    for (uint32_t i = 0; i < output->len; i++)
+        output->sequence[i] = bestSequence[i];
+
+    printf("accessTime after search:%d\n", bestCost);
+
+    free(temp_output->sequence);
+    free(temp_output);
+
     return RETURN_OK;
 }
 
