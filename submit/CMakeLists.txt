@@ -31,3 +31,6 @@ target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model
 # 添加编译选项和宏定义
 target_compile_options(project_hw PRIVATE -g -std=c99)
 target_compile_definitions(project_hw PRIVATE _GNU_SOURCE)
+# 多线程
+find_package(Threads REQUIRED)
+target_link_libraries(project_hw PRIVATE ${CMAKE_THREAD_LIBS_INIT})

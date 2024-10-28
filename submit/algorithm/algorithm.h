@@ -52,6 +52,18 @@ extern "C"
         MinHeap **heap_array;
     } MinHeapArray;
 
+    typedef struct {
+    const InputParam *input;
+    OutputParam *output;
+    AccessTime *accessTime;
+    } ThreadArg;
+    
+    // 定义线程返回值结构体
+    typedef struct {
+        OutputParam *output;
+        AccessTime accessTime;
+    } ThreadResult;
+
     int32_t AlgorithmRun(const InputParam *input, OutputParam *output);
 
     void QuickSort(IOUint *a, int len);
@@ -78,7 +90,10 @@ extern "C"
     int32_t merge(const InputParam *input, OutputParam *output);
     Node *randomExtractMin(MinHeap *heap);
     int32_t merge_random(const InputParam *input, OutputParam *output);
-
+    void *merge_thread(void *arg);
+    void *merge_random_thread(void *arg);
+    void *partition_scan_merge_thread(void *arg);
+    void *mp_scan_merge_random_thread(void *arg);
     int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
 #ifdef __cplusplus
 }
