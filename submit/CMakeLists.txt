@@ -22,6 +22,10 @@ include_directories(${HEADER_DIRS})
 
 # 生成可执行文件
 add_executable(project_hw  ${SOURCES})
+
+find_library(M_LIB m)
+target_link_libraries(project_hw ${M_LIB})
+
 target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
 # 添加编译选项和宏定义

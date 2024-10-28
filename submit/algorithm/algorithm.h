@@ -3,11 +3,22 @@
 #define ALGORITHM_H
 
 #include "../public.h"
+#include <sys/time.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+    typedef struct{
+        struct timeval start;
+    } TimeRecord;
+
+    static TimeRecord g_TimeRecord;
+
+    void startRecordTime();
+
+    int32_t getDurationMicroseconds();
 
     typedef struct
     {
@@ -68,6 +79,7 @@ extern "C"
     Node *randomExtractMin(MinHeap *heap);
     int32_t merge_random(const InputParam *input, OutputParam *output);
 
+    int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
 #ifdef __cplusplus
 }
 #endif
