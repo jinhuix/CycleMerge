@@ -166,9 +166,11 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
     AccessTime accessTime;
     TotalAccessTime(input, output, &accessTime);
     printf("accessTime before search:%d\n", accessTime.addressDuration);
+    uint32_t tapeBeltWear = TotalTapeBeltWearTimes(input, output, NULL);  // 带体磨损
+    uint32_t tapeMotorWear = TotalMotorWearTimes(input, output);          // 电机磨损
 
-    int32_t currentCost = accessTime.addressDuration;
-    int32_t bestCost = currentCost;
+    uint32_t currentCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear;  // 总代价
+    uint32_t bestCost = currentCost;
     uint32_t bestSequence[input->ioVec.len];
 
     // 当前求到的初始解
@@ -238,7 +240,9 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
 
         // 计算邻域解的总时延
         TotalAccessTime(input, temp_output, &accessTime);
-        int32_t neighborCost = accessTime.addressDuration;
+        tapeBeltWear = TotalTapeBeltWearTimes(input, temp_output, NULL);  // 带体磨损
+        tapeMotorWear = TotalMotorWearTimes(input, temp_output);          // 电机磨损
+        uint32_t neighborCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear;
 
         // 接受邻域解的条件，比当前解好或温度条件满足接受一个更劣的解
         if (neighborCost < currentCost || ((double)rand() / RAND_MAX) < exp((currentCost - neighborCost) / temperature))
