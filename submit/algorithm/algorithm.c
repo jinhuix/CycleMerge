@@ -1,23 +1,12 @@
 #include "algorithm.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
-#include <sched.h>
 
 void startRecordTime(){
     gettimeofday(&g_TimeRecord.start, NULL);
-}
-
-void set_thread_affinity(pthread_t tid, int core_id) {
-    cpu_set_t cpuset;
-    CPU_ZERO(&cpuset);
-    CPU_SET(core_id, &cpuset);
-    
-    int result = pthread_setaffinity_np(tid, sizeof(cpu_set_t), &cpuset);
-    if (result != 0) {
-        printf("Error setting thread affinity: %d\n", result);
-    }
 }
 
 int32_t getDurationMicroseconds(){
@@ -35,95 +24,66 @@ int32_t getDurationMicroseconds(){
 int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     int min_time = 0x3f3f3f3f;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-    if (!best_sequence) return -1;  // 内存分配失败
-
-    pthread_t tid1, tid2;
-
-    if (input->ioVec.len > 1000) {  // 请求数量大于1000时，跑两种 merge
-        OutputParam *output1 = (OutputParam *)malloc(sizeof(OutputParam));
-        OutputParam *output2 = (OutputParam *)malloc(sizeof(OutputParam));
-
-        output1->sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-        output2->sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-
-        if (!output1->sequence || !output2->sequence) {
-            free(output1);
-            free(output2);
-            free(best_sequence);
-            return -1;  // 内存分配失败
+    if (input->ioVec.len > 1000)
+    {
+        // int flag = 1;
+        AccessTime accessTime = {0};
+        merge(input, output);
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
+        {
+            min_time = accessTime.addressDuration;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            // flag = 1;
         }
-
-        AccessTime accessTime1 = {0}, accessTime2 = {0};
-        ThreadArg arg1 = {input, output1, &accessTime1};
-        ThreadArg arg2 = {input, output2, &accessTime2};
-
-        pthread_create(&tid1, NULL, merge_thread, &arg1);
-        set_thread_affinity(tid1, 0);
-        pthread_create(&tid2, NULL, merge_random_thread, &arg2);
-        set_thread_affinity(tid2, 1);
-
-        pthread_join(tid1, NULL);
-        pthread_join(tid2, NULL);
-
-        if (accessTime1.addressDuration < min_time) {
-            min_time = accessTime1.addressDuration;
-            memcpy(best_sequence, output1->sequence, input->ioVec.len * sizeof(int));
+        merge_random(input, output);
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
+        {
+            min_time = accessTime.addressDuration;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            // flag = 2;
         }
-
-        if (accessTime2.addressDuration < min_time) {
-            min_time = accessTime2.addressDuration;
-            memcpy(best_sequence, output2->sequence, input->ioVec.len * sizeof(int));
-        }
-        if (tid1) pthread_cancel(tid1);
-        if (tid2) pthread_cancel(tid2);
-        free(output1->sequence);
-        free(output2->sequence);
-        free(output1);
-        free(output2);
-
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-    } else {  // 请求数量小于1000时，全部跑
-        OutputParam *output1 = (OutputParam *)malloc(sizeof(OutputParam));
-        OutputParam *output2 = (OutputParam *)malloc(sizeof(OutputParam));
-
-        output1->sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-        output2->sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-
-        if (!output1->sequence || !output2->sequence) {
-            free(output1);
-            free(output2);
-            free(best_sequence);
-            return -1;  // 内存分配失败
+        // printf("flag=%d\n", flag);
+    }else
+    {
+        // int flag = 3;
+        partition_scan(input, output);
+        AccessTime accessTime = {0};
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
+        {
+            min_time = accessTime.addressDuration;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            // flag = 3;
         }
-
-        AccessTime accessTime1 = {0}, accessTime2 = {0};
-        ThreadArg arg1 = {input, output1, &accessTime1};
-        ThreadArg arg2 = {input, output2, &accessTime2};
-
-        pthread_create(&tid1, NULL, partition_scan_merge_thread, &arg1);
-        set_thread_affinity(tid1, 0);  // Pin to core 0
-        pthread_create(&tid2, NULL, mp_scan_merge_random_thread, &arg2);
-        set_thread_affinity(tid2, 1);  // Pin to core 1
-        pthread_join(tid1, NULL);
-        pthread_join(tid2, NULL);
-
-        if (accessTime1.addressDuration < min_time) {
-            min_time = accessTime1.addressDuration;
-            memcpy(best_sequence, output1->sequence, input->ioVec.len * sizeof(int));
+        MPScan(input, output);
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
+        {
+            min_time = accessTime.addressDuration;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            // flag = 4;
         }
-
-        if (accessTime2.addressDuration < min_time) {
-            min_time = accessTime2.addressDuration;
-            memcpy(best_sequence, output2->sequence, input->ioVec.len * sizeof(int));
+        merge(input, output);
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
+        {
+            min_time = accessTime.addressDuration;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            // flag = 5;
         }
-        if (tid1) pthread_cancel(tid1);
-        if (tid2) pthread_cancel(tid2);
-        free(output1->sequence);
-        free(output2->sequence);
-        free(output1);
-        free(output2);
-
+        merge_random(input, output);
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
+        {
+            min_time = accessTime.addressDuration;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            // flag = 6;
+        }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+        // printf("flag=%d\n", flag);
     }
 
     free(best_sequence);
@@ -1276,20 +1236,32 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
     return RETURN_OK;
 }
 
-// 包装merge函数的线程执行函数
+// 包装 merge 函数的线程执行函数
 void *merge_thread(void *arg) {
     ThreadArg *threadArg = (ThreadArg *)arg;
-    merge(threadArg->input, threadArg->output);
-    TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    pthread_exit(NULL);
+
+    // 创建线程返回值
+    ThreadResult *result = (ThreadResult *)malloc(sizeof(ThreadResult));
+    result->output = threadArg->output;
+
+    merge(threadArg->input, result->output);
+    TotalAccessTime(threadArg->input, result->output, &result->accessTime);
+
+    pthread_exit(result);  // 返回结果
 }
 
-// 包装merge_random函数的线程执行函数
+// 包装 merge_random 函数的线程执行函数
 void *merge_random_thread(void *arg) {
     ThreadArg *threadArg = (ThreadArg *)arg;
-    merge_random(threadArg->input, threadArg->output);
-    TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    pthread_exit(NULL);
+
+    // 创建线程返回值
+    ThreadResult *result = (ThreadResult *)malloc(sizeof(ThreadResult));
+    result->output = threadArg->output;
+
+    merge_random(threadArg->input, result->output);
+    TotalAccessTime(threadArg->input, result->output, &result->accessTime);
+
+    pthread_exit(result);  // 返回结果
 }
 // 线程1：执行 partition_scan 和 merge
 void *partition_scan_merge_thread(void *arg) {

@@ -258,6 +258,7 @@ int main(int argc, char *argv[])
     /* 获取输入参数 */
     InputParam *inputParam = (InputParam *)malloc(sizeof(InputParam));
     ret = parseFile(file, &inputParam->headInfo, &inputParam->ioVec);
+    printf("dasdasd");
     if (ret < 0) {
         printf("InputParam error\n");
         return RETURN_ERROR;
