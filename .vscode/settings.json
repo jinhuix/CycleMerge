@@ -10,6 +10,11 @@
         "logging.h": "c",
         "operator_optimization.h": "c",
         "interface.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "cstdint": "c",
+        "chrono": "c",
+        "random": "c",
+        "limits": "c",
+        "ratio": "c"
     }
 }

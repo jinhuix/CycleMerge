@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#define MAX_TRIALS 200  // 最大尝试次数
+#define NUM_EMPLOYED_BEES 40  // 雇佣蜂的数量
+#define NUM_ONLOOKER_BEES 20  // 跟随蜂的数量
+#define MAX_ITERATIONS 1000  // 最大迭代次数
 
 void startRecordTime(){
     gettimeofday(&g_TimeRecord.start, NULL);
@@ -15,6 +19,26 @@ int32_t getDurationMicroseconds(){
     return (end.tv_sec - g_TimeRecord.start.tv_sec) * 1000000 + end.tv_usec - g_TimeRecord.start.tv_usec;
 }
 
+// 计算总代价：寻址时长 + 带体磨损 + 电机磨损
+uint32_t getTotalCost(const InputParam *input, OutputParam *output) {
+    AccessTime accessTime = {0};
+    TotalAccessTime(input, output, &accessTime);                                    // 寻址时长                                       
+    uint32_t tapeBeltWear = TotalTapeBeltWearTimes(input, output, NULL);            // 带体磨损
+    uint32_t tapeMotorWear = TotalMotorWearTimes(input, output);                    // 电机磨损
+    uint32_t totalCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear; // 总代价
+    return totalCost;
+}
+
+// 计算单次代价：寻址时长 + 带体磨损 + 电机磨损
+uint32_t getCost(const HeadInfo *start, const HeadInfo *target) {
+    uint32_t seekT = SeekTimeCalculate(start, target);
+    uint32_t beltW = BeltWearTimes(start, target, NULL);
+    uint32_t motorW = MotorWearTimes(start, target);
+    uint32_t cost = seekT + beltW + motorW;
+    return cost;
+}
+
+
 /**
  * @brief  算法接口
  * @param  input            输入参数
@@ -22,68 +46,69 @@ int32_t getDurationMicroseconds(){
  * @return int32_t          返回成功或者失败，RETURN_OK 或 RETURN_ERROR
  */
 int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
-    int min_time = 0x3f3f3f3f;
+    uint32_t min_cost = 0xFFFFFFFF;
+    uint32_t total_cost = 0xFFFFFFFF;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
     if (input->ioVec.len > 1000)
     {
-        // int flag = 1;
+        int flag = 1;
         AccessTime accessTime = {0};
         merge(input, output);
-        TotalAccessTime(input, output, &accessTime);
-        if (accessTime.addressDuration < min_time)
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
         {
-            min_time = accessTime.addressDuration;
+            min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            // flag = 1;
+            flag = 1;
         }
         merge_random(input, output);
-        TotalAccessTime(input, output, &accessTime);
-        if (accessTime.addressDuration < min_time)
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
         {
-            min_time = accessTime.addressDuration;
+            min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            // flag = 2;
+            flag = 2;
         }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-        // printf("flag=%d\n", flag);
+        printf("flag=%d\n", flag);
     }else
     {
-        // int flag = 3;
-        partition_scan(input, output);
+        int flag = 3;
+        partition_scan(input, output);  // 在算法内部还是只考虑寻址时长
         AccessTime accessTime = {0};
-        TotalAccessTime(input, output, &accessTime);
-        if (accessTime.addressDuration < min_time)
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
         {
-            min_time = accessTime.addressDuration;
+            min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            // flag = 3;
+            flag = 3;
         }
-        MPScan(input, output);
-        TotalAccessTime(input, output, &accessTime);
-        if (accessTime.addressDuration < min_time)
+        MPScan(input, output);            // 在算法内部还是只考虑寻址时长
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
         {
-            min_time = accessTime.addressDuration;
+            min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            // flag = 4;
+            flag = 4;
         }
         merge(input, output);
-        TotalAccessTime(input, output, &accessTime);
-        if (accessTime.addressDuration < min_time)
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
         {
-            min_time = accessTime.addressDuration;
+            min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            // flag = 5;
+            flag = 5;
         }
         merge_random(input, output);
-        TotalAccessTime(input, output, &accessTime);
-        if (accessTime.addressDuration < min_time)
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
         {
-            min_time = accessTime.addressDuration;
+            min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            // flag = 6;
+            flag = 6;
         }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-        // printf("flag=%d\n", flag);
+        printf("flag=%d\n", flag);
     }
 
     free(best_sequence);
@@ -103,9 +128,9 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
     startRecordTime();
 
     ret = IOScheduleAlgorithm(input, output);
-
+    printf("cost before operator optimization: %ld\n", getTotalCost(input, output));
     ret = operator_optimization(input, output);
-
+    printf("cost afther operator optimization: %ld\n", getTotalCost(input, output));
     duration_us = getDurationMicroseconds();
 
     // printf("duration_us=%d\n", duration_us);
@@ -117,40 +142,104 @@ int32_t operator_optimization(const InputParam *input, OutputParam *output)
 {
     // SimpleOperatorOptimization(input, output);
 
-    SimulatedAnnealing(input, output);
+    ArtificialBeeColony(input, output);
     return RETURN_OK;
 }
 
 int32_t SimpleOperatorOptimization(const InputParam *input, OutputParam *output)
 {
-    /* Step2：通过算子优化，微调ouput的顺序，事例 */
-    // output->len = input->ioVec.len;
-    // for (uint32_t i = 0; i < output->len; i++)
-    // {
-    //     output->sequence[i] = input->ioVec.ioArray[i].id;
-    // }
+    int32_t ret;
+
+    int maxIterations = 1000000;
+
+    uint32_t currentCost = getTotalCost(input, output);  // 总代价
+    uint32_t bestCost = currentCost;
+    uint32_t bestSequence[input->ioVec.len];
+
+    // 当前求到的初始解
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+        bestSequence[i] = output->sequence[i];
+
+    // 用于存放邻域解
+    OutputParam *temp_output;
+    temp_output = (OutputParam *)malloc(sizeof(OutputParam));
+    temp_output->len = input->ioVec.len;
+    temp_output->sequence = (uint32_t *)malloc(input->ioVec.len * sizeof(uint32_t));
+
+    uint32_t iteration = 0;
+    uint32_t flag  = 50000 ;
+
+    while (iteration < flag)
+    {
+        // 生成邻域解
+        for (uint32_t i = 0; i < input->ioVec.len; ++i)
+            temp_output->sequence[i] = output->sequence[i];
+        {
+            // 将一个点插入另一个位置
+            uint32_t from = rand() % input->ioVec.len;
+            uint32_t to;
+            to = rand() % input->ioVec.len; 
+            uint32_t temp = temp_output->sequence[from];
+            if (from < to)
+                for (uint32_t i = from; i < to; ++i)
+                    temp_output->sequence[i] = temp_output->sequence[i + 1];
+            else
+                for (uint32_t i = from; i > to; --i)
+                    temp_output->sequence[i] = temp_output->sequence[i - 1];
+            temp_output->sequence[to] = temp;
+        }
+
+        // 计算邻域解的总时延
+        uint32_t neighborCost = getTotalCost(input, temp_output);
+        // 接受邻域解的条件，比当前解好或温度条件满足接受一个更劣的解
+        if (neighborCost < currentCost)
+        {
+            printf("%ld iter, one operator optimization cost: %ld\n", iteration, neighborCost);
+            // 接受邻域解
+            for (uint32_t i = 0; i < input->ioVec.len; ++i)
+                output->sequence[i] = temp_output->sequence[i];
+
+            currentCost = neighborCost;
+
+            // 若当前解比最优解好，则更新最优解
+            if (currentCost < bestCost)
+            {
+                for (uint32_t i = 0; i < input->ioVec.len; ++i)
+                    bestSequence[i] = output->sequence[i];
+                bestCost = currentCost;
+            }
+        }
+
+        ++iteration;
+    }
+
+    // 将最优解复制到输出参数
+    output->len = input->ioVec.len;
+    for (uint32_t i = 0; i < output->len; i++)
+        output->sequence[i] = bestSequence[i];
+
+    printf("accessTime after search:%d\n", bestCost);
+
+    free(temp_output->sequence);
+    free(temp_output);
+
+    return RETURN_OK;
     return RETURN_OK;
 }
 
-int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
+int32_t SimulatedAnnealingRandom(const InputParam *input, OutputParam *output)
 {
     int32_t ret;
 
     // 初始化参数
-    double initialTemperature = 1000;
+    double initialTemperature = 5000;
     double coolingRate = 0.995;
     double minTemperature = 1;
     int maxIterations = 10000000;
 
-    AccessTime accessTime;
-    TotalAccessTime(input, output, &accessTime);
-    uint32_t tapeBeltWear = TotalTapeBeltWearTimes(input, output, NULL);  // 带体磨损
-    uint32_t tapeMotorWear = TotalMotorWearTimes(input, output);          // 电机磨损
-
-    uint32_t currentCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear;  // 总代价
+    uint32_t currentCost = getTotalCost(input, output);  // 总代价
     uint32_t bestCost = currentCost;
     uint32_t bestSequence[input->ioVec.len];
-    printf("cost before search:%d\n", currentCost);
 
     // 当前求到的初始解
     for (uint32_t i = 0; i < input->ioVec.len; ++i)
@@ -164,7 +253,131 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
 
     // 模拟退火过程
     double temperature = initialTemperature;
-    int iteration = 0;
+    uint32_t iteration = 0;
+    uint32_t flag  = 100000 ;
+
+    while (temperature > minTemperature && iteration < maxIterations)
+    {
+        // 生成邻域解
+        for (uint32_t i = 0; i < input->ioVec.len; ++i)
+            temp_output->sequence[i] = output->sequence[i];
+
+        // double randValue = (double)rand() / RAND_MAX;
+        // if (randValue < 0.33)
+        // {
+        //     // 交换两个点
+        //     uint32_t i = rand() % input->ioVec.len;
+        //     uint32_t j = rand() % input->ioVec.len;
+        //     uint32_t temp = temp_output->sequence[i];
+        //     temp_output->sequence[i] = temp_output->sequence[j];
+        //     temp_output->sequence[j] = temp;
+        // }
+        // else if (randValue < 0.66)
+        // {
+        //     // 反转一段区间
+        //     uint32_t start = rand() % input->ioVec.len;
+        //     uint32_t end = rand() % input->ioVec.len;
+        //     if (start > end)
+        //     {
+        //         uint32_t temp = start;
+        //         start = end;
+        //         end = temp;
+        //     }
+        //     while (start < end)
+        //     {
+        //         uint32_t temp = temp_output->sequence[start];
+        //         temp_output->sequence[start] = temp_output->sequence[end];
+        //         temp_output->sequence[end] = temp;
+        //         start++;
+        //         end--;
+        //     }
+        // }
+        // else
+        {
+            // 将一个点插入另一个位置
+            uint32_t from = rand() % input->ioVec.len;
+            uint32_t to;
+            to = rand() % input->ioVec.len; 
+            uint32_t temp = temp_output->sequence[from];
+            if (from < to)
+                for (uint32_t i = from; i < to; ++i)
+                    temp_output->sequence[i] = temp_output->sequence[i + 1];
+            else
+                for (uint32_t i = from; i > to; --i)
+                    temp_output->sequence[i] = temp_output->sequence[i - 1];
+            temp_output->sequence[to] = temp;
+        }
+
+        // 计算邻域解的总时延
+        uint32_t neighborCost = getTotalCost(input, temp_output);
+        // 接受邻域解的条件，比当前解好或温度条件满足接受一个更劣的解
+        if (neighborCost < currentCost || (iteration >=  flag && ((double)rand() / RAND_MAX) < exp((currentCost - neighborCost) / temperature)))
+        {
+            // printf("%ld iter, one operator optimization cost: %ld\n", iteration, neighborCost);
+            // 接受邻域解
+            for (uint32_t i = 0; i < input->ioVec.len; ++i)
+                output->sequence[i] = temp_output->sequence[i];
+
+            currentCost = neighborCost;
+
+            // 若当前解比最优解好，则更新最优解
+            if (currentCost < bestCost)
+            {
+                if (currentCost * 1.0001 < bestCost )
+                    flag = 0;
+                for (uint32_t i = 0; i < input->ioVec.len; ++i)
+                    bestSequence[i] = output->sequence[i];
+                bestCost = currentCost;
+            }
+        }
+        if (iteration >= flag)
+        {
+            // 降低温度
+            temperature *= coolingRate;
+        }
+        ++iteration;
+    }
+
+    // 将最优解复制到输出参数
+    output->len = input->ioVec.len;
+    for (uint32_t i = 0; i < output->len; i++)
+        output->sequence[i] = bestSequence[i];
+
+    printf("accessTime after search:%d\n", bestCost);
+
+    free(temp_output->sequence);
+    free(temp_output);
+
+    return RETURN_OK;
+}
+
+int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
+{
+    int32_t ret;
+
+    // 初始化参数
+    double initialTemperature = 5000;
+    double coolingRate = 0.995;
+    double minTemperature = 1;
+    int maxIterations = 10000000;
+
+    uint32_t currentCost = getTotalCost(input, output);  // 总代价
+    uint32_t bestCost = currentCost;
+    uint32_t bestSequence[input->ioVec.len];
+
+    // 当前求到的初始解
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+        bestSequence[i] = output->sequence[i];
+
+    // 用于存放邻域解
+    OutputParam *temp_output;
+    temp_output = (OutputParam *)malloc(sizeof(OutputParam));
+    temp_output->len = input->ioVec.len;
+    temp_output->sequence = (uint32_t *)malloc(input->ioVec.len * sizeof(uint32_t));
+
+    // 模拟退火过程
+    double temperature = initialTemperature;
+    uint32_t iteration = 0;
 
     while (temperature > minTemperature && iteration < maxIterations)
     {
@@ -206,7 +419,8 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
         {
             // 将一个点插入另一个位置
             uint32_t from = rand() % input->ioVec.len;
-            uint32_t to = rand() % input->ioVec.len;
+            uint32_t to;
+            to = rand() % input->ioVec.len; 
             uint32_t temp = temp_output->sequence[from];
             if (from < to)
                 for (uint32_t i = from; i < to; ++i)
@@ -218,14 +432,12 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
         }
 
         // 计算邻域解的总时延
-        TotalAccessTime(input, temp_output, &accessTime);
-        tapeBeltWear = TotalTapeBeltWearTimes(input, temp_output, NULL);  // 带体磨损
-        tapeMotorWear = TotalMotorWearTimes(input, temp_output);          // 电机磨损
-        uint32_t neighborCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear;
-
+        uint32_t neighborCost = getTotalCost(input, temp_output);
         // 接受邻域解的条件，比当前解好或温度条件满足接受一个更劣的解
-        if (neighborCost < currentCost || ((double)rand() / RAND_MAX) < exp((currentCost - neighborCost) / temperature))
+        double deltaCost = (double)(currentCost - neighborCost);
+        if (neighborCost < currentCost || ((double)rand() / RAND_MAX) < exp(deltaCost / temperature))
         {
+            // printf("%ld iter, one operator optimization cost: %ld\n", iteration, neighborCost);
             // 接受邻域解
             for (uint32_t i = 0; i < input->ioVec.len; ++i)
                 output->sequence[i] = temp_output->sequence[i];
@@ -240,7 +452,7 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
                 bestCost = currentCost;
             }
         }
-
+    
         // 降低温度
         temperature *= coolingRate;
         ++iteration;
@@ -251,12 +463,210 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
     for (uint32_t i = 0; i < output->len; i++)
         output->sequence[i] = bestSequence[i];
 
-    printf("cost after search:%d\n", bestCost);
+    printf("accessTime after search:%d\n", bestCost);
 
     free(temp_output->sequence);
     free(temp_output);
 
     return RETURN_OK;
+}
+
+//模拟蜂群
+// 复制解
+void copySolution(uint32_t *dest, const uint32_t *src, uint32_t len) {
+    for (uint32_t i = 0; i < len; ++i) {
+        dest[i] = src[i];
+    }
+}
+
+// 生成随机解
+void generateRandomSolution(OutputParam *solution, uint32_t len) {
+    uint32_t i = rand() % len;
+    uint32_t j = rand() % len;
+    double randValue = (double)rand() / RAND_MAX;
+    if (randValue < 0.33)
+    {
+        // 随机交换两个随机位置的元素
+        uint32_t temp = solution->sequence[i];
+        solution->sequence[i] = solution->sequence[j];
+        solution->sequence[j] = temp;
+    }
+    else if (randValue < 0.66)
+    {
+        if (i > j)
+        {
+            uint32_t temp = i;
+            i = j;
+            j = temp;
+        }
+        while( i < j)
+        {
+            uint32_t temp =  solution->sequence[i];
+            solution->sequence[i] = solution->sequence[j];
+            solution->sequence[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    else
+    {
+        uint32_t temp = solution->sequence[i];
+        if (i < j)
+            for(uint32_t k = i; k < j; ++k)
+                solution->sequence[k] = solution->sequence[k+1];
+        else
+            for(uint32_t k = i; k > j; --k)
+                solution->sequence[k] = solution->sequence[k-1];
+        solution->sequence[j] = temp;
+    }
+}
+
+// 生成邻域解（随机插入元素）
+void generateNeighborSolution(OutputParam *neighbor, const OutputParam *current, uint32_t len) {
+    copySolution(neighbor->sequence, current->sequence, len);
+    uint32_t i = rand() % len;
+    uint32_t j = rand() % len;
+    uint32_t temp = neighbor->sequence[i];
+    if (i < j)
+        for(uint32_t k = i; k < j; ++k)
+            neighbor->sequence[k] = neighbor->sequence[k+1];
+    else
+        for(uint32_t k = i; k > j; --k)
+            neighbor->sequence[k] = neighbor->sequence[k-1];
+    neighbor->sequence[j] = temp;
+}
+
+// 人工蜂群算法
+int32_t ArtificialBeeColony(const InputParam *input, OutputParam *output) {
+    int32_t ret;
+
+    uint32_t len = input->ioVec.len;
+
+    // 初始化蜜蜂群
+    OutputParam employedBees[NUM_EMPLOYED_BEES];
+    OutputParam bestSolution;
+    bestSolution.len = len;
+    bestSolution.sequence = (uint32_t *)malloc(len * sizeof(uint32_t));
+
+    uint32_t employedBeesCost[NUM_EMPLOYED_BEES];  // 雇佣蜂对应的解的代价
+    uint32_t bestCost = UINT32_MAX;  // 最好的解的代价
+    int trials[NUM_EMPLOYED_BEES] = {0};  // 每个雇佣蜂的尝试次数
+
+    // 初始化雇佣蜂
+    for (int i = 0; i < NUM_EMPLOYED_BEES; ++i) {
+        employedBees[i].len = len;
+        employedBees[i].sequence = (uint32_t *)malloc(len * sizeof(uint32_t));
+        for (uint32_t j = 0; j < input->ioVec.len; ++j)
+            employedBees[i].sequence[j] = output->sequence[j];
+        if (i != 0) //第一只不随机
+            generateRandomSolution(&employedBees[i], len);
+        employedBeesCost[i] = getTotalCost(input, &employedBees[i]);
+        printf("%ld emplyed bee initial cost: %ld\n", i, employedBeesCost[i]);
+        // 更新最优解
+        if (employedBeesCost[i] < bestCost) {
+            bestCost = employedBeesCost[i];
+            copySolution(bestSolution.sequence, employedBees[i].sequence, len);
+        }
+    }
+
+    // 临时变量用于存储邻域解
+    OutputParam neighbor;
+    neighbor.len = len;
+    neighbor.sequence = (uint32_t *)malloc(len * sizeof(uint32_t));
+
+    int iteration = 0;
+    while (iteration < MAX_ITERATIONS) {
+        // 雇佣蜂阶段
+        for (int i = 0; i < NUM_EMPLOYED_BEES; ++i) {
+            generateNeighborSolution(&neighbor, &employedBees[i], len);
+            uint32_t neighborCost = getTotalCost(input, &neighbor);
+
+            // 如果邻域解更好，接受邻域解
+            if (neighborCost < employedBeesCost[i]) {
+                employedBeesCost[i] = neighborCost;
+                copySolution(employedBees[i].sequence, neighbor.sequence, len);
+                trials[i] = 0;  // 重置尝试次数
+            } else {
+                trials[i]++;  // 尝试次数增加
+            }
+
+            // 更新最优解
+            if (employedBeesCost[i] < bestCost) {
+                bestCost = employedBeesCost[i];
+                copySolution(bestSolution.sequence, employedBees[i].sequence, len);
+                printf("%ld iter, one operator optimization cost: %ld\n", iteration, bestCost);
+            }
+        }
+
+        // 计算选择概率（根据解的质量）
+        double totalFitness = 0.0;
+        double fitness[NUM_EMPLOYED_BEES];
+        for (int i = 0; i < NUM_EMPLOYED_BEES; ++i) {
+            fitness[i] = 1.0 / (1.0 + employedBeesCost[i]);  // 代价越小，适应度越高
+            totalFitness += fitness[i];
+        }
+
+        // 跟随蜂阶段
+        for (int i = 0; i < NUM_ONLOOKER_BEES; ++i) {
+            // 根据适应度选择解
+            double r = (double)rand() / RAND_MAX * totalFitness;
+            double cumulativeFitness = 0.0;
+            int selectedBeeIndex = 0;
+            for (int j = 0; j < NUM_EMPLOYED_BEES; ++j) {
+                cumulativeFitness += fitness[j];
+                if (cumulativeFitness >= r) {
+                    selectedBeeIndex = j;
+                    break;
+                }
+            }
+
+            // 跟随蜂搜索邻域解
+            generateNeighborSolution(&neighbor, &employedBees[selectedBeeIndex], len);
+            uint32_t neighborCost = getTotalCost(input, &neighbor);
+
+            // 如果邻域解更好，接受邻域解
+            if (neighborCost < employedBeesCost[selectedBeeIndex]) {
+                employedBeesCost[selectedBeeIndex] = neighborCost;
+                copySolution(employedBees[selectedBeeIndex].sequence, neighbor.sequence, len);
+                trials[selectedBeeIndex] = 0;  // 重置尝试次数
+            } else {
+                trials[selectedBeeIndex]++;  // 尝试次数增加
+            }
+
+            // 更新最优解
+            if (employedBeesCost[selectedBeeIndex] < bestCost) {
+                bestCost = employedBeesCost[selectedBeeIndex];
+                copySolution(bestSolution.sequence, employedBees[selectedBeeIndex].sequence, len);
+                printf("%ld iter, one operator optimization cost: %ld\n", iteration, bestCost);
+            }
+        }
+
+        // 侦查蜂阶段：检查是否有过多尝试次数的解，如果有则重新生成随机解
+        for (int i = 0; i < NUM_EMPLOYED_BEES; ++i) {
+            if (trials[i] > MAX_TRIALS) {
+                generateRandomSolution(&employedBees[i], len);
+                employedBeesCost[i] = getTotalCost(input, &employedBees[i]);
+                trials[i] = 0;  // 重置尝试次数
+            }
+        }
+
+        iteration++;
+    }
+
+    // 将最优解复制到输出参数
+    output->len = bestSolution.len;
+    copySolution(output->sequence, bestSolution.sequence, bestSolution.len);
+
+    printf("Final best cost: %u\n", bestCost);
+
+    // 释放内存
+    for (int i = 0; i < NUM_EMPLOYED_BEES; ++i) {
+        free(employedBees[i].sequence);
+    }
+    free(neighbor.sequence);
+    free(bestSolution.sequence);
+
+    return 0;
 }
 
 // 快速排序
@@ -1024,7 +1434,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
     for (int i = 0; i < input->ioVec.len; i++)
     {
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
-        Node min_node = {0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)};
+        Node min_node = {0, i + 1, getCost(&currentHead, &status_tmp)};
 
         for (int j = 0; j < input->ioVec.len; j++)
         {
@@ -1032,7 +1442,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
                 continue;
             HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
 
-            Node tmp_node = {j + 1, i + 1, SeekTimeCalculate(&status1, &status_tmp)};
+            Node tmp_node = {j + 1, i + 1, getCost(&status1, &status_tmp)};
             if (tmp_node.dis < min_node.dis)
             {
                 min_node = tmp_node;
@@ -1073,7 +1483,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
             min_node.dis = INT32_MAX;
             if (nex[0] == 0)
             {
-                Node tmp_node = {0, target_id, SeekTimeCalculate(&currentHead, &status_tmp)};
+                Node tmp_node = {0, target_id, getCost(&currentHead, &status_tmp)};
                 min_node = tmp_node;
             }
             for (int source_id = 1; source_id < input->ioVec.len + 1; source_id++)
@@ -1081,7 +1491,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
                 if (target_id == source_id || nex[source_id] != 0 || find(source_id) == find(target_id))
                     continue;
                 HeadInfo status1 = {input->ioVec.ioArray[source_id - 1].wrap, input->ioVec.ioArray[source_id - 1].endLpos, HEAD_RW};
-                Node tmp_node = {source_id, target_id, SeekTimeCalculate(&status1, &status_tmp)};
+                Node tmp_node = {source_id, target_id, getCost(&status1, &status_tmp)};
                 if (tmp_node.dis < min_node.dis)
                 {
                     min_node = tmp_node;
@@ -1160,7 +1570,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
     for (int i = 0; i < input->ioVec.len; i++)
     {
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
-        Node min_node = {0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)};
+        Node min_node = {0, i + 1, getCost(&currentHead, &status_tmp)};
 
         for (int j = 0; j < input->ioVec.len; j++)
         {
@@ -1168,7 +1578,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
                 continue;
             HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
 
-            Node tmp_node = {j + 1, i + 1, SeekTimeCalculate(&status1, &status_tmp)};
+            Node tmp_node = {j + 1, i + 1, getCost(&status1, &status_tmp)};
             if (tmp_node.dis < min_node.dis)
             {
                 min_node = tmp_node;
@@ -1211,7 +1621,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
             min_node.dis = INT32_MAX;
             if (nex[0] == 0)
             {
-                Node tmp_node = {0, target_id, SeekTimeCalculate(&currentHead, &status_tmp)};
+                Node tmp_node = {0, target_id, getCost(&currentHead, &status_tmp)};
                 min_node = tmp_node;
             }
             for (int source_id = 1; source_id < input->ioVec.len + 1; source_id++)
@@ -1219,7 +1629,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
                 if (target_id == source_id || nex[source_id] != 0 || find(source_id) == find(target_id))
                     continue;
                 HeadInfo status1 = {input->ioVec.ioArray[source_id - 1].wrap, input->ioVec.ioArray[source_id - 1].endLpos, HEAD_RW};
-                Node tmp_node = {source_id, target_id, SeekTimeCalculate(&status1, &status_tmp)};
+                Node tmp_node = {source_id, target_id, getCost(&status1, &status_tmp)};
                 if (tmp_node.dis < min_node.dis)
                 {
                     min_node = tmp_node;
@@ -1241,6 +1651,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
 }
 
 // 包装 merge 函数的线程执行函数
+// TODO：cost加上磨损
 void *merge_thread(void *arg) {
     ThreadArg *threadArg = (ThreadArg *)arg;
 
@@ -1255,6 +1666,7 @@ void *merge_thread(void *arg) {
 }
 
 // 包装 merge_random 函数的线程执行函数
+// TODO：cost加上磨损
 void *merge_random_thread(void *arg) {
     ThreadArg *threadArg = (ThreadArg *)arg;
 
@@ -1267,7 +1679,9 @@ void *merge_random_thread(void *arg) {
 
     pthread_exit(result);  // 返回结果
 }
+
 // 线程1：执行 partition_scan 和 merge
+// TODO：cost加上磨损
 void *partition_scan_merge_thread(void *arg) {
     int min_time = 0x3f3f3f3f;
     ThreadArg *threadArg = (ThreadArg *)arg;
@@ -1295,6 +1709,7 @@ void *partition_scan_merge_thread(void *arg) {
 }
 
 // 线程2：执行 MPScan 和 merge_random
+// TODO：cost加上磨损
 void *mp_scan_merge_random_thread(void *arg) {
     int min_time = 0x3f3f3f3f;
     ThreadArg *threadArg = (ThreadArg *)arg;

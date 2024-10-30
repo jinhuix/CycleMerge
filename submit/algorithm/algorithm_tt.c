@@ -15,26 +15,6 @@ int32_t getDurationMicroseconds(){
     return (end.tv_sec - g_TimeRecord.start.tv_sec) * 1000000 + end.tv_usec - g_TimeRecord.start.tv_usec;
 }
 
-// 计算总代价：寻址时长 + 带体磨损 + 电机磨损
-uint32_t getTotalCost(const InputParam *input, OutputParam *output) {
-    AccessTime accessTime = {0};
-    TotalAccessTime(input, output, &accessTime);                                    // 寻址时长                                       
-    uint32_t tapeBeltWear = TotalTapeBeltWearTimes(input, output, NULL);            // 带体磨损
-    uint32_t tapeMotorWear = TotalMotorWearTimes(input, output);                    // 电机磨损
-    uint32_t totalCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear; // 总代价
-    return totalCost;
-}
-
-// 计算单次代价：寻址时长 + 带体磨损 + 电机磨损
-uint32_t getCost(const HeadInfo *start, const HeadInfo *target) {
-    uint32_t seekT = SeekTimeCalculate(start, target);
-    uint32_t beltW = BeltWearTimes(start, target, NULL);
-    uint32_t motorW = MotorWearTimes(start, target);
-    uint32_t cost = seekT + beltW + motorW;
-    return cost;
-}
-
-
 /**
  * @brief  算法接口
  * @param  input            输入参数
@@ -42,69 +22,68 @@ uint32_t getCost(const HeadInfo *start, const HeadInfo *target) {
  * @return int32_t          返回成功或者失败，RETURN_OK 或 RETURN_ERROR
  */
 int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
-    uint32_t min_cost = 0xFFFFFFFF;
-    uint32_t total_cost = 0xFFFFFFFF;
+    int min_time = 0x3f3f3f3f;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
     if (input->ioVec.len > 1000)
     {
-        int flag = 1;
+        // int flag = 1;
         AccessTime accessTime = {0};
         merge(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
         {
-            min_cost = total_cost;
+            min_time = accessTime.addressDuration;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 1;
+            // flag = 1;
         }
         merge_random(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
         {
-            min_cost = total_cost;
+            min_time = accessTime.addressDuration;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 2;
+            // flag = 2;
         }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-        printf("flag=%d\n", flag);
+        // printf("flag=%d\n", flag);
     }else
     {
-        int flag = 3;
-        partition_scan(input, output);  // 在算法内部还是只考虑寻址时长
+        // int flag = 3;
+        partition_scan(input, output);
         AccessTime accessTime = {0};
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
         {
-            min_cost = total_cost;
+            min_time = accessTime.addressDuration;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 3;
+            // flag = 3;
         }
-        MPScan(input, output);            // 在算法内部还是只考虑寻址时长
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
+        MPScan(input, output);
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
         {
-            min_cost = total_cost;
+            min_time = accessTime.addressDuration;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 4;
+            // flag = 4;
         }
         merge(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
         {
-            min_cost = total_cost;
+            min_time = accessTime.addressDuration;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 5;
+            // flag = 5;
         }
         merge_random(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
+        TotalAccessTime(input, output, &accessTime);
+        if (accessTime.addressDuration < min_time)
         {
-            min_cost = total_cost;
+            min_time = accessTime.addressDuration;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 6;
+            // flag = 6;
         }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-        printf("flag=%d\n", flag);
+        // printf("flag=%d\n", flag);
     }
 
     free(best_sequence);
@@ -165,13 +144,13 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
 
     AccessTime accessTime;
     TotalAccessTime(input, output, &accessTime);
-    printf("accessTime before search:%d\n", accessTime.addressDuration);
     uint32_t tapeBeltWear = TotalTapeBeltWearTimes(input, output, NULL);  // 带体磨损
     uint32_t tapeMotorWear = TotalMotorWearTimes(input, output);          // 电机磨损
 
     uint32_t currentCost = accessTime.addressDuration + tapeBeltWear + tapeMotorWear;  // 总代价
     uint32_t bestCost = currentCost;
     uint32_t bestSequence[input->ioVec.len];
+    printf("cost before search:%d\n", currentCost);
 
     // 当前求到的初始解
     for (uint32_t i = 0; i < input->ioVec.len; ++i)
@@ -272,7 +251,7 @@ int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output)
     for (uint32_t i = 0; i < output->len; i++)
         output->sequence[i] = bestSequence[i];
 
-    printf("accessTime after search:%d\n", bestCost);
+    printf("cost after search:%d\n", bestCost);
 
     free(temp_output->sequence);
     free(temp_output);
@@ -1045,7 +1024,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
     for (int i = 0; i < input->ioVec.len; i++)
     {
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
-        Node min_node = {0, i + 1, getCost(&currentHead, &status_tmp)};
+        Node min_node = {0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)};
 
         for (int j = 0; j < input->ioVec.len; j++)
         {
@@ -1053,7 +1032,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
                 continue;
             HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
 
-            Node tmp_node = {j + 1, i + 1, getCost(&status1, &status_tmp)};
+            Node tmp_node = {j + 1, i + 1, SeekTimeCalculate(&status1, &status_tmp)};
             if (tmp_node.dis < min_node.dis)
             {
                 min_node = tmp_node;
@@ -1094,7 +1073,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
             min_node.dis = INT32_MAX;
             if (nex[0] == 0)
             {
-                Node tmp_node = {0, target_id, getCost(&currentHead, &status_tmp)};
+                Node tmp_node = {0, target_id, SeekTimeCalculate(&currentHead, &status_tmp)};
                 min_node = tmp_node;
             }
             for (int source_id = 1; source_id < input->ioVec.len + 1; source_id++)
@@ -1102,7 +1081,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
                 if (target_id == source_id || nex[source_id] != 0 || find(source_id) == find(target_id))
                     continue;
                 HeadInfo status1 = {input->ioVec.ioArray[source_id - 1].wrap, input->ioVec.ioArray[source_id - 1].endLpos, HEAD_RW};
-                Node tmp_node = {source_id, target_id, getCost(&status1, &status_tmp)};
+                Node tmp_node = {source_id, target_id, SeekTimeCalculate(&status1, &status_tmp)};
                 if (tmp_node.dis < min_node.dis)
                 {
                     min_node = tmp_node;
@@ -1181,7 +1160,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
     for (int i = 0; i < input->ioVec.len; i++)
     {
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
-        Node min_node = {0, i + 1, getCost(&currentHead, &status_tmp)};
+        Node min_node = {0, i + 1, SeekTimeCalculate(&currentHead, &status_tmp)};
 
         for (int j = 0; j < input->ioVec.len; j++)
         {
@@ -1189,7 +1168,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
                 continue;
             HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
 
-            Node tmp_node = {j + 1, i + 1, getCost(&status1, &status_tmp)};
+            Node tmp_node = {j + 1, i + 1, SeekTimeCalculate(&status1, &status_tmp)};
             if (tmp_node.dis < min_node.dis)
             {
                 min_node = tmp_node;
@@ -1232,7 +1211,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
             min_node.dis = INT32_MAX;
             if (nex[0] == 0)
             {
-                Node tmp_node = {0, target_id, getCost(&currentHead, &status_tmp)};
+                Node tmp_node = {0, target_id, SeekTimeCalculate(&currentHead, &status_tmp)};
                 min_node = tmp_node;
             }
             for (int source_id = 1; source_id < input->ioVec.len + 1; source_id++)
@@ -1240,7 +1219,7 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
                 if (target_id == source_id || nex[source_id] != 0 || find(source_id) == find(target_id))
                     continue;
                 HeadInfo status1 = {input->ioVec.ioArray[source_id - 1].wrap, input->ioVec.ioArray[source_id - 1].endLpos, HEAD_RW};
-                Node tmp_node = {source_id, target_id, getCost(&status1, &status_tmp)};
+                Node tmp_node = {source_id, target_id, SeekTimeCalculate(&status1, &status_tmp)};
                 if (tmp_node.dis < min_node.dis)
                 {
                     min_node = tmp_node;
@@ -1262,7 +1241,6 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
 }
 
 // 包装 merge 函数的线程执行函数
-// TODO：cost加上磨损
 void *merge_thread(void *arg) {
     ThreadArg *threadArg = (ThreadArg *)arg;
 
@@ -1277,7 +1255,6 @@ void *merge_thread(void *arg) {
 }
 
 // 包装 merge_random 函数的线程执行函数
-// TODO：cost加上磨损
 void *merge_random_thread(void *arg) {
     ThreadArg *threadArg = (ThreadArg *)arg;
 
@@ -1290,9 +1267,7 @@ void *merge_random_thread(void *arg) {
 
     pthread_exit(result);  // 返回结果
 }
-
 // 线程1：执行 partition_scan 和 merge
-// TODO：cost加上磨损
 void *partition_scan_merge_thread(void *arg) {
     int min_time = 0x3f3f3f3f;
     ThreadArg *threadArg = (ThreadArg *)arg;
@@ -1320,7 +1295,6 @@ void *partition_scan_merge_thread(void *arg) {
 }
 
 // 线程2：执行 MPScan 和 merge_random
-// TODO：cost加上磨损
 void *mp_scan_merge_random_thread(void *arg) {
     int min_time = 0x3f3f3f3f;
     ThreadArg *threadArg = (ThreadArg *)arg;
