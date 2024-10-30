@@ -2,7 +2,8 @@
 Algorithm: FCFS
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 0.01 
+totcost: 332336255 
+algorithmRunningDuration(ms): 0.00 
 memoryUse(ms): 0 
 addressingDuration(ms): 80725380 
 readDuration(ms): 1118172
@@ -15,7 +16,8 @@ errorIOCount: 0
 Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 0.07 
+totcost: 19281630 
+algorithmRunningDuration(ms): 0.05 
 memoryUse(ms): 0 
 addressingDuration(ms): 11173473 
 readDuration(ms): 1118172
@@ -28,7 +30,8 @@ errorIOCount: 0
 Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 0.07 
+totcost: 14641051 
+algorithmRunningDuration(ms): 0.06 
 memoryUse(ms): 0 
 addressingDuration(ms): 8216969 
 readDuration(ms): 1118172
@@ -41,7 +44,8 @@ errorIOCount: 0
 Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 0.12 
+totcost: 9440656 
+algorithmRunningDuration(ms): 0.11 
 memoryUse(ms): 0 
 addressingDuration(ms): 3443208 
 readDuration(ms): 1118172
@@ -54,7 +58,8 @@ errorIOCount: 0
 Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 1.35 
+totcost: 9011858 
+algorithmRunningDuration(ms): 1.52 
 memoryUse(ms): 0 
 addressingDuration(ms): 3361345 
 readDuration(ms): 1118172
@@ -67,7 +72,8 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 15.56 
+totcost: 8316883 
+algorithmRunningDuration(ms): 16.86 
 memoryUse(ms): 0 
 addressingDuration(ms): 3359170 
 readDuration(ms): 1118172
@@ -80,7 +86,8 @@ errorIOCount: 0
 Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 288.86 
+totcost: 8511993 
+algorithmRunningDuration(ms): 323.06 
 memoryUse(ms): 0 
 addressingDuration(ms): 3291762 
 readDuration(ms): 1118172
@@ -93,7 +100,8 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 38.30 
+totcost: 7803467 
+algorithmRunningDuration(ms): 43.59 
 memoryUse(ms): 0 
 addressingDuration(ms): 3128254 
 readDuration(ms): 1118172
@@ -106,12 +114,13 @@ errorIOCount: 0
 Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 37.99 
+totcost: 7956574 
+algorithmRunningDuration(ms): 43.16 
 memoryUse(ms): 0 
-addressingDuration(ms): 3285840 
+addressingDuration(ms): 3183890 
 readDuration(ms): 1118172
-tapeBeltWear(times): 5092555
-tapeMotorWear(times): 128 
+tapeBeltWear(times): 4772560
+tapeMotorWear(times): 124 
 errorIOCount: 0 
 
 
@@ -119,7 +128,8 @@ errorIOCount: 0
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 1000 
-algorithmRunningDuration(ms): 328.90 
+totcost: 7803467 
+algorithmRunningDuration(ms): 366.75 
 memoryUse(ms): 0 
 addressingDuration(ms): 3128254 
 readDuration(ms): 1118172

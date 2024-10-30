@@ -2,6 +2,7 @@
 Algorithm: FCFS
 /* 关键指标结构体 */
 ioCount: 200 
+totcost: 54404474 
 algorithmRunningDuration(ms): 0.00 
 memoryUse(ms): 0 
 addressingDuration(ms): 13554720 
@@ -15,6 +16,7 @@ errorIOCount: 0
 Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 200 
+totcost: 4436127 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 2375676 
@@ -28,6 +30,7 @@ errorIOCount: 0
 Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 200 
+totcost: 3000593 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 1302754 
@@ -41,6 +44,7 @@ errorIOCount: 0
 Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 200 
+totcost: 4607281 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 1549830 
@@ -54,6 +58,7 @@ errorIOCount: 0
 Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 200 
+totcost: 3750197 
 algorithmRunningDuration(ms): 0.35 
 memoryUse(ms): 0 
 addressingDuration(ms): 1366915 
@@ -67,6 +72,7 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 200 
+totcost: 4463427 
 algorithmRunningDuration(ms): 0.69 
 memoryUse(ms): 0 
 addressingDuration(ms): 1681022 
@@ -80,7 +86,8 @@ errorIOCount: 0
 Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 200 
-algorithmRunningDuration(ms): 63.96 
+totcost: 2853250 
+algorithmRunningDuration(ms): 64.11 
 memoryUse(ms): 0 
 addressingDuration(ms): 1273132 
 readDuration(ms): 221011
@@ -93,7 +100,8 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 200 
-algorithmRunningDuration(ms): 1.70 
+totcost: 4148329 
+algorithmRunningDuration(ms): 1.69 
 memoryUse(ms): 0 
 addressingDuration(ms): 1492000 
 readDuration(ms): 221011
@@ -103,10 +111,25 @@ errorIOCount: 0
 
 
 /* 算法名称 */
+Algorithm: MergeRandom
+/* 关键指标结构体 */
+ioCount: 200 
+totcost: 4277963 
+algorithmRunningDuration(ms): 1.69 
+memoryUse(ms): 0 
+addressingDuration(ms): 1545430 
+readDuration(ms): 221011
+tapeBeltWear(times): 2732463
+tapeMotorWear(times): 70 
+errorIOCount: 0 
+
+
+/* 算法名称 */
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 200 
-algorithmRunningDuration(ms): 65.69 
+totcost: 2853250 
+algorithmRunningDuration(ms): 65.65 
 memoryUse(ms): 0 
 addressingDuration(ms): 1273132 
 readDuration(ms): 221011
