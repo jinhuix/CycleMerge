@@ -34,12 +34,10 @@ int32_t getDurationMicroseconds(){
  */
 int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     int min_time = 0x3f3f3f3f;
-    printf("-----");
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
     if (!best_sequence) return -1;  // 内存分配失败
 
     pthread_t tid1, tid2;
-    printf("%d线程数",&input->ioVec.len);
     if (input->ioVec.len > 1000) {  // 请求数量大于1000时，跑两种 merge
         OutputParam *output1 = (OutputParam *)malloc(sizeof(OutputParam));
         OutputParam *output2 = (OutputParam *)malloc(sizeof(OutputParam));
@@ -53,7 +51,6 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
             free(best_sequence);
             return -1;  // 内存分配失败
         }
-
         AccessTime accessTime1 = {0}, accessTime2 = {0};
         ThreadArg arg1 = {input, output1, &accessTime1};
         ThreadArg arg2 = {input, output2, &accessTime2};
@@ -140,7 +137,6 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
 {
     int32_t ret, duration_us;
-    printf("dasdasda");
     startRecordTime();
     ret = IOScheduleAlgorithm(input, output);
 
@@ -1278,21 +1274,21 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
 
 // 包装merge函数的线程执行函数
 void *merge_thread(void *arg) {
-    printf("线程1创建");
+    printf("线程1创建\n");
     ThreadArg *threadArg = (ThreadArg *)arg;
     merge(threadArg->input, threadArg->output);
     TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    printf("线程1完成");
+    printf("线程1完成\n");
     return NULL;
 }
 
 // 包装merge_random函数的线程执行函数
 void *merge_random_thread(void *arg) {
-    printf("线程2创建");
+    printf("线程2创建\n");
     ThreadArg *threadArg = (ThreadArg *)arg;
     merge_random(threadArg->input, threadArg->output);
     TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    printf("线程2完成");
+    printf("线程2完成\n");
     return NULL;
 }
 // 线程1：执行 partition_scan 和 merge
