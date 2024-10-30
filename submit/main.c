@@ -46,6 +46,7 @@ void PrintMetrics(const KeyMetrics *metrics)
 {
     printf("\nKey Metrics:\n");
     printf("\tioCount:\t\t\t %u\n", metrics->ioCount);
+    printf("\ttotalCost:\t\t\t %u\n", metrics->addressingDuration + metrics->tapeBeltWear + metrics->tapeMotorWear);
     printf("\talgorithmRunningDuration:\t %.3f (ms)\n", metrics->algorithmRunningDuration);
     printf("\tmemoryUse:\t\t\t %ld (KB)\n", metrics->memoryUse);
     printf("\taddressingDuration:\t\t %u (ms)\n", metrics->addressingDuration);
@@ -66,6 +67,7 @@ void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics)
 
     fprintf(file, "/* 关键指标结构体 */\n");
     fprintf(file, "ioCount: %u \n", metrics->ioCount);
+    fprintf(file, "addressingDuration(ms): %u \n", metrics->addressingDuration + metrics->tapeBeltWear + metrics->tapeMotorWear);
     fprintf(file, "algorithmRunningDuration(ms): %.2f \n", metrics->algorithmRunningDuration);
     fprintf(file, "memoryUse(ms): %lu \n", metrics->memoryUse);
     fprintf(file, "addressingDuration(ms): %u \n", metrics->addressingDuration);
@@ -225,6 +227,41 @@ int parseFile(const char *filename, HeadInfo *headInfo, IOVector *ioVector)
     return RETURN_OK;
 }
 
+// 检查cost计算是否正确
+void check(const InputParam *input, OutputParam *output) {
+    int32_t len = input->ioVec.len;
+
+    AccessTime accessTime = {0};
+    TotalAccessTime(input, output, &accessTime);                                    // 寻址时长   
+    uint32_t total_seekT = accessTime.addressDuration;
+    uint32_t total_beltW = TotalTapeBeltWearTimes(input, output, NULL);            // 带体磨损
+    uint32_t total_motorW = TotalMotorWearTimes(input, output);                    // 电机磨损
+    uint32_t totalCost = total_seekT + total_beltW + total_motorW; // 总代价
+    printf("\nTotal cost:\n");
+    printf("\ttotal_seekT:\t\t\t %u\n", total_seekT);
+    printf("\ttotal_beltW:\t\t\t %u\n", total_beltW);
+    printf("\ttotal_motorW:\t\t\t %u\n", total_motorW);
+    printf("\ttotalCost:\t\t\t %u\n", totalCost);
+
+
+    uint32_t seekT = 0, beltW = 0, motorW = 0;
+    for(int i = 0; i < len-1; ++i) {
+        HeadInfo x = {input->ioVec.ioArray[output->sequence[i] - 1].wrap, input->ioVec.ioArray[output->sequence[i] - 1].endLpos, HEAD_RW};
+        HeadInfo y = {input->ioVec.ioArray[output->sequence[i+1] - 1].wrap, input->ioVec.ioArray[output->sequence[i+1] - 1].startLpos, HEAD_RW};
+         seekT = seekT + SeekTimeCalculate(&x, &y);
+         beltW = beltW + BeltWearTimes(&x, &y, NULL);
+         motorW = motorW + MotorWearTimes(&x, &y);
+    }
+    uint32_t cost = seekT + beltW + motorW;
+    printf("\ncost:\n");
+    printf("\tseekT:\t\t\t %u\n", seekT);
+    printf("\tbeltW:\t\t\t %u\n", beltW);
+    printf("\tmotorW:\t\t\t %u\n", motorW);
+    printf("\tcost:\t\t\t %u\n", cost);
+}
+
+
+
 int main(int argc, char *argv[])
 {
     printf("\n\nWelcome to HW project.\n\n");
@@ -317,6 +354,7 @@ int main(int argc, char *argv[])
     PrintMetrics(&metrics);
     /* 保存指标数据到文件 */
     SaveKeyMetricsToFile("./metrics.txt", &metrics);
+    // check(inputParam, output);
 
     // printf("\n\nOutput sequence: [");
     // for (uint32_t i = 0; i < output->len; i++) {
