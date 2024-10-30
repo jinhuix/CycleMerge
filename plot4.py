@@ -7,12 +7,13 @@ def parse_file(file_path):
     algorithms = []
     io_counts = []
     addressing_durations = []
+    totcosts = []
 
     with open(file_path, 'r', encoding='utf-8') as file:
         content = file.read()
 
     # 使用正则表达式解析文件内容
-    algorithm_pattern = re.compile(r'/\* 算法名称 \*/\nAlgorithm: (.+?)\n/\* 关键指标结构体 \*/\nioCount: (\d+) \nalgorithmRunningDuration\(ms\): [\d.]+ \nmemoryUse\(ms\): \d+ \naddressingDuration\(ms\): (\d+) \nreadDuration\(ms\): \d+\ntapeBeltWear\(times\): \d+\ntapeMotorWear\(times\): \d+ \nerrorIOCount: \d+ \n\n')
+    algorithm_pattern = re.compile(r'/\* 算法名称 \*/\nAlgorithm: (.+?)\n/\* 关键指标结构体 \*/\nioCount: (\d+) \ntotcost: (\d+) \nalgorithmRunningDuration\(ms\): [\d.]+ \nmemoryUse\(ms\): \d+ \naddressingDuration\(ms\): (\d+) \nreadDuration\(ms\): \d+\ntapeBeltWear\(times\): \d+\ntapeMotorWear\(times\): \d+ \nerrorIOCount: \d+ \n\n')
     matches = algorithm_pattern.findall(content)
 
     for match in matches:
@@ -20,17 +21,21 @@ def parse_file(file_path):
             continue
         algorithms.append(match[0])
         io_counts.append(int(match[1]))
-        addressing_durations.append(int(match[2]))
-
-    return algorithms, io_counts, addressing_durations
+        totcosts.append(int(match[2]))
+        # addressing_durations.append(int(match[3]))
+        
+    return algorithms, io_counts, totcosts
+    # return algorithms, io_counts, addressing_durations
 
 def plot_experiment_variation(data, category, output_path):
     plt.figure(figsize=(10, 6))
     
     for algorithm in data:
         io_counts = data[algorithm]['io_counts']
-        addressing_durations = data[algorithm]['addressing_durations']
-        plt.plot(io_counts, addressing_durations, marker='o', label=algorithm)
+        # addressing_durations = data[algorithm]['addressing_durations']
+        totcosts = data[algorithm]['totcosts']
+        # plt.plot(io_counts, addressing_durations, marker='o', label=algorithm)
+        plt.plot(io_counts, totcosts, marker='o', label=algorithm)
     
     plt.xlabel('IO Count')
     plt.ylabel('Addressing Duration (ms)')
@@ -48,15 +53,19 @@ def process_directory(directory_path):
     for filename in os.listdir(directory_path):
         if filename.endswith('.txt'):
             file_path = os.path.join(directory_path, filename)
-            algorithms, io_counts, addressing_durations = parse_file(file_path)
+            # algorithms, io_counts, addressing_durations = parse_file(file_path)
+            algorithms, io_counts, totcosts = parse_file(file_path)
             
             for category in categories:
                 if category in filename:
-                    for algorithm, io_count, addressing_duration in zip(algorithms, io_counts, addressing_durations):
+                    # for algorithm, io_count, addressing_duration in zip(algorithms, io_counts, addressing_durations):
+                    for algorithm, io_count, totcost in zip(algorithms, io_counts, totcosts):
                         if algorithm not in data[category]:
-                            data[category][algorithm] = {'io_counts': [], 'addressing_durations': []}
+                            # data[category][algorithm] = {'io_counts': [], 'addressing_durations': []}
+                            data[category][algorithm] = {'io_counts': [], 'totcosts': []}
                         data[category][algorithm]['io_counts'].append(io_count)
-                        data[category][algorithm]['addressing_durations'].append(addressing_duration)
+                        # data[category][algorithm]['addressing_durations'].append(addressing_duration)
+                        data[category][algorithm]['totcosts'].append(totcost)
                     break
 
     if not os.path.exists('./pic/line'):

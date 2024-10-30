@@ -2,7 +2,8 @@
 Algorithm: FCFS
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 0.02 
+totcost: 31689992 
+algorithmRunningDuration(ms): 0.00 
 memoryUse(ms): 0 
 addressingDuration(ms): 7664161 
 readDuration(ms): 71972
@@ -15,6 +16,7 @@ errorIOCount: 0
 Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 90 
+totcost: 2371671 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 1186925 
@@ -28,6 +30,7 @@ errorIOCount: 0
 Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 90 
+totcost: 2381733 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 893201 
@@ -41,6 +44,7 @@ errorIOCount: 0
 Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 90 
+totcost: 4402641 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 1316629 
@@ -54,7 +58,8 @@ errorIOCount: 0
 Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 0.16 
+totcost: 2519623 
+algorithmRunningDuration(ms): 0.14 
 memoryUse(ms): 0 
 addressingDuration(ms): 941113 
 readDuration(ms): 71972
@@ -67,7 +72,8 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 0.17 
+totcost: 3020776 
+algorithmRunningDuration(ms): 0.14 
 memoryUse(ms): 0 
 addressingDuration(ms): 1187565 
 readDuration(ms): 71972
@@ -80,7 +86,8 @@ errorIOCount: 0
 Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 24.47 
+totcost: 2381733 
+algorithmRunningDuration(ms): 25.78 
 memoryUse(ms): 0 
 addressingDuration(ms): 893201 
 readDuration(ms): 71972
@@ -93,7 +100,8 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 0.41 
+totcost: 3179850 
+algorithmRunningDuration(ms): 0.42 
 memoryUse(ms): 0 
 addressingDuration(ms): 1107504 
 readDuration(ms): 71972
@@ -106,11 +114,12 @@ errorIOCount: 0
 Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 0.39 
+totcost: 3128951 
+algorithmRunningDuration(ms): 0.41 
 memoryUse(ms): 0 
-addressingDuration(ms): 1123601 
+addressingDuration(ms): 1102261 
 readDuration(ms): 71972
-tapeBeltWear(times): 2076872
+tapeBeltWear(times): 2026624
 tapeMotorWear(times): 66 
 errorIOCount: 0 
 
@@ -119,7 +128,8 @@ errorIOCount: 0
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 90 
-algorithmRunningDuration(ms): 23.19 
+totcost: 2381733 
+algorithmRunningDuration(ms): 26.20 
 memoryUse(ms): 0 
 addressingDuration(ms): 893201 
 readDuration(ms): 71972

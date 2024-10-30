@@ -57,6 +57,7 @@ void PrintMetrics(const KeyMetrics *metrics)
 {
     printf("\nKey Metrics:\n");
     printf("\tioCount:\t\t\t %u\n", metrics->ioCount);
+    printf("totcost: %u \n", metrics->addressingDuration + metrics->tapeBeltWear + metrics->tapeMotorWear);
     printf("\talgorithmRunningDuration:\t %.3f (ms)\n", metrics->algorithmRunningDuration);
     printf("\tmemoryUse:\t\t\t %ld (KB)\n", metrics->memoryUse);
     printf("\taddressingDuration:\t\t %u (ms)\n", metrics->addressingDuration);
@@ -89,6 +90,7 @@ void SaveKeyMetricsToFile(const char *filename, const KeyMetrics *metrics, char 
 
     fprintf(file, "/* 关键指标结构体 */\n");
     fprintf(file, "ioCount: %u \n", metrics->ioCount);
+    fprintf(file, "totcost: %u \n", metrics->addressingDuration + metrics->tapeBeltWear + metrics->tapeMotorWear);
     fprintf(file, "algorithmRunningDuration(ms): %.2f \n", metrics->algorithmRunningDuration);
     fprintf(file, "memoryUse(ms): %lu \n", metrics->memoryUse);
     fprintf(file, "addressingDuration(ms): %u \n", metrics->addressingDuration);
@@ -340,7 +342,7 @@ int process(char *file)
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge", "partition_scan"};
     // char *algorithms[] = {"FCFS", "SORT", "SCAN", "SCAN2", "Nearest", "MPScanPartition", "partition_scan", "MPScan", "merge"};
-    char *algorithms[] = {"FCFS", "Sort", "Scan", "MPScan", "MPScanStar", "Nearest", "PartitionScan", "Merge","MergeRandom", "FAST"};
+    char *algorithms[] = {"FCFS", "Sort", "Scan", "MPScan", "MPScanStar", "Nearest", "PartitionScan", "Merge", "MergeRandom", "FAST"};
     char *operator_optimization[] = {"SIMPLE"};
 
     int numAlgorithms = sizeof(algorithms) / sizeof(algorithms[0]);
@@ -420,7 +422,6 @@ int process(char *file)
     return RETURN_OK;
 }
 
-
 int main(int argc, char *argv[])
 {
     printf("\n\nWelcome to HW project.\n\n");
@@ -489,6 +490,6 @@ int main(int argc, char *argv[])
         // 如果是文件，直接处理
         ret = process(file);
     }
-    
+
     return 0;
 }
