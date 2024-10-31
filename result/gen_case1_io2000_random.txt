@@ -31,7 +31,7 @@ Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 36539609 
-algorithmRunningDuration(ms): 0.12 
+algorithmRunningDuration(ms): 0.13 
 memoryUse(ms): 0 
 addressingDuration(ms): 21481962 
 readDuration(ms): 2196842
@@ -73,7 +73,7 @@ Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 12908945 
-algorithmRunningDuration(ms): 68.00 
+algorithmRunningDuration(ms): 69.07 
 memoryUse(ms): 0 
 addressingDuration(ms): 5219988 
 readDuration(ms): 2196842
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 13337100 
-algorithmRunningDuration(ms): 510.84 
+algorithmRunningDuration(ms): 510.18 
 memoryUse(ms): 0 
 addressingDuration(ms): 4978041 
 readDuration(ms): 2196842
@@ -100,13 +100,13 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 2000 
-totcost: 12207921 
-algorithmRunningDuration(ms): 188.69 
+totcost: 12181103 
+algorithmRunningDuration(ms): 412.90 
 memoryUse(ms): 0 
-addressingDuration(ms): 4711745 
+addressingDuration(ms): 4875865 
 readDuration(ms): 2196842
-tapeBeltWear(times): 7496014
-tapeMotorWear(times): 162 
+tapeBeltWear(times): 7304938
+tapeMotorWear(times): 300 
 errorIOCount: 0 
 
 
@@ -114,13 +114,13 @@ errorIOCount: 0
 Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 2000 
-totcost: 11733822 
-algorithmRunningDuration(ms): 185.75 
+totcost: 12041051 
+algorithmRunningDuration(ms): 403.20 
 memoryUse(ms): 0 
-addressingDuration(ms): 4633576 
+addressingDuration(ms): 4868321 
 readDuration(ms): 2196842
-tapeBeltWear(times): 7100082
-tapeMotorWear(times): 164 
+tapeBeltWear(times): 7172438
+tapeMotorWear(times): 292 
 errorIOCount: 0 
 
 
@@ -128,13 +128,13 @@ errorIOCount: 0
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 2000 
-totcost: 12207921 
-algorithmRunningDuration(ms): 698.56 
+totcost: 12181103 
+algorithmRunningDuration(ms): 923.77 
 memoryUse(ms): 0 
-addressingDuration(ms): 4711745 
+addressingDuration(ms): 4875865 
 readDuration(ms): 2196842
-tapeBeltWear(times): 7496014
-tapeMotorWear(times): 162 
+tapeBeltWear(times): 7304938
+tapeMotorWear(times): 300 
 errorIOCount: 0 
 
 

@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 500 
 totcost: 6343900 
-algorithmRunningDuration(ms): 1.76 
+algorithmRunningDuration(ms): 1.77 
 memoryUse(ms): 0 
 addressingDuration(ms): 2406724 
 readDuration(ms): 555762
@@ -73,7 +73,7 @@ Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 500 
 totcost: 6728534 
-algorithmRunningDuration(ms): 4.39 
+algorithmRunningDuration(ms): 4.42 
 memoryUse(ms): 0 
 addressingDuration(ms): 2710597 
 readDuration(ms): 555762
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 500 
 totcost: 6190549 
-algorithmRunningDuration(ms): 131.66 
+algorithmRunningDuration(ms): 132.31 
 memoryUse(ms): 0 
 addressingDuration(ms): 2429443 
 readDuration(ms): 555762
@@ -100,13 +100,13 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 500 
-totcost: 5759818 
-algorithmRunningDuration(ms): 10.91 
+totcost: 6372391 
+algorithmRunningDuration(ms): 23.90 
 memoryUse(ms): 0 
-addressingDuration(ms): 2315116 
+addressingDuration(ms): 2540017 
 readDuration(ms): 555762
-tapeBeltWear(times): 3444600
-tapeMotorWear(times): 102 
+tapeBeltWear(times): 3832204
+tapeMotorWear(times): 170 
 errorIOCount: 0 
 
 
@@ -114,13 +114,13 @@ errorIOCount: 0
 Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 500 
-totcost: 5628507 
-algorithmRunningDuration(ms): 10.76 
+totcost: 6213320 
+algorithmRunningDuration(ms): 23.67 
 memoryUse(ms): 0 
-addressingDuration(ms): 2313243 
+addressingDuration(ms): 2505045 
 readDuration(ms): 555762
-tapeBeltWear(times): 3315154
-tapeMotorWear(times): 110 
+tapeBeltWear(times): 3708107
+tapeMotorWear(times): 168 
 errorIOCount: 0 
 
 
@@ -128,13 +128,13 @@ errorIOCount: 0
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 500 
-totcost: 5759818 
-algorithmRunningDuration(ms): 142.57 
+totcost: 6190549 
+algorithmRunningDuration(ms): 156.27 
 memoryUse(ms): 0 
-addressingDuration(ms): 2315116 
+addressingDuration(ms): 2429443 
 readDuration(ms): 555762
-tapeBeltWear(times): 3444600
-tapeMotorWear(times): 102 
+tapeBeltWear(times): 3761030
+tapeMotorWear(times): 76 
 errorIOCount: 0 
 
 

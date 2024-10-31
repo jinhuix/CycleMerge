@@ -17,7 +17,7 @@ Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 100491645 
-algorithmRunningDuration(ms): 0.33 
+algorithmRunningDuration(ms): 0.32 
 memoryUse(ms): 0 
 addressingDuration(ms): 60095065 
 readDuration(ms): 5508917
@@ -31,7 +31,7 @@ Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 112788621 
-algorithmRunningDuration(ms): 0.34 
+algorithmRunningDuration(ms): 0.33 
 memoryUse(ms): 0 
 addressingDuration(ms): 67891694 
 readDuration(ms): 5508917
@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 21112089 
-algorithmRunningDuration(ms): 4.82 
+algorithmRunningDuration(ms): 4.83 
 memoryUse(ms): 0 
 addressingDuration(ms): 7438878 
 readDuration(ms): 5508917
@@ -73,7 +73,7 @@ Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 20407987 
-algorithmRunningDuration(ms): 438.82 
+algorithmRunningDuration(ms): 442.21 
 memoryUse(ms): 0 
 addressingDuration(ms): 7642805 
 readDuration(ms): 5508917
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 20776874 
-algorithmRunningDuration(ms): 1461.49 
+algorithmRunningDuration(ms): 1466.49 
 memoryUse(ms): 0 
 addressingDuration(ms): 7194171 
 readDuration(ms): 5508917
@@ -100,13 +100,13 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 5000 
-totcost: 19253745 
-algorithmRunningDuration(ms): 1265.19 
+totcost: 19058816 
+algorithmRunningDuration(ms): 2711.77 
 memoryUse(ms): 0 
-addressingDuration(ms): 6812680 
+addressingDuration(ms): 7015825 
 readDuration(ms): 5508917
-tapeBeltWear(times): 12440835
-tapeMotorWear(times): 230 
+tapeBeltWear(times): 12042545
+tapeMotorWear(times): 446 
 errorIOCount: 0 
 
 
@@ -114,13 +114,13 @@ errorIOCount: 0
 Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 5000 
-totcost: 18873139 
-algorithmRunningDuration(ms): 1225.65 
+totcost: 18170549 
+algorithmRunningDuration(ms): 2664.37 
 memoryUse(ms): 0 
-addressingDuration(ms): 6795387 
+addressingDuration(ms): 6849622 
 readDuration(ms): 5508917
-tapeBeltWear(times): 12077504
-tapeMotorWear(times): 248 
+tapeBeltWear(times): 11320495
+tapeMotorWear(times): 432 
 errorIOCount: 0 
 
 
@@ -128,13 +128,13 @@ errorIOCount: 0
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 5000 
-totcost: 19253745 
-algorithmRunningDuration(ms): 2725.76 
+totcost: 19058816 
+algorithmRunningDuration(ms): 4180.58 
 memoryUse(ms): 0 
-addressingDuration(ms): 6812680 
+addressingDuration(ms): 7015825 
 readDuration(ms): 5508917
-tapeBeltWear(times): 12440835
-tapeMotorWear(times): 230 
+tapeBeltWear(times): 12042545
+tapeMotorWear(times): 446 
 errorIOCount: 0 
 
 

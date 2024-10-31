@@ -17,7 +17,7 @@ Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 10 
 totcost: 995987 
-algorithmRunningDuration(ms): 0.00 
+algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 304643 
 readDuration(ms): 6060
@@ -31,7 +31,7 @@ Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 10 
 totcost: 1525723 
-algorithmRunningDuration(ms): 0.00 
+algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
 addressingDuration(ms): 387493 
 readDuration(ms): 6060
@@ -100,8 +100,22 @@ errorIOCount: 0
 Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 10 
-totcost: 1033510 
+totcost: 1113766 
 algorithmRunningDuration(ms): 0.10 
+memoryUse(ms): 0 
+addressingDuration(ms): 318194 
+readDuration(ms): 6060
+tapeBeltWear(times): 795559
+tapeMotorWear(times): 13 
+errorIOCount: 0 
+
+
+/* 算法名称 */
+Algorithm: MergeRandom
+/* 关键指标结构体 */
+ioCount: 10 
+totcost: 1033510 
+algorithmRunningDuration(ms): 0.07 
 memoryUse(ms): 0 
 addressingDuration(ms): 296958 
 readDuration(ms): 6060
@@ -111,25 +125,11 @@ errorIOCount: 0
 
 
 /* 算法名称 */
-Algorithm: MergeRandom
-/* 关键指标结构体 */
-ioCount: 10 
-totcost: 1503379 
-algorithmRunningDuration(ms): 0.07 
-memoryUse(ms): 0 
-addressingDuration(ms): 401835 
-readDuration(ms): 6060
-tapeBeltWear(times): 1101531
-tapeMotorWear(times): 13 
-errorIOCount: 0 
-
-
-/* 算法名称 */
 Algorithm: FAST
 /* 关键指标结构体 */
 ioCount: 10 
 totcost: 986056 
-algorithmRunningDuration(ms): 1.30 
+algorithmRunningDuration(ms): 1.39 
 memoryUse(ms): 0 
 addressingDuration(ms): 293696 
 readDuration(ms): 6060
