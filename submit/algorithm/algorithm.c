@@ -134,7 +134,7 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
 
     ret = IOScheduleAlgorithm(input, output);
     printf("cost before operator optimization: %ld\n", getTotalCost(input, output));
-    ret = operator_optimization(input, output);
+    // ret = operator_optimization(input, output);
     printf("cost afther operator optimization: %ld\n", getTotalCost(input, output));
     duration_us = getDurationMicroseconds();
 
@@ -1591,13 +1591,14 @@ int32_t merge(const InputParam *input, OutputParam *output)
 
         if (nex[node->x] == 0 && (node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0 && find(node->x) != find(node->y))
         {
-            tot_sz++;
-            // 记录最后merge选取的最后10条边
-            if (tot_sz > input->ioVec.len - lastpoints)
-            {
-                pos[tot_sz + lastpoints - input->ioVec.len - 1] = node->y;
-                printf("pos[%d]=%d\n", tot_sz + lastpoints - input->ioVec.len - 1, node->y);
-            }
+            // TODO: tail sort
+            // tot_sz++;
+            // // 记录最后merge选取的最后10条边
+            // if (tot_sz > input->ioVec.len - lastpoints)
+            // {
+            //     pos[tot_sz + lastpoints - input->ioVec.len - 1] = node->y;
+            //     printf("pos[%d]=%d\n", tot_sz + lastpoints - input->ioVec.len - 1, node->y);
+            // }
             unite(node->x, node->y);
             nex[node->x] = node->y;
             vis[node->y] = 1;
@@ -1637,7 +1638,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
     }
     destoryMinHeap(heap);
 
-    TailReinsert(input, output, pos, lastpoints);
+    // TailReinsert(input, output, pos, lastpoints);
 
     return RETURN_OK;
 }
