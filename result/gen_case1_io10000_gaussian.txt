@@ -31,7 +31,7 @@ Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 10000 
 totcost: 241299750 
-algorithmRunningDuration(ms): 0.74 
+algorithmRunningDuration(ms): 0.75 
 memoryUse(ms): 0 
 addressingDuration(ms): 145852483 
 readDuration(ms): 10890548
@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 10000 
 totcost: 33176475 
-algorithmRunningDuration(ms): 15.72 
+algorithmRunningDuration(ms): 15.75 
 memoryUse(ms): 0 
 addressingDuration(ms): 10913124 
 readDuration(ms): 10890548
@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 10000 
-totcost: 32006883 
-algorithmRunningDuration(ms): 1776.63 
+totcost: 32837488 
+algorithmRunningDuration(ms): 3878.67 
 memoryUse(ms): 0 
-addressingDuration(ms): 10853143 
+addressingDuration(ms): 12141988 
 readDuration(ms): 10890548
-tapeBeltWear(times): 21153158
-tapeMotorWear(times): 582 
+tapeBeltWear(times): 20694298
+tapeMotorWear(times): 1202 
 errorIOCount: 0 
 
 
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 10000 
 totcost: 32286350 
-algorithmRunningDuration(ms): 2873.74 
+algorithmRunningDuration(ms): 2875.03 
 memoryUse(ms): 0 
 addressingDuration(ms): 10223119 
 readDuration(ms): 10890548
@@ -101,7 +101,7 @@ Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 10000 
 totcost: 29398432 
-algorithmRunningDuration(ms): 10912.95 
+algorithmRunningDuration(ms): 10923.44 
 memoryUse(ms): 0 
 addressingDuration(ms): 9877180 
 readDuration(ms): 10890548
@@ -115,25 +115,11 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 10000 
 totcost: 29037530 
-algorithmRunningDuration(ms): 10681.70 
+algorithmRunningDuration(ms): 10686.79 
 memoryUse(ms): 0 
 addressingDuration(ms): 9846630 
 readDuration(ms): 10890548
 tapeBeltWear(times): 19190296
-tapeMotorWear(times): 604 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 10000 
-totcost: 29398432 
-algorithmRunningDuration(ms): 13790.06 
-memoryUse(ms): 0 
-addressingDuration(ms): 9877180 
-readDuration(ms): 10890548
-tapeBeltWear(times): 19520648
 tapeMotorWear(times): 604 
 errorIOCount: 0 
 

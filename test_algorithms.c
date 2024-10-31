@@ -618,7 +618,8 @@ int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output)
                 continue;
 
             HeadInfo nextHead = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].startLpos, HEAD_RW};
-            int32_t seekTime = SeekTimeCalculate(&currentHead, &nextHead);
+            // int32_t seekTime = SeekTimeCalculate(&currentHead, &nextHead);
+            int32_t seekTime = getCost(&currentHead, &nextHead);
 
             if (seekTime < minSeekTime)
             {

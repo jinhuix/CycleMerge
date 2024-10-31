@@ -112,6 +112,14 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
             flag = 6;
         }
+        NearestNeighborAlgorithm(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 7;
+        }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
         printf("flag=%d\n", flag);
     }
@@ -1779,6 +1787,58 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
     destoryMinHeap(heap);
 
     // free(dis);
+    return RETURN_OK;
+}
+
+int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output)
+{
+    // 初始化输出参数
+    output->len = input->ioVec.len;
+
+    // 记录哪些请求已经被处理
+    bool processed[input->ioVec.len];
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        processed[i] = false;
+    }
+
+    // 初始化当前头位置为输入的头状态
+    HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+
+    // 对于每一个请求，找到距离当前头位置最近的未处理请求
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+    {
+        int32_t minSeekTime = INT32_MAX;
+        uint32_t nextRequestIndex = 0;
+
+        for (uint32_t j = 0; j < input->ioVec.len; ++j)
+        {
+            if (processed[j])
+                continue;
+
+            HeadInfo nextHead = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].startLpos, HEAD_RW};
+            // int32_t seekTime = SeekTimeCalculate(&currentHead, &nextHead);
+            int32_t seekTime = getCost(&currentHead, &nextHead);
+
+            if (seekTime < minSeekTime)
+            {
+                minSeekTime = seekTime;
+                nextRequestIndex = j;
+            }
+        }
+
+        // 更新当前头位置为找到的最近请求的末尾位置
+        currentHead.wrap = input->ioVec.ioArray[nextRequestIndex].wrap;
+        currentHead.lpos = input->ioVec.ioArray[nextRequestIndex].endLpos;
+        currentHead.status = HEAD_RW;
+
+        // 将该请求标记为已处理
+        processed[nextRequestIndex] = true;
+
+        // 将该请求添加到输出序列中
+        output->sequence[i] = input->ioVec.ioArray[nextRequestIndex].id;
+    }
+
     return RETURN_OK;
 }
 

@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 13 
-totcost: 1140575 
+totcost: 1133231 
 algorithmRunningDuration(ms): 0.01 
 memoryUse(ms): 0 
-addressingDuration(ms): 369748 
+addressingDuration(ms): 370388 
 readDuration(ms): 12253
-tapeBeltWear(times): 770796
-tapeMotorWear(times): 31 
+tapeBeltWear(times): 762810
+tapeMotorWear(times): 33 
 errorIOCount: 0 
 
 
@@ -121,20 +121,6 @@ addressingDuration(ms): 445255
 readDuration(ms): 12253
 tapeBeltWear(times): 1154608
 tapeMotorWear(times): 21 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 13 
-totcost: 1150383 
-algorithmRunningDuration(ms): 2.14 
-memoryUse(ms): 0 
-addressingDuration(ms): 355182 
-readDuration(ms): 12253
-tapeBeltWear(times): 795178
-tapeMotorWear(times): 23 
 errorIOCount: 0 
 
 

@@ -31,7 +31,7 @@ Algorithm: Scan
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 112788621 
-algorithmRunningDuration(ms): 0.33 
+algorithmRunningDuration(ms): 0.34 
 memoryUse(ms): 0 
 addressingDuration(ms): 67891694 
 readDuration(ms): 5508917
@@ -45,7 +45,7 @@ Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 21396488 
-algorithmRunningDuration(ms): 1.04 
+algorithmRunningDuration(ms): 1.02 
 memoryUse(ms): 0 
 addressingDuration(ms): 7488459 
 readDuration(ms): 5508917
@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 5000 
-totcost: 20407987 
-algorithmRunningDuration(ms): 442.21 
+totcost: 21225131 
+algorithmRunningDuration(ms): 969.22 
 memoryUse(ms): 0 
-addressingDuration(ms): 7642805 
+addressingDuration(ms): 8435241 
 readDuration(ms): 5508917
-tapeBeltWear(times): 12764754
-tapeMotorWear(times): 428 
+tapeBeltWear(times): 12789116
+tapeMotorWear(times): 774 
 errorIOCount: 0 
 
 
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 20776874 
-algorithmRunningDuration(ms): 1466.49 
+algorithmRunningDuration(ms): 1468.32 
 memoryUse(ms): 0 
 addressingDuration(ms): 7194171 
 readDuration(ms): 5508917
@@ -101,7 +101,7 @@ Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 19058816 
-algorithmRunningDuration(ms): 2711.77 
+algorithmRunningDuration(ms): 2716.04 
 memoryUse(ms): 0 
 addressingDuration(ms): 7015825 
 readDuration(ms): 5508917
@@ -115,26 +115,12 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 5000 
 totcost: 18170549 
-algorithmRunningDuration(ms): 2664.37 
+algorithmRunningDuration(ms): 2661.08 
 memoryUse(ms): 0 
 addressingDuration(ms): 6849622 
 readDuration(ms): 5508917
 tapeBeltWear(times): 11320495
 tapeMotorWear(times): 432 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 5000 
-totcost: 19058816 
-algorithmRunningDuration(ms): 4180.58 
-memoryUse(ms): 0 
-addressingDuration(ms): 7015825 
-readDuration(ms): 5508917
-tapeBeltWear(times): 12042545
-tapeMotorWear(times): 446 
 errorIOCount: 0 
 
 

@@ -10,7 +10,8 @@ extern "C"
 {
 #endif
 
-    typedef struct{
+    typedef struct
+    {
         struct timeval start;
     } TimeRecord;
 
@@ -52,14 +53,16 @@ extern "C"
         MinHeap **heap_array;
     } MinHeapArray;
 
-    typedef struct {
-    const InputParam *input;
-    OutputParam *output;
-    AccessTime *accessTime;
+    typedef struct
+    {
+        const InputParam *input;
+        OutputParam *output;
+        AccessTime *accessTime;
     } ThreadArg;
-    
+
     // 定义线程返回值结构体
-    typedef struct {
+    typedef struct
+    {
         OutputParam *output;
         AccessTime accessTime;
     } ThreadResult;
@@ -95,6 +98,7 @@ extern "C"
     void *partition_scan_merge_thread(void *arg);
     void *mp_scan_merge_random_thread(void *arg);
     int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
+    int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output);
 #ifdef __cplusplus
 }
 #endif

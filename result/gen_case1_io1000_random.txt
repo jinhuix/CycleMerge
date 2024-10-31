@@ -17,7 +17,7 @@ Algorithm: Sort
 /* 关键指标结构体 */
 ioCount: 1000 
 totcost: 19281630 
-algorithmRunningDuration(ms): 0.05 
+algorithmRunningDuration(ms): 0.06 
 memoryUse(ms): 0 
 addressingDuration(ms): 11173473 
 readDuration(ms): 1118172
@@ -45,7 +45,7 @@ Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 1000 
 totcost: 9440656 
-algorithmRunningDuration(ms): 0.11 
+algorithmRunningDuration(ms): 0.10 
 memoryUse(ms): 0 
 addressingDuration(ms): 3443208 
 readDuration(ms): 1118172
@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 1000 
 totcost: 9011858 
-algorithmRunningDuration(ms): 1.53 
+algorithmRunningDuration(ms): 1.52 
 memoryUse(ms): 0 
 addressingDuration(ms): 3361345 
 readDuration(ms): 1118172
@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 1000 
-totcost: 8316883 
-algorithmRunningDuration(ms): 18.58 
+totcost: 8213008 
+algorithmRunningDuration(ms): 37.45 
 memoryUse(ms): 0 
-addressingDuration(ms): 3359170 
+addressingDuration(ms): 3556435 
 readDuration(ms): 1118172
-tapeBeltWear(times): 4957565
-tapeMotorWear(times): 148 
+tapeBeltWear(times): 4656285
+tapeMotorWear(times): 288 
 errorIOCount: 0 
 
 
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 1000 
 totcost: 8511993 
-algorithmRunningDuration(ms): 323.82 
+algorithmRunningDuration(ms): 324.37 
 memoryUse(ms): 0 
 addressingDuration(ms): 3291762 
 readDuration(ms): 1118172
@@ -101,7 +101,7 @@ Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 1000 
 totcost: 7781889 
-algorithmRunningDuration(ms): 95.53 
+algorithmRunningDuration(ms): 95.65 
 memoryUse(ms): 0 
 addressingDuration(ms): 3245209 
 readDuration(ms): 1118172
@@ -115,26 +115,12 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 1000 
 totcost: 8307828 
-algorithmRunningDuration(ms): 94.15 
+algorithmRunningDuration(ms): 94.11 
 memoryUse(ms): 0 
 addressingDuration(ms): 3395762 
 readDuration(ms): 1118172
 tapeBeltWear(times): 4911830
 tapeMotorWear(times): 236 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 1000 
-totcost: 7781889 
-algorithmRunningDuration(ms): 419.42 
-memoryUse(ms): 0 
-addressingDuration(ms): 3245209 
-readDuration(ms): 1118172
-tapeBeltWear(times): 4536458
-tapeMotorWear(times): 222 
 errorIOCount: 0 
 
 

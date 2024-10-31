@@ -342,7 +342,8 @@ int process(char *file)
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "SA", "TS", "merge"};
     // char *algorithms[] = {"FCFS", "SCAN", "SCAN2", "Nearest", "merge", "partition_scan"};
     // char *algorithms[] = {"FCFS", "SORT", "SCAN", "SCAN2", "Nearest", "MPScanPartition", "partition_scan", "MPScan", "merge"};
-    char *algorithms[] = {"FCFS", "Sort", "Scan", "MPScan", "MPScanStar", "Nearest", "PartitionScan", "Merge", "MergeRandom", "FAST"};
+    // char *algorithms[] = {"FCFS", "Sort", "Scan", "MPScan", "MPScanStar", "Nearest", "PartitionScan", "Merge", "MergeRandom", "FAST"};
+    char *algorithms[] = {"FCFS", "Sort", "Scan", "MPScan", "MPScanStar", "Nearest", "PartitionScan", "Merge", "MergeRandom"};
     char *operator_optimization[] = {"SIMPLE"};
 
     int numAlgorithms = sizeof(algorithms) / sizeof(algorithms[0]);

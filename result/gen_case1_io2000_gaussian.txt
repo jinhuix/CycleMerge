@@ -45,7 +45,7 @@ Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 13295130 
-algorithmRunningDuration(ms): 0.28 
+algorithmRunningDuration(ms): 0.29 
 memoryUse(ms): 0 
 addressingDuration(ms): 4828914 
 readDuration(ms): 2202212
@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 13000803 
-algorithmRunningDuration(ms): 3.10 
+algorithmRunningDuration(ms): 3.09 
 memoryUse(ms): 0 
 addressingDuration(ms): 4794981 
 readDuration(ms): 2202212
@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 2000 
-totcost: 12180687 
-algorithmRunningDuration(ms): 70.19 
+totcost: 12520837 
+algorithmRunningDuration(ms): 155.10 
 memoryUse(ms): 0 
-addressingDuration(ms): 4904257 
+addressingDuration(ms): 5423854 
 readDuration(ms): 2202212
-tapeBeltWear(times): 7276174
-tapeMotorWear(times): 256 
+tapeBeltWear(times): 7096473
+tapeMotorWear(times): 510 
 errorIOCount: 0 
 
 
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 12549496 
-algorithmRunningDuration(ms): 518.69 
+algorithmRunningDuration(ms): 520.38 
 memoryUse(ms): 0 
 addressingDuration(ms): 4733978 
 readDuration(ms): 2202212
@@ -101,7 +101,7 @@ Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 10948088 
-algorithmRunningDuration(ms): 414.18 
+algorithmRunningDuration(ms): 414.88 
 memoryUse(ms): 0 
 addressingDuration(ms): 4439466 
 readDuration(ms): 2202212
@@ -115,26 +115,12 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 12104677 
-algorithmRunningDuration(ms): 403.80 
+algorithmRunningDuration(ms): 403.69 
 memoryUse(ms): 0 
 addressingDuration(ms): 4704058 
 readDuration(ms): 2202212
 tapeBeltWear(times): 7400369
 tapeMotorWear(times): 250 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 2000 
-totcost: 10948088 
-algorithmRunningDuration(ms): 934.60 
-memoryUse(ms): 0 
-addressingDuration(ms): 4439466 
-readDuration(ms): 2202212
-tapeBeltWear(times): 6508368
-tapeMotorWear(times): 254 
 errorIOCount: 0 
 
 

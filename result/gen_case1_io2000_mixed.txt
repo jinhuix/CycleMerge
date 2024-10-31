@@ -45,7 +45,7 @@ Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 33932739 
-algorithmRunningDuration(ms): 3.13 
+algorithmRunningDuration(ms): 4.12 
 memoryUse(ms): 0 
 addressingDuration(ms): 18289957 
 readDuration(ms): 2807058
@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 33922733 
-algorithmRunningDuration(ms): 18.10 
+algorithmRunningDuration(ms): 18.83 
 memoryUse(ms): 0 
 addressingDuration(ms): 18279949 
 readDuration(ms): 2807058
@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 2000 
-totcost: 30762103 
-algorithmRunningDuration(ms): 69.34 
+totcost: 30946682 
+algorithmRunningDuration(ms): 163.58 
 memoryUse(ms): 0 
-addressingDuration(ms): 17574182 
+addressingDuration(ms): 17995470 
 readDuration(ms): 2807058
-tapeBeltWear(times): 13184333
-tapeMotorWear(times): 3588 
+tapeBeltWear(times): 12947424
+tapeMotorWear(times): 3788 
 errorIOCount: 0 
 
 
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 30853252 
-algorithmRunningDuration(ms): 2673.02 
+algorithmRunningDuration(ms): 2712.68 
 memoryUse(ms): 0 
 addressingDuration(ms): 17720091 
 readDuration(ms): 2807058
@@ -101,7 +101,7 @@ Algorithm: Merge
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 29807013 
-algorithmRunningDuration(ms): 942.03 
+algorithmRunningDuration(ms): 941.37 
 memoryUse(ms): 0 
 addressingDuration(ms): 17310989 
 readDuration(ms): 2807058
@@ -115,26 +115,12 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 2000 
 totcost: 29909622 
-algorithmRunningDuration(ms): 709.58 
+algorithmRunningDuration(ms): 709.15 
 memoryUse(ms): 0 
 addressingDuration(ms): 17431956 
 readDuration(ms): 2807058
 tapeBeltWear(times): 12474004
 tapeMotorWear(times): 3662 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 2000 
-totcost: 29807013 
-algorithmRunningDuration(ms): 3617.89 
-memoryUse(ms): 0 
-addressingDuration(ms): 17310989 
-readDuration(ms): 2807058
-tapeBeltWear(times): 12492388
-tapeMotorWear(times): 3636 
 errorIOCount: 0 
 
 

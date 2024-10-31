@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 15 
 totcost: 1100997 
-algorithmRunningDuration(ms): 2.33 
+algorithmRunningDuration(ms): 2.31 
 memoryUse(ms): 0 
 addressingDuration(ms): 354295 
 readDuration(ms): 9090
@@ -115,26 +115,12 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 15 
 totcost: 1620467 
-algorithmRunningDuration(ms): 0.09 
+algorithmRunningDuration(ms): 0.10 
 memoryUse(ms): 0 
 addressingDuration(ms): 458526 
 readDuration(ms): 9090
 tapeBeltWear(times): 1161920
 tapeMotorWear(times): 21 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 15 
-totcost: 1100997 
-algorithmRunningDuration(ms): 2.47 
-memoryUse(ms): 0 
-addressingDuration(ms): 354295 
-readDuration(ms): 9090
-tapeBeltWear(times): 746675
-tapeMotorWear(times): 27 
 errorIOCount: 0 
 
 

@@ -45,7 +45,7 @@ Algorithm: MPScan
 /* 关键指标结构体 */
 ioCount: 400 
 totcost: 5909009 
-algorithmRunningDuration(ms): 0.04 
+algorithmRunningDuration(ms): 0.03 
 memoryUse(ms): 0 
 addressingDuration(ms): 2111735 
 readDuration(ms): 443928
@@ -59,7 +59,7 @@ Algorithm: MPScanStar
 /* 关键指标结构体 */
 ioCount: 400 
 totcost: 5032142 
-algorithmRunningDuration(ms): 1.08 
+algorithmRunningDuration(ms): 1.07 
 memoryUse(ms): 0 
 addressingDuration(ms): 1939144 
 readDuration(ms): 443928
@@ -72,13 +72,13 @@ errorIOCount: 0
 Algorithm: Nearest
 /* 关键指标结构体 */
 ioCount: 400 
-totcost: 5669631 
-algorithmRunningDuration(ms): 2.77 
+totcost: 5783067 
+algorithmRunningDuration(ms): 6.11 
 memoryUse(ms): 0 
-addressingDuration(ms): 2281344 
+addressingDuration(ms): 2518148 
 readDuration(ms): 443928
-tapeBeltWear(times): 3388141
-tapeMotorWear(times): 146 
+tapeBeltWear(times): 3264653
+tapeMotorWear(times): 266 
 errorIOCount: 0 
 
 
@@ -87,7 +87,7 @@ Algorithm: PartitionScan
 /* 关键指标结构体 */
 ioCount: 400 
 totcost: 5079469 
-algorithmRunningDuration(ms): 105.34 
+algorithmRunningDuration(ms): 104.52 
 memoryUse(ms): 0 
 addressingDuration(ms): 1964894 
 readDuration(ms): 443928
@@ -115,26 +115,12 @@ Algorithm: MergeRandom
 /* 关键指标结构体 */
 ioCount: 400 
 totcost: 5077603 
-algorithmRunningDuration(ms): 15.12 
+algorithmRunningDuration(ms): 14.79 
 memoryUse(ms): 0 
 addressingDuration(ms): 2048590 
 readDuration(ms): 443928
 tapeBeltWear(times): 3028869
 tapeMotorWear(times): 144 
-errorIOCount: 0 
-
-
-/* 算法名称 */
-Algorithm: FAST
-/* 关键指标结构体 */
-ioCount: 400 
-totcost: 5079469 
-algorithmRunningDuration(ms): 120.31 
-memoryUse(ms): 0 
-addressingDuration(ms): 1964894 
-readDuration(ms): 443928
-tapeBeltWear(times): 3114531
-tapeMotorWear(times): 44 
 errorIOCount: 0 
 
 
