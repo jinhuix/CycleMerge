@@ -9,6 +9,265 @@
 #define NUM_ONLOOKER_BEES 20 // 跟随蜂的数量
 #define MAX_ITERATIONS 1000  // 最大迭代次数
 
+const InputParam *g_input;
+int * dist_martix = NULL;
+
+int _get_distance(int i, int j){
+    if(i == j){
+        return -INF;
+    }
+
+    HeadInfo currentHead, targetPos;
+    
+
+    if(i == 1){
+        // head
+        currentHead = g_input->headInfo;
+    }
+    else{
+        currentHead.lpos = g_input->ioVec.ioArray[i-2].endLpos;
+        currentHead.wrap = g_input->ioVec.ioArray[i-2].wrap;
+        currentHead.status = HEAD_RW;
+    }
+
+    if(j == 1){
+        // head
+        targetPos = g_input->headInfo;
+    }
+    else{
+        targetPos.lpos = g_input->ioVec.ioArray[j-2].startLpos;
+        targetPos.wrap = g_input->ioVec.ioArray[j-2].wrap;
+        targetPos.status = HEAD_RW;
+    }
+
+    // TotalTapeBeltWearTimes(&currentHead, &targetPos, NULL);  // 带体磨损
+    return -getCost(&currentHead, &targetPos);
+}
+
+int kmGetDistance(int i, int j){
+    if(dist_martix == NULL){
+        dist_martix = (int *)malloc(sizeof(int)*(g_input->ioVec.len+2)*(g_input->ioVec.len+2));
+        memset(dist_martix, 0, sizeof(int)*(g_input->ioVec.len+2)*(g_input->ioVec.len+2));
+
+        for(int i=1;i<=g_input->ioVec.len + 1;i++){
+            for(int j=1;j<=g_input->ioVec.len + 1;j++){
+                ;
+                dist_martix[i*(g_input->ioVec.len+2)+j] = _get_distance(i, j);
+            }
+        }
+    }
+    return dist_martix[i*(g_input->ioVec.len+2)+j];
+}
+
+int min(int a, int b)
+{
+    return a<b?a:b;
+}
+
+int max(int a, int b)
+{
+    return a>b?a:b;
+}
+
+void kmInit(struct KM * cthis, int n, int nx, int ny){
+    int need_n = n + 100;
+    cthis->match = (int *)malloc(sizeof(int)*(need_n));
+    cthis->lx = (int *)malloc(sizeof(int)*(need_n));
+    cthis->ly = (int *)malloc(sizeof(int)*(need_n));
+    cthis->visx = (bool *)malloc(sizeof(bool)*(need_n));
+    cthis->visy = (bool *)malloc(sizeof(bool)*(need_n));
+    cthis->fa = (int *)malloc(sizeof(int) * 2 * need_n);
+    cthis->slack = (int *)malloc(sizeof(bool)*(need_n));
+    cthis->visit_node = (bool *)malloc(sizeof(bool)*(need_n));
+    cthis->next = (int *)malloc(sizeof(int) * need_n);
+
+    cthis->n=n;
+    cthis->nx = nx;
+    cthis->ny = ny;
+    cthis->need_n = need_n;
+}
+
+void kmClear(struct KM * cthis){
+    free(cthis->match);
+    free(cthis->lx);
+    free(cthis->ly);
+    free(cthis->visx);
+    free(cthis->visy);
+    free(cthis->fa);
+    free(cthis->slack);
+    free(cthis->visit_node);
+    free(cthis->next);
+}
+ 
+
+ 
+
+int kmFindpath(struct KM * cthis, int x)
+{
+    int tempDelta;
+    cthis->visx[x]=true;
+    for(int y=1;y<=cthis->ny;y++){
+        if(cthis->visy[y])continue;
+        tempDelta =cthis->lx[x]+cthis->ly[y]-kmGetDistance(x,y);
+        if(tempDelta ==  0){
+            cthis->visy[y] = true;
+            cthis->fa[y+cthis->nx]=x;
+            if(cthis->match[y] == -1){
+                return y+cthis->nx;
+            }
+            cthis->fa[cthis->match[y]]=y+cthis->nx;//记录交替树的父亲信息（为了区别X，Y集合，Y的点都映射成n+y）
+            int res=kmFindpath(cthis, cthis->match[y]);
+            if(res>0)return res;//返回增广路的末端叶子节点
+        }
+        else if(cthis->slack[x] > tempDelta)//统计以x为准的slack值。
+            cthis->slack[x] = tempDelta;
+    }
+    return -1;
+}
+void kmMain(struct KM * cthis)
+{
+    for(int x = 1 ; x <= cthis->nx ; ++x){
+        // printf("lx[%d] = %d\n", x, cthis->lx[x]);
+       for(int i = 1 ; i <= cthis->nx ; ++i) cthis->slack[i] = INF;
+       for(int i=1;i<=cthis->nx+cthis->ny;i++)cthis->fa[i]=-1;
+        memset(cthis->visx,false,sizeof(bool) * cthis->need_n);
+        memset(cthis->visy,false,sizeof(bool) * cthis->need_n);//换到外面，可以保留原树
+        int fir=1;int leaf=-1;
+        while(true){
+            if(fir==1){
+                leaf=kmFindpath(cthis, x);
+                fir=0;
+            }
+            else{
+                for(int i=1;i<=cthis->nx;i++){
+                    if(cthis->slack[i]==0){//只接着搜有新边加入的X点
+                        cthis->slack[i]=INF;//slack要重新清空，方以后接着用
+                        leaf=kmFindpath(cthis, i);
+                        if(leaf>0)break;
+                    }
+                }
+            }
+            if(leaf>0){
+                int p=leaf;
+                while(p>0){
+                    cthis->match[p-cthis->nx]=cthis->fa[p];
+                    p=cthis->fa[cthis->fa[p]];//顺着记录一路找找上去
+                }
+                break;
+            }
+            else{
+                int delta =INF;
+                for(int i = 1 ; i <= cthis->nx ; ++i)
+                    if(cthis->visx[i] && delta > cthis->slack[i])
+                        delta = cthis->slack[i];
+                for(int i = 1 ; i <= cthis->nx ; ++i)
+                    if(cthis->visx[i]) {cthis->lx[i] -= delta;cthis->slack[i]-=delta;}//X点的slack要响应改变，slack变0说明有新边加入
+                for(int j = 1 ; j <= cthis->ny ; ++j){
+                    if(cthis->visy[j])
+                        cthis->ly[j] += delta;
+                }
+            }
+        }
+    }
+}
+ 
+void kmSolve(struct KM * cthis)
+{
+    memset(cthis->match,-1,sizeof(int) * cthis->need_n);
+    memset(cthis->ly,0,sizeof(int) * cthis->need_n);
+ 
+    for(int i=1;i<=cthis->nx;i++)
+    {
+        cthis->lx[i]=-INF;
+        for(int j=1;j<=cthis->ny;j++)
+            cthis->lx[i]=max(cthis->lx[i],kmGetDistance(i, j));
+    }
+ 
+    kmMain(cthis);
+}
+
+
+
+void cycleMergeLink(struct KM * cthis, int i, int j){
+    cthis->next[i] = j;
+    cthis->match[j] = i;
+}
+
+void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p){
+    int visited_start = -1;
+    int visited_end = -1;
+    int unvisited_start = -1;
+    int unvisited_end = -1;
+    int max_cost = -INF;
+    for(int i = 1; i <= cthis->n; i++){
+        if(cthis->visit_node[i]){
+            for(int j = 1; j <= cthis->n; j++){
+                if(!cthis->visit_node[j]){
+                    int this_cost = 0;
+                    this_cost += kmGetDistance(i, j);
+                    this_cost += kmGetDistance(cthis->match[j], cthis->next[i]);
+                    this_cost -= kmGetDistance(i, cthis->next[i]);
+                    this_cost -= kmGetDistance(cthis->match[j], j);
+                    if(visited_start == -1 || this_cost > max_cost){
+                        max_cost = this_cost;
+                        visited_start = i;
+                        visited_end = cthis->next[i];
+                        unvisited_start = j;
+                        unvisited_end = cthis->match[j];
+                    }
+                }
+            }
+        }
+    }
+    *visited_start_p = visited_start;
+    *visited_end_p = visited_end;
+    *unvisited_start_p = unvisited_start;
+    *unvisited_end_p = unvisited_end;
+}
+
+void cycleMergeMain(struct KM * cthis){
+    int path_length = 0;
+    int last_end = -1;
+    memset(cthis->visit_node, 0, sizeof(bool) * cthis->need_n);
+    for(int i = 1; i <= cthis->ny; i++){
+        int left = cthis->match[i];
+        cthis->next[left] = i;
+    }
+
+    int now_node = 1;
+    
+    int visit_cnt = 0;
+    while(visit_cnt != cthis->n){
+        // assert(cthis->visit_node[now_node] == 0);
+        cthis->visit_node[now_node] = 1;
+        visit_cnt ++;
+        if(visit_cnt == cthis->n){
+            break;
+        }
+
+        int next = cthis->next[now_node];
+        if(cthis->visit_node[next]){
+            int visited_start, visited_end;
+            int unvisited_start, unvisited_end;
+            cycleMergeFindMinimalMerge(cthis, &visited_start, &visited_end, &unvisited_start, &unvisited_end);
+
+            cycleMergeLink(cthis, visited_start, unvisited_start);
+            cycleMergeLink(cthis, unvisited_end, visited_end);
+            path_length += kmGetDistance(visited_start, unvisited_start);
+            path_length += kmGetDistance(unvisited_end, visited_end);
+            path_length -= kmGetDistance(visited_start, visited_end);
+            now_node = unvisited_start;
+
+        }
+        else{
+            path_length += kmGetDistance(now_node, next);
+            now_node = next;
+        }
+    }
+    printf("path length = %d\n", path_length);
+}
+
+
 void startRecordTime()
 {
     gettimeofday(&g_TimeRecord.start, NULL);
@@ -57,6 +316,14 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
     {
         int flag = 1;
         AccessTime accessTime = {0};
+        cycleMerge(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 1;
+        }
         merge(input, output);
         total_cost = getTotalCost(input, output);
         if (total_cost < min_cost)
@@ -137,6 +404,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
 int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
 {
     int32_t ret, duration_us;
+    g_input = input;
 
     startRecordTime();
 
@@ -1533,6 +1801,28 @@ int32_t TailReinsert(const InputParam *input, OutputParam *output, int *pos, int
 
     free(tmp->sequence);
     free(tmp);
+}
+
+int32_t cycleMerge(const InputParam *input, OutputParam *output){
+    struct KM km;
+    int n = input->ioVec.len + 1;
+    kmInit(&km, n, n, n);
+    kmSolve(&km);
+    cycleMergeMain(&km);
+
+    int cnt = 0;
+    int now = 1;
+    while (cnt < input->ioVec.len)
+    {
+        output->sequence[cnt++] = km.next[now] - 1;
+        now = km.next[now];
+    }
+    kmClear(&km);
+    if(dist_martix){
+        free(dist_martix);
+    }
+
+    return RETURN_OK;
 }
 
 int32_t merge(const InputParam *input, OutputParam *output)

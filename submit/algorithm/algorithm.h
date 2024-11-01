@@ -99,6 +99,43 @@ extern "C"
     void *mp_scan_merge_random_thread(void *arg);
     int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
     int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output);
+
+
+
+#define INF 0x3f3f3f3f
+uint32_t getCost(const HeadInfo *start, const HeadInfo *target);
+int get_distance(int i, int j);
+int min(int a, int b);
+int max(int a, int b);
+
+struct KM{
+    // int match[MAXN], lx[MAXN],ly[MAXN], slack[MAXN], fa[MAXN*2];
+    // bool visx[MAXN],visy[MAXN];
+    int * match;
+    int * lx;
+    int * ly;
+    bool * visx;
+    bool * visy;
+    bool * visit_node;
+    int * fa;
+    int * next;
+    int * slack;
+    int n, nx, ny;
+    int need_n;
+};
+
+int kmGetDistance(int i, int j);
+void kmInit(struct KM * cthis, int n, int nx, int ny);
+void kmClear(struct KM * cthis);
+int kmFindpath(struct KM * cthis, int x);
+void kmMain(struct KM * cthis);
+void kmSolve(struct KM * cthis);
+
+void cycleMergeLink(struct KM * cthis, int i, int j);
+void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p);
+void cycleMergeMain(struct KM * cthis);
+ 
+
 #ifdef __cplusplus
 }
 #endif
