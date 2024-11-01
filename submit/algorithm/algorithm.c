@@ -33,6 +33,7 @@ int _get_distance(int i, int j){
     if(j == 1){
         // head
         targetPos = g_input->headInfo;
+        return -0;
     }
     else{
         targetPos.lpos = g_input->ioVec.ioArray[j-2].startLpos;
@@ -57,6 +58,7 @@ int kmGetDistance(int i, int j){
         }
     }
     return dist_martix[i*(g_input->ioVec.len+2)+j];
+    // return _get_distance(i, j);
 }
 
 int min(int a, int b)
@@ -362,6 +364,14 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
             min_cost = total_cost;
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
             flag = 4;
+        }
+        cycleMerge(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 5;
         }
         merge(input, output);
         total_cost = getTotalCost(input, output);
