@@ -87,6 +87,8 @@ void kmInit(struct KM * cthis, int n, int nx, int ny){
     cthis->nx = nx;
     cthis->ny = ny;
     cthis->need_n = need_n;
+    cthis->heap = initFibHeap();
+    cthis->slackNodes = (FibNode **)malloc((cthis->nx + 1) * sizeof(FibNode *));
 }
 
 void kmClear(struct KM * cthis){
@@ -99,9 +101,13 @@ void kmClear(struct KM * cthis){
     free(cthis->slack);
     free(cthis->visit_node);
     free(cthis->next);
-}
- 
+    free(cthis->heap);
+    for (int i = 1; i <= cthis->nx; ++i) {
+        free(cthis->slackNodes[i]);
+    }
+    free(cthis->slackNodes);
 
+}
  
 
 int kmFindpath(struct KM * cthis, int x)
@@ -122,53 +128,67 @@ int kmFindpath(struct KM * cthis, int x)
             if(res>0)return res;//返回增广路的末端叶子节点
         }
         else if(cthis->slack[x] > tempDelta)//统计以x为准的slack值。
-            cthis->slack[x] = tempDelta;
+            decreaseKey(cthis->heap, cthis->slackNodes[x], tempDelta);
     }
     return -1;
 }
-void kmMain(struct KM * cthis)
-{
-    for(int x = 1 ; x <= cthis->nx ; ++x){
-        // printf("lx[%d] = %d\n", x, cthis->lx[x]);
-       for(int i = 1 ; i <= cthis->nx ; ++i) cthis->slack[i] = INF;
-       for(int i=1;i<=cthis->nx+cthis->ny;i++)cthis->fa[i]=-1;
-        memset(cthis->visx,false,sizeof(bool) * cthis->need_n);
-        memset(cthis->visy,false,sizeof(bool) * cthis->need_n);//换到外面，可以保留原树
-        int fir=1;int leaf=-1;
-        while(true){
-            if(fir==1){
-                leaf=kmFindpath(cthis, x); //返回增广路中的最后一个点
-                fir=0;
-            }
-            else{
-                for(int i=1;i<=cthis->nx;i++){
-                    if(cthis->slack[i]==0){//只接着搜有新边加入的X点
-                        cthis->slack[i]=INF;//slack要重新清空，方以后接着用
-                        leaf=kmFindpath(cthis, i);
-                        if(leaf>0)break;
+void kmMain(struct KM *cthis) {
+    for (int x = 1; x <= cthis->nx; ++x) {
+        // 初始化父节点和访问标记
+        for (int i = 1; i <= cthis->nx + cthis->ny; ++i) cthis->fa[i] = -1;
+        memset(cthis->visx, false, sizeof(bool) * cthis->need_n);
+        memset(cthis->visy, false, sizeof(bool) * cthis->need_n);
+
+        // 重置 slack 并插入到 Fibonacci 堆中
+        for (int i = 1; i <= cthis->nx; ++i) {
+            int slackValue = INF;
+            cthis->slackNodes[i] = createFibNode(slackValue, i);
+            insert(cthis->heap, cthis->slackNodes[i]); // 插入 Fibonacci 堆
+        }
+
+        int fir = 1;
+        int leaf = -1;
+
+        while (true) {
+            if (fir == 1) {
+                leaf = kmFindpath(cthis, x);  // 找到一条增广路径
+                fir = 0;
+            } else {
+                // 从 Fibonacci 堆中提取最小松弛值
+                FibNode* minSlackNode = extractMin(cthis->heap);
+                if (minSlackNode->key == 0) {  // 如果 slack 值为 0
+                    // 使用 minSlackNode->value 作为节点索引继续寻找增广路径
+                    leaf = kmFindpath(cthis, minSlackNode->value);
+                    if (leaf > 0) break;
+                    }
+                }
+
+            if (leaf > 0) {
+                // 找到增广路径，更新匹配
+                int p = leaf;
+                while (p > 0) {
+                    cthis->match[p - cthis->nx] = cthis->fa[p];
+                    p = cthis->fa[cthis->fa[p]];
+                }
+                break;
+            } else {
+                // 更新顶标
+                int delta = findMin(cthis->heap);  // 通过 Fibonacci 堆找到最小 delta
+                for (int i = 1; i <= cthis->nx; ++i) {
+                    if (cthis->visx[i]) {
+                        cthis->lx[i] -= delta;
+                        decreaseKey(cthis->heap, cthis->slackNodes[i], cthis->slackNodes[i]->key - delta);  // 更新 slack 值
+                    }
+                }
+                for (int j = 1; j <= cthis->ny; ++j) {
+                    if (cthis->visy[j]) {
+                        cthis->ly[j] += delta;
                     }
                 }
             }
-            if(leaf>0){
-                int p=leaf;
-                while(p>0){
-                    cthis->match[p-cthis->nx]=cthis->fa[p];
-                    p=cthis->fa[cthis->fa[p]];//顺着记录一路找找上去
-                }
-                break;
-            }
-            else{
-                int delta =INF;
-                for(int i = 1 ; i <= cthis->nx ; ++i)
-                    if(cthis->visx[i] && delta > cthis->slack[i])
-                        delta = cthis->slack[i];
-                for(int i = 1 ; i <= cthis->nx ; ++i)
-                    if(cthis->visx[i]) {cthis->lx[i] -= delta;cthis->slack[i]-=delta;}//X点的slack要响应改变，slack变0说明有新边加入
-                for(int j = 1 ; j <= cthis->ny ; ++j){
-                    if(cthis->visy[j])
-                        cthis->ly[j] += delta;
-                }
-            }
+        }
+        for (int i = 1; i <= cthis->nx; ++i) {
+            free(cthis->slackNodes[i]);
         }
     }
 }
@@ -269,6 +289,151 @@ void cycleMergeMain(struct KM * cthis){
     printf("path length = %d\n", path_length);
 }
 
+//Fibonacci堆
+FibHeap* initFibHeap() {
+    FibHeap *heap = (FibHeap *)malloc(sizeof(FibHeap));
+    if (heap == NULL) {
+        // 处理内存分配失败
+        fprintf(stderr, "Error: Memory allocation for heap failed.\n");
+        exit(EXIT_FAILURE);
+    }
+    heap->min = NULL;
+    heap->n = 0;
+    return heap;
+}
+
+FibNode* createFibNode(int key, int value) {
+    FibNode *node = (FibNode *)malloc(sizeof(FibNode));
+    if (node == NULL) {
+        // 处理内存分配失败
+        fprintf(stderr, "Error: Memory allocation for FibNode failed.\n");
+        exit(EXIT_FAILURE);
+    }
+    node->key = key;
+    node->value = value;
+    node->degree = 0;
+    node->mark = false;
+    node->parent = NULL;
+    node->child = NULL;
+    node->left = node;  // 自己指向自己
+    node->right = node; // 自己指向自己
+    return node;
+}
+
+void insert(FibHeap *heap, FibNode *node) {
+    if (heap->min == NULL) {
+        heap->min = node;
+    } else {
+        // 将新节点插入到根链表中
+        node->left = heap->min;
+        node->right = heap->min->right;
+        heap->min->right->left = node;
+        heap->min->right = node;
+        // 更新最小节点
+        if (node->key < heap->min->key) {
+            heap->min = node;
+        }
+    }
+    heap->n++;
+}
+void unionFibHeap(FibHeap *heap1, FibHeap *heap2) {
+    if (heap2->min == NULL) return;
+    if (heap1->min == NULL) {
+        heap1->min = heap2->min;
+    } else {
+        // 合并两个堆的根列表
+        FibNode *min1 = heap1->min;
+        FibNode *min2 = heap2->min;
+        min1->right->left = min2->left;
+        min2->left->right = min1->right;
+        min1->right = min2;
+        min2->left = min1;
+        // 更新最小节点
+        if (min2->key < min1->key) {
+            heap1->min = min2;
+        }
+    }
+    heap1->n += heap2->n;
+    
+}
+int findMin(FibHeap *heap) {
+    if (heap->min == NULL) return INF;  // 无节点时返回极大值
+    return heap->min->key;
+}
+void cut(FibHeap *heap, FibNode *node, FibNode *parent) {
+    if (node->right == node) {
+        parent->child = NULL;
+    } else {
+        node->left->right = node->right;
+        node->right->left = node->left;
+        if (parent->child == node) {
+            parent->child = node->right;
+        }
+    }
+    parent->degree--;
+    node->parent = NULL;
+    node->left = node->right = node;
+    node->mark = false;
+    insert(heap, node);
+}
+
+void cascadingCut(FibHeap *heap, FibNode *node) {
+    FibNode *parent = node->parent;
+    if (parent != NULL) {
+        if (!node->mark) {
+            node->mark = true;
+        } else {
+            cut(heap, node, parent);
+            cascadingCut(heap, parent);
+        }
+    }
+}
+
+void decreaseKey(FibHeap *heap, FibNode *node, int newKey) {
+    if (newKey > node->key) {
+        // printf("New key is greater than current key\n");
+        return;
+    }
+    node->key = newKey;
+    FibNode *parent = node->parent;
+    if (parent != NULL && node->key < parent->key) {
+        cut(heap, node, parent);
+        cascadingCut(heap, parent);
+    }
+    if (node->key < heap->min->key) {
+        heap->min = node;
+    }
+}
+void consolidate(FibHeap *heap) {
+    // 这里实现 consolidate 函数，将根列表中的节点合并，保持堆的平衡
+}
+
+FibNode* extractMinValue(FibHeap *heap) {
+    FibNode *z = heap->min;
+    if (z != NULL) {
+        FibNode *child = z->child;
+        if (child != NULL) {
+            FibNode *current = child;
+            do {
+                FibNode *next = current->right;
+                insert(heap, current);
+                current->parent = NULL;
+                current = next;
+            } while (current != child);
+        }
+        // 从根链表中移除 z
+        if (z == z->right) {
+            heap->min = NULL;
+        } else {
+            z->left->right = z->right;
+            z->right->left = z->left;
+            heap->min = z->right;
+            consolidate(heap);
+        }
+        heap->n--;
+    }
+    return z;
+}
 
 void startRecordTime()
 {
@@ -326,23 +491,23 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
             flag = 1;
         }
-        merge(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 1;
-        }
-        merge_random(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 2;
-        }
-        memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+        // merge(input, output);
+        // total_cost = getTotalCost(input, output);
+        // if (total_cost < min_cost)
+        // {
+        //     min_cost = total_cost;
+        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        //     flag = 1;
+        // }
+        // merge_random(input, output);
+        // total_cost = getTotalCost(input, output);
+        // if (total_cost < min_cost)
+        // {
+        //     min_cost = total_cost;
+        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        //     flag = 2;
+        // }
+        // memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
         printf("flag=%d\n", flag);
     }
     else
@@ -1817,8 +1982,8 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
     struct KM km;
     int n = input->ioVec.len + 1;
     kmInit(&km, n, n, n);
-    kmSolve(&km);
-    cycleMergeMain(&km);
+    // kmSolve(&km);
+    // cycleMergeMain(&km);
 
     int cnt = 0;
     int now = 1;

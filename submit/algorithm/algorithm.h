@@ -108,6 +108,34 @@ int get_distance(int i, int j);
 int min(int a, int b);
 int max(int a, int b);
 
+// 定义 Fibonacci 堆节点
+typedef struct FibNode {
+    int key;                  // 节点的键值（用于松弛值）
+    int value;                // 节点的值（对应顶点编号）
+    int degree;               // 子节点数量
+    bool mark;                // 是否被删除过一次
+    struct FibNode *parent;   // 父节点
+    struct FibNode *child;    // 子节点链表中的任意一个
+    struct FibNode *left;     // 左兄弟
+    struct FibNode *right;    // 右兄弟
+} FibNode;
+
+// 定义 Fibonacci 堆结构
+typedef struct FibHeap {
+    FibNode *min;             // 最小节点
+    int n;                    // 节点总数
+} FibHeap;
+
+FibHeap* initFibHeap();
+FibNode* createFibNode(int key, int value);
+void insert(FibHeap *heap, FibNode *node);
+void unionFibHeap(FibHeap *heap1, FibHeap *heap2);
+int findMin(FibHeap *heap);
+void cut(FibHeap *heap, FibNode *node, FibNode *parent);
+void cascadingCut(FibHeap *heap, FibNode *node);
+void decreaseKey(FibHeap *heap, FibNode *node, int newKey);
+void consolidate(FibHeap *heap);
+FibNode* extractMinValue(FibHeap *heap);
 struct KM{
     // int match[MAXN], lx[MAXN],ly[MAXN], slack[MAXN], fa[MAXN*2];
     // bool visx[MAXN],visy[MAXN];
@@ -122,6 +150,8 @@ struct KM{
     int * slack;
     int n, nx, ny;
     int need_n;
+    FibHeap *heap;
+    FibNode **slackNodes;
 };
 
 int kmGetDistance(int i, int j);
