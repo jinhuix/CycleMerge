@@ -14,7 +14,7 @@ set(HEADER_DIRS
 # 添加源文件变量
 set(SOURCES
     ${PROJECT_SOURCE_DIR}/main.c
-    ${ALG_DIR}/algorithm.c
+    ${ALG_DIR}/algorithm_op.c
 )
 
 # 包含头文件目录

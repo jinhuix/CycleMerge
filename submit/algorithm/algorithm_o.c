@@ -187,9 +187,6 @@ void kmMain(struct KM *cthis) {
                 }
             }
         }
-        for (int i = 1; i <= cthis->nx; ++i) {
-            free(cthis->slackNodes[i]);
-        }
     }
 }
  
