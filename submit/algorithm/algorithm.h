@@ -135,6 +135,8 @@ void fibHeapDecreaseKey(FibHeap* heap, FibNode* x, int new_key);
 void cut(FibHeap* heap, FibNode* x, FibNode* y);
 void cascadingCut(FibHeap* heap, FibNode* y);
 FibNode* fibHeapExtractMin(FibHeap* heap);
+void fib_node_remove(FibNode* node);
+void fib_node_add(FibNode *node, FibNode *root);
 
 struct KM{
     // int match[MAXN], lx[MAXN],ly[MAXN], slack[MAXN], fa[MAXN*2];

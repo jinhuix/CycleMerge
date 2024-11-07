@@ -70,7 +70,6 @@ int max(int a, int b)
 {
     return a>b?a:b;
 }
-
 void kmInit(struct KM * cthis, int n, int nx, int ny){
     int need_n = n + 100;
     cthis->match = (int *)malloc(sizeof(int)*(need_n));
@@ -83,15 +82,29 @@ void kmInit(struct KM * cthis, int n, int nx, int ny){
     cthis->visit_node = (bool *)malloc(sizeof(bool)*(need_n));
     cthis->next = (int *)malloc(sizeof(int) * need_n);
 
-    cthis->n=n;
+    cthis->n = n;
     cthis->nx = nx;
     cthis->ny = ny;
     cthis->need_n = need_n;
-    cthis->heap = initFibHeap();
-    cthis->slackNodes = (FibNode **)malloc((cthis->nx + 1) * sizeof(FibNode *));
+
+    // 初始化斐波那契堆
+    cthis->slack_heap = createFibHeap();
+    cthis->slack_nodes = (FibNode **)malloc((cthis->nx + 1) * sizeof(FibNode *));
 }
 
 void kmClear(struct KM * cthis){
+    // 添加斐波那契堆相关的内存释放
+    if(cthis->slack_heap) {
+        while(cthis->slack_heap->min != NULL) {
+            FibNode* node = fibHeapExtractMin(cthis->slack_heap);
+            free(node);
+        }
+        free(cthis->slack_heap);
+    }
+    if(cthis->slack_nodes) {
+        free(cthis->slack_nodes);
+    }
+    
     free(cthis->match);
     free(cthis->lx);
     free(cthis->ly);
@@ -101,91 +114,124 @@ void kmClear(struct KM * cthis){
     free(cthis->slack);
     free(cthis->visit_node);
     free(cthis->next);
-    free(cthis->heap);
-    for (int i = 1; i <= cthis->nx; ++i) {
-        free(cthis->slackNodes[i]);
-    }
-    free(cthis->slackNodes);
-
 }
+
  
 
-int kmFindpath(struct KM * cthis, int x)
-{
+int kmFindpath(struct KM* cthis, int x) {
     int tempDelta;
-    cthis->visx[x]=true;
-    for(int y=1;y<=cthis->ny;y++){
-        if(cthis->visy[y])continue;
-        tempDelta =cthis->lx[x]+cthis->ly[y]-kmGetDistance(x,y);
-        if(tempDelta ==  0){
+    cthis->visx[x] = true;
+    
+    for(int y = 1; y <= cthis->ny; y++) {
+        if(cthis->visy[y]) continue;
+        
+        tempDelta = cthis->lx[x] + cthis->ly[y] - kmGetDistance(x, y);
+        
+        if(tempDelta == 0) {
             cthis->visy[y] = true;
-            cthis->fa[y+cthis->nx]=x;
-            if(cthis->match[y] == -1){  //如果 cthis->match[y] != -1，说明y已经匹配上了U集合中的某个顶点，cthis->match[y] 的值就是与之匹配的点的编号。
-                return y+cthis->nx;
+            cthis->fa[y + cthis->nx] = x;
+            
+            if(cthis->match[y] == -1) {
+                return y + cthis->nx;
             }
-            cthis->fa[cthis->match[y]]=y+cthis->nx;//记录交替树的父亲信息（为了区别X，Y集合，Y的点都映射成n+y）
-            int res=kmFindpath(cthis, cthis->match[y]);
-            if(res>0)return res;//返回增广路的末端叶子节点
+            
+            cthis->fa[cthis->match[y]] = y + cthis->nx;
+            int res = kmFindpath(cthis, cthis->match[y]);
+            if(res > 0) return res;
         }
-        else if(cthis->slack[x] > tempDelta)//统计以x为准的slack值。
-            decreaseKey(cthis->heap, cthis->slackNodes[x], tempDelta);
+        else {
+            // 更新斐波那契堆中对应点的slack值
+            int current_slack = cthis->slack_nodes[x]->key;
+            if(current_slack > tempDelta) {
+                fibHeapDecreaseKey(cthis->slack_heap, cthis->slack_nodes[x], tempDelta);
+            }
+        }
     }
     return -1;
 }
-void kmMain(struct KM *cthis) {
-    for (int x = 1; x <= cthis->nx; ++x) {
-        // 初始化父节点和访问标记
-        for (int i = 1; i <= cthis->nx + cthis->ny; ++i) cthis->fa[i] = -1;
+
+void kmMain(struct KM* cthis) {
+    for(int x = 1; x <= cthis->nx; ++x) {
+        printf("aaaaaaaa\n");
+        // 清空堆前先释放节点内存
+        while (cthis->slack_heap->min != NULL) {
+            FibNode* node = fibHeapExtractMin(cthis->slack_heap);
+            if (node!= NULL) free(node);
+        }
+        printf("bbbbbbb\n");
+        // 初始化各数组
+        for(int i = 1; i <= cthis->nx + cthis->ny; i++) {
+            cthis->fa[i] = -1;
+        }
         memset(cthis->visx, false, sizeof(bool) * cthis->need_n);
         memset(cthis->visy, false, sizeof(bool) * cthis->need_n);
-
-        // 重置 slack 并插入到 Fibonacci 堆中
-        for (int i = 1; i <= cthis->nx; ++i) {
-            int slackValue = INF;
-            cthis->slackNodes[i] = createFibNode(slackValue, i);
-            insert(cthis->heap, cthis->slackNodes[i]); // 插入 Fibonacci 堆
+        // 初始化slack值到斐波那契堆
+        for (int i = 1; i <= cthis->ny; i++) {  // 应该使用ny而不是nx
+            cthis->slack_nodes[i] = fibHeapInsert(cthis->slack_heap, INF, i);
         }
-
         int fir = 1;
         int leaf = -1;
-
-        while (true) {
-            if (fir == 1) {
-                leaf = kmFindpath(cthis, x);  // 找到一条增广路径
+        while(true) {
+            if(fir == 1) {
+                leaf = kmFindpath(cthis, x);
                 fir = 0;
             } else {
-                // 从 Fibonacci 堆中提取最小松弛值
-                FibNode* minSlackNode = extractMin(cthis->heap);
-                if (minSlackNode->key == 0) {  // 如果 slack 值为 0
-                    // 使用 minSlackNode->value 作为节点索引继续寻找增广路径
-                    leaf = kmFindpath(cthis, minSlackNode->value);
-                    if (leaf > 0) break;
+                leaf = -1;
+                // 检查slack为0的点
+                printf("n=%d\n",cthis->slack_heap->n);
+                FibNode* current = cthis->slack_heap->min;
+                do {
+                    FibNode* next = current->right;  // 保存下一个节点
+                    if (current->key == 0) {
+                        int i = current->value;
+                        // 重置该点的slack值,将i的位置减少到INF
+                        fibHeapDecreaseKey(cthis->slack_heap, cthis->slack_nodes[i], INF);
+                        leaf = kmFindpath(cthis, i);
+                        printf("leaf=%d\n",leaf);
+                        if (leaf > 0) {
+                            printf("找到可行通路\n");
+                            break;
+                        }
                     }
-                }
-
-            if (leaf > 0) {
-                // 找到增广路径，更新匹配
+                    current = next;
+                    printf("flag:%d\n",current->value);
+                } while (current != cthis->slack_heap->min);
+            }
+            if(leaf > 0) {
+                // 找到增广路，更新匹配
                 int p = leaf;
-                while (p > 0) {
+                while(p > 0) {
                     cthis->match[p - cthis->nx] = cthis->fa[p];
                     p = cthis->fa[cthis->fa[p]];
                 }
                 break;
             } else {
-                // 更新顶标
-                int delta = findMin(cthis->heap);  // 通过 Fibonacci 堆找到最小 delta
-                for (int i = 1; i <= cthis->nx; ++i) {
-                    if (cthis->visx[i]) {
+                // 未找到增广路，更新顶标
+                FibNode* min_node = fibHeapExtractMin(cthis->slack_heap);
+                int delta = min_node->key;
+                
+                if(delta >= INF) {
+                    // 无法找到增广路
+                    break;
+                }
+
+                // 更新标号和slack值
+                for(int i = 1; i <= cthis->nx; ++i) {
+                    if(cthis->visx[i]) {
                         cthis->lx[i] -= delta;
-                        decreaseKey(cthis->heap, cthis->slackNodes[i], cthis->slackNodes[i]->key - delta);  // 更新 slack 值
+                        // 更新对应的slack值
+                        int new_slack = cthis->slack_nodes[i]->key - delta;
+                        fibHeapDecreaseKey(cthis->slack_heap, cthis->slack_nodes[i], new_slack);
                     }
                 }
-                for (int j = 1; j <= cthis->ny; ++j) {
-                    if (cthis->visy[j]) {
+                
+                for(int j = 1; j <= cthis->ny; ++j) {
+                    if(cthis->visy[j]) {
                         cthis->ly[j] += delta;
                     }
                 }
             }
+            
         }
     }
 }
@@ -201,7 +247,6 @@ void kmSolve(struct KM * cthis)
         for(int j=1;j<=cthis->ny;j++)
             cthis->lx[i]=max(cthis->lx[i],kmGetDistance(i, j));
     }
- 
     kmMain(cthis);
 }
 
@@ -285,151 +330,298 @@ void cycleMergeMain(struct KM * cthis){
     }
     printf("path length = %d\n", path_length);
 }
-
-//Fibonacci堆
-FibHeap* initFibHeap() {
-    FibHeap *heap = (FibHeap *)malloc(sizeof(FibHeap));
-    if (heap == NULL) {
-        // 处理内存分配失败
-        fprintf(stderr, "Error: Memory allocation for heap failed.\n");
-        exit(EXIT_FAILURE);
-    }
-    heap->min = NULL;
-    heap->n = 0;
-    return heap;
-}
-
+// createFibNode 函数也需要完整的初始化
 FibNode* createFibNode(int key, int value) {
-    FibNode *node = (FibNode *)malloc(sizeof(FibNode));
-    if (node == NULL) {
-        // 处理内存分配失败
-        fprintf(stderr, "Error: Memory allocation for FibNode failed.\n");
-        exit(EXIT_FAILURE);
+    FibNode* node = (FibNode*)malloc(sizeof(FibNode));
+    if (!node) {
+        return NULL;
     }
+
     node->key = key;
     node->value = value;
     node->degree = 0;
     node->mark = false;
     node->parent = NULL;
     node->child = NULL;
-    node->left = node;  // 自己指向自己
-    node->right = node; // 自己指向自己
+    node->left = node;   // 初始时指向自己
+    node->right = node;  // 初始时指向自己
+
     return node;
 }
 
-void insert(FibHeap *heap, FibNode *node) {
-    if (heap->min == NULL) {
-        heap->min = node;
+// 创建空的斐波那契堆
+FibHeap* createFibHeap() {
+    FibHeap* heap = (FibHeap*)malloc(sizeof(FibHeap));
+    heap->min = NULL;
+    heap->n = 0;
+    return heap;
+}
+
+// 将节点y链接到节点x下
+void fibHeapLink(FibHeap* heap, FibNode* y, FibNode* x) {
+    // 从根链表中移除y
+    y->left->right = y->right;
+    y->right->left = y->left;
+
+    // 使y成为x的子节点
+    y->parent = x;
+    if (x->child == NULL) {
+        x->child = y;
+        y->right = y;
+        y->left = y;
     } else {
-        // 将新节点插入到根链表中
-        node->left = heap->min;
+        y->left = x->child;
+        y->right = x->child->right;
+        x->child->right = y;
+        y->right->left = y;
+    }
+
+    // 增加x的度数
+    x->degree++;
+    y->mark = false;
+}
+
+// 合并两个双向链表
+void consolidate(FibHeap* heap) {
+    if (!heap || !heap->min) return;
+    
+    // 计算最大度数
+    int max_degree = (int)(log(heap->n) / log(2)) + 1;
+    FibNode** A = (FibNode**)calloc(max_degree, sizeof(FibNode*));
+    if (!A) return;  // 内存分配失败检查
+    
+    // 创建根链表节点数组
+    FibNode* w = heap->min;
+    FibNode** rootList = NULL;
+    int numRoots = 0;
+    
+    // 统计根节点数量
+    do {
+        numRoots++;
+        w = w->right;
+    } while (w != heap->min);
+    
+    rootList = (FibNode**)malloc(numRoots * sizeof(FibNode*));
+    if (!rootList) {
+        free(A);
+        return;
+    }
+    
+    // 收集所有根节点
+    w = heap->min;
+    for (int i = 0; i < numRoots; i++) {
+        rootList[i] = w;
+        w = w->right;
+    }
+    
+    // 处理每个根节点
+    for (int i = 0; i < numRoots; i++) {
+        w = rootList[i];
+        int d = w->degree;
+        while (A[d] != NULL) {
+            FibNode* y = A[d];
+            if (w->key > y->key) {
+                FibNode* temp = w;
+                w = y;
+                y = temp;
+            }
+            fibHeapLink(heap, y, w);
+            A[d] = NULL;
+            d++;
+        }
+        A[d] = w;
+    }
+    
+    // 重建堆的根链表
+    heap->min = NULL;
+    for (int i = 0; i < max_degree; i++) {
+        if (A[i] != NULL) {
+            if (heap->min == NULL) {
+                heap->min = A[i];
+                A[i]->left = A[i];
+                A[i]->right = A[i];
+            } else {
+                // 将节点插入根链表
+                A[i]->right = heap->min->right;
+                A[i]->left = heap->min;
+                heap->min->right->left = A[i];
+                heap->min->right = A[i];
+                if (A[i]->key < heap->min->key) {
+                    heap->min = A[i];
+                }
+            }
+        }
+    }
+    
+    free(rootList);
+    free(A);
+}
+
+FibNode* fibHeapInsert(FibHeap* heap, int key, int value) {
+    // 检查堆是否有效
+    if (!heap) {
+        return NULL;
+    }
+
+    // 创建新节点
+    FibNode* node = createFibNode(key, value);
+    if (!node) {
+        return NULL;
+    }
+
+    // 插入节点
+    if (heap->min == NULL) {
+        // 堆为空时的处理
+        heap->min = node;
+        node->left = node;    // 设置自循环
+        node->right = node;
+    } else {
+        // 插入到根链表
+        // 确保min->right是有效的
+        if (heap->min->right == NULL) {
+            // 如果min节点的右指针无效，修复它
+            heap->min->right = heap->min;
+            heap->min->left = heap->min;
+        }
+
         node->right = heap->min->right;
+        node->left = heap->min;
         heap->min->right->left = node;
         heap->min->right = node;
+
         // 更新最小节点
         if (node->key < heap->min->key) {
             heap->min = node;
         }
     }
+
     heap->n++;
+    return node;
 }
-void unionFibHeap(FibHeap *heap1, FibHeap *heap2) {
-    if (heap2->min == NULL) return;
-    if (heap1->min == NULL) {
-        heap1->min = heap2->min;
-    } else {
-        // 合并两个堆的根列表
-        FibNode *min1 = heap1->min;
-        FibNode *min2 = heap2->min;
-        min1->right->left = min2->left;
-        min2->left->right = min1->right;
-        min1->right = min2;
-        min2->left = min1;
-        // 更新最小节点
-        if (min2->key < min1->key) {
-            heap1->min = min2;
-        }
-    }
-    heap1->n += heap2->n;
-    
-}
-int findMin(FibHeap *heap) {
-    if (heap->min == NULL) return INF;  // 无节点时返回极大值
-    return heap->min->key;
-}
-void cut(FibHeap *heap, FibNode *node, FibNode *parent) {
-    if (node->right == node) {
-        parent->child = NULL;
-    } else {
-        node->left->right = node->right;
-        node->right->left = node->left;
-        if (parent->child == node) {
-            parent->child = node->right;
-        }
-    }
-    parent->degree--;
-    node->parent = NULL;
-    node->left = node->right = node;
-    node->mark = false;
-    insert(heap, node);
-}
-
-void cascadingCut(FibHeap *heap, FibNode *node) {
-    FibNode *parent = node->parent;
-    if (parent != NULL) {
-        if (!node->mark) {
-            node->mark = true;
-        } else {
-            cut(heap, node, parent);
-            cascadingCut(heap, parent);
-        }
-    }
-}
-
-void decreaseKey(FibHeap *heap, FibNode *node, int newKey) {
-    if (newKey > node->key) {
-        // printf("New key is greater than current key\n");
+void fibHeapDecreaseKey(FibHeap* heap, FibNode* x, int new_key) {
+    // 基础检查
+    if (!heap || !x) {
         return;
     }
-    node->key = newKey;
-    FibNode *parent = node->parent;
-    if (parent != NULL && node->key < parent->key) {
-        cut(heap, node, parent);
-        cascadingCut(heap, parent);
+
+    // 检查新键值
+    if (new_key > x->key) {
+        return;
     }
-    if (node->key < heap->min->key) {
-        heap->min = node;
+    // 保存旧键值
+    int old_key = x->key;
+    x->key = new_key;
+    
+    // 处理破坏最小堆性质的情况
+    FibNode* y = x->parent;
+    if (y && x->key < y->key) {
+        cut(heap, x, y);
+        cascadingCut(heap, y);
     }
-}
-void consolidate(FibHeap *heap) {
-    // 这里实现 consolidate 函数，将根列表中的节点合并，保持堆的平衡
+    // 更新最小节点
+    if (!heap->min || x->key < heap->min->key) {
+        heap->min = x;
+    }
 }
 
-FibNode* extractMinValue(FibHeap *heap) {
-    FibNode *z = heap->min;
-    if (z != NULL) {
-        FibNode *child = z->child;
-        if (child != NULL) {
-            FibNode *current = child;
-            do {
-                FibNode *next = current->right;
-                insert(heap, current);
-                current->parent = NULL;
-                current = next;
-            } while (current != child);
-        }
-        // 从根链表中移除 z
-        if (z == z->right) {
-            heap->min = NULL;
-        } else {
-            z->left->right = z->right;
-            z->right->left = z->left;
-            heap->min = z->right;
-            consolidate(heap);
-        }
-        heap->n--;
+void cut(FibHeap* heap, FibNode* x, FibNode* y) {
+    if (!heap || !x || !y) {
+        return;
     }
+
+    // 从父节点的子链表中移除x
+    if (x->right == x) {
+        y->child = NULL;
+    } else {
+        if (y->child == x) {
+            y->child = x->right;
+        }
+        x->right->left = x->left;
+        x->left->right = x->right;
+    }
+    y->degree--;
+    // 将x添加到根链表
+    if (!heap->min) {
+        // 堆为空的情况
+        heap->min = x;
+        x->left = x;
+        x->right = x;
+    } else if (heap->min->right == NULL || heap->min->left == NULL) {
+        // 根链表损坏的情况，修复根链表
+        heap->min->right = heap->min;
+        heap->min->left = heap->min;
+        
+        // 然后将x添加到修复后的根链表
+        x->right = heap->min;
+        x->left = heap->min;
+        heap->min->right = x;
+        heap->min->left = x;
+    } else {
+        // 正常情况
+        x->right = heap->min->right;
+        x->left = heap->min;
+        heap->min->right->left = x;
+        heap->min->right = x;
+    }
+    x->parent = NULL;
+    x->mark = false;
+}
+
+void cascadingCut(FibHeap* heap, FibNode* y) {
+    if (!heap || !y) return;
+
+    FibNode* z = y->parent;
+    if (z) {
+        if (!y->mark) {
+            y->mark = true;
+        } else {
+            cut(heap, y, z);
+            cascadingCut(heap, z);
+        }
+    }
+}
+
+FibNode* fibHeapExtractMin(FibHeap* heap) {
+    if (!heap) return NULL;
+    
+    FibNode* z = heap->min;
+    if (!z) return NULL;
+    FibNode* child = NULL;
+    // 处理子节点
+    if (z->child != NULL) {
+        child = z->child;
+        fib_node_remove(child);
+        if (child->right == child)
+            z->child = NULL;
+        else
+            z->child = child->right;
+        fib_node_add(child, heap->min);
+        child->parent = NULL;
+    }
+    
+    // 从根链表移除z
+    fib_node_remove(z);
+    if (z->right == min)
+        heap->min = NULL;
+    else{
+        heap->min = z->right;
+        consolidate(heap);
+    }
+    heap->n--;
     return z;
+}
+
+void fib_node_remove(FibNode* node){
+    node->left->right = node->right;
+    node->right->left = node->left;
+}
+
+void fib_node_add(FibNode *node, FibNode *root)
+{
+    node->left = root->left;
+    root->left->right = node;
+    node->right = root;
+    root->left = node;
 }
 
 void startRecordTime()
@@ -488,23 +680,23 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
             flag = 1;
         }
-        // merge(input, output);
-        // total_cost = getTotalCost(input, output);
-        // if (total_cost < min_cost)
-        // {
-        //     min_cost = total_cost;
-        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        //     flag = 1;
-        // }
-        // merge_random(input, output);
-        // total_cost = getTotalCost(input, output);
-        // if (total_cost < min_cost)
-        // {
-        //     min_cost = total_cost;
-        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        //     flag = 2;
-        // }
-        // memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+        merge(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 1;
+        }
+        merge_random(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 2;
+        }
+        memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
         printf("flag=%d\n", flag);
     }
     else
@@ -1979,8 +2171,8 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
     struct KM km;
     int n = input->ioVec.len + 1;
     kmInit(&km, n, n, n);
-    // kmSolve(&km);
-    // cycleMergeMain(&km);
+    kmSolve(&km);
+    cycleMergeMain(&km);
 
     int cnt = 0;
     int now = 1;

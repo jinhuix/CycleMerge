@@ -1,0 +1,10 @@
+/* 关键指标结构体 */
+ioCount: 100 
+addressingDuration(ms): 2318326 
+algorithmRunningDuration(ms): 40.06 
+memoryUse(ms): 0 
+addressingDuration(ms): 897752 
+readDuration(ms): 106203
+tapeBeltWear(times): 1420534
+tapeMotorWear(times): 40 
+errorIOCount: 0 

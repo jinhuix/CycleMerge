@@ -147,7 +147,6 @@ void kmMain(struct KM * cthis)
                         leaf=kmFindpath(cthis, i);
                         if(leaf>0)
                         {
-                            printf("leaf=%d\n",leaf);
                             break;
                         }
                     }
@@ -330,23 +329,23 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
             flag = 1;
         }
-        merge(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 1;
-        }
-        merge_random(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 2;
-        }
-        memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+        // merge(input, output);
+        // total_cost = getTotalCost(input, output);
+        // if (total_cost < min_cost)
+        // {
+        //     min_cost = total_cost;
+        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        //     flag = 1;
+        // }
+        // merge_random(input, output);
+        // total_cost = getTotalCost(input, output);
+        // if (total_cost < min_cost)
+        // {
+        //     min_cost = total_cost;
+        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        //     flag = 2;
+        // }
+        // memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
         printf("flag=%d\n", flag);
     }
     else
