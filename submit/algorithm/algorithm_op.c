@@ -1,4 +1,5 @@
 #include "algorithm_op.h"
+#include "hungarian_c.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -275,6 +276,7 @@ void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * 
 
 void cycleMergeMain(struct KM * cthis){
     int path_length = 0;
+    int cycle_cnt = 1;
     int last_end = -1;
     memset(cthis->visit_node, 0, sizeof(bool) * cthis->need_n);
     for(int i = 1; i <= cthis->ny; i++){
@@ -295,6 +297,7 @@ void cycleMergeMain(struct KM * cthis){
 
         int next = cthis->next[now_node];
         if(cthis->visit_node[next]){
+            cycle_cnt ++;
             int visited_start, visited_end;
             int unvisited_start, unvisited_end;
             cycleMergeFindMinimalMerge(cthis, &visited_start, &visited_end, &unvisited_start, &unvisited_end);
@@ -312,7 +315,7 @@ void cycleMergeMain(struct KM * cthis){
             now_node = next;
         }
     }
-    printf("path length = %d\n", path_length);
+    printf("path length = %d, cycle_cnt = %d\n", path_length, cycle_cnt);
 }
 
 static FibNode *fib_heap_search(FibHeap *heap, Type key);
@@ -1055,6 +1058,14 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
             memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
             flag = 1;
         }
+        // fastCycleMerge(input, output);
+        // total_cost = getTotalCost(input, output);
+        // if (total_cost < min_cost)
+        // {
+        //     min_cost = total_cost;
+        //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        //     flag = 1;
+        // }
         // merge(input, output);
         // total_cost = getTotalCost(input, output);
         // if (total_cost < min_cost)
@@ -2559,6 +2570,53 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
     kmClear(&km);
     if(dist_martix){
         free(dist_martix);
+        dist_martix = NULL;
+    }
+
+    return RETURN_OK;
+}
+
+int32_t fastCycleMerge(const InputParam *input, OutputParam *output)
+{
+    int duration_us = getDurationMicroseconds();
+
+    printf("[time] %s: start at %d\n", __func__, duration_us);
+    struct KM km;
+    int n = input->ioVec.len + 1;
+    kmInit(&km, n, n, n);
+    int match[maxn + 10];
+    kmGetDistance(1,1);
+    duration_us = getDurationMicroseconds();
+    printf("[time] %s: finish dist matrix %d\n", __func__, duration_us);
+    if(hungarianMinimumWeightPerfectMatchingDenseGraph_C(n, dist_martix, match)){
+        duration_us = getDurationMicroseconds();
+        printf("[time] %s: matching found at %d\n", __func__, duration_us);
+        for (int i = 0; i < n; i++)
+        {
+            int left = i + 1;
+            int right = match[i] + 1;
+            // printf("%d, %d, %d\n", i, left, right);
+            km.next[left] = right;
+            km.match[right] = left;
+        }
+        cycleMergeMain(&km);
+        duration_us = getDurationMicroseconds();
+        printf("[time] %s: merge end at %d\n", __func__, duration_us);
+    }
+    
+
+    int cnt = 0;
+    int now = 1;
+    while (cnt < input->ioVec.len)
+    {
+        output->sequence[cnt++] = km.next[now] - 1;
+        now = km.next[now];
+    }
+    kmClear(&km);
+    if (dist_martix)
+    {
+        free(dist_martix);
+        dist_martix = NULL;
     }
 
     return RETURN_OK;
