@@ -104,39 +104,10 @@ extern "C"
 
 #define INF 0x3f3f3f3f
 uint32_t getCost(const HeadInfo *start, const HeadInfo *target);
+uint32_t getTotalCost(const InputParam *input, OutputParam *output);
 int get_distance(int i, int j);
 int min(int a, int b);
 int max(int a, int b);
-
-// 斐波那契堆节点结构
-typedef struct FibNode {
-    int key;           // 关键字值
-    int value;         // 实际存储的值
-    int degree;        // 子节点个数
-    bool mark;         // 标记是否失去过子节点
-    struct FibNode *parent;    // 父节点
-    struct FibNode *child;     // 子节点
-    struct FibNode *left;      // 左兄弟
-    struct FibNode *right;     // 右兄弟
-} FibNode;
-
-// 斐波那契堆结构
-typedef struct FibHeap {
-    FibNode *min;      // 最小节点
-    int n;             // 节点总数
-} FibHeap;
-
-FibNode* createFibNode(int key, int value);
-FibHeap* createFibHeap();
-void fibHeapLink(FibHeap* heap, FibNode* y, FibNode* x);
-void consolidate(FibHeap* heap);
-FibNode* fibHeapInsert(FibHeap* heap, int key, int value);
-void fibHeapDecreaseKey(FibHeap* heap, FibNode* x, int new_key);
-void cut(FibHeap* heap, FibNode* x, FibNode* y);
-void cascadingCut(FibHeap* heap, FibNode* y);
-FibNode* fibHeapExtractMin(FibHeap* heap);
-void fib_node_remove(FibNode* node);
-void fib_node_add(FibNode *node, FibNode *root);
 
 struct KM{
     // int match[MAXN], lx[MAXN],ly[MAXN], slack[MAXN], fa[MAXN*2];
@@ -152,8 +123,6 @@ struct KM{
     int * slack;
     int n, nx, ny;
     int need_n;
-    FibHeap* slack_heap;
-    FibNode** slack_nodes;
 };
 
 int kmGetDistance(int i, int j);
@@ -164,9 +133,22 @@ void kmMain(struct KM * cthis);
 void kmSolve(struct KM * cthis);
 
 void cycleMergeLink(struct KM * cthis, int i, int j);
-void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p);
-void cycleMergeMain(struct KM * cthis);
+void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p, bool random);
+void cycleMergeMain(struct KM * cthis, bool random);
  
+ #define MAX 10
+typedef struct {
+    int items[MAX];
+    int front;
+    int rear;
+    int size; // 当前元素个数
+} Queue;
+void initQueue(Queue *q);
+int isEmpty(Queue *q);
+int isFull(Queue *q);
+void enqueue(Queue *q, int item);
+int dequeue(Queue *q);
+int peek(Queue *q);
 
 #ifdef __cplusplus
 }
