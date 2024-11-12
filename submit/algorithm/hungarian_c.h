@@ -1,5 +1,5 @@
-#ifndef BB_H
-#define BB_H
+#ifndef HUNGARIAN_C_H
+#define HUNGARIAN_C_H
 #ifdef __cplusplus
 extern "C"
 {
