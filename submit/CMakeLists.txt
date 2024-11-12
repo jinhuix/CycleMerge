@@ -15,6 +15,7 @@ set(HEADER_DIRS
 set(SOURCES
     ${PROJECT_SOURCE_DIR}/main.c
     ${ALG_DIR}/algorithm_op.c
+    ${ALG_DIR}/watchdog.c
     ${ALG_DIR}/hungarian.cpp
 )
 

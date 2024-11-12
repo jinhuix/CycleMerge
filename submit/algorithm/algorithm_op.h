@@ -4,6 +4,7 @@
 
 #include "../public.h"
 #include <sys/time.h>
+#include <pthread.h>
 
 #ifdef __cplusplus
 extern "C"
