@@ -14,7 +14,8 @@ set(HEADER_DIRS
 # 添加源文件变量
 set(SOURCES
     ${PROJECT_SOURCE_DIR}/main.c
-    ${ALG_DIR}/algorithm.c
+    ${ALG_DIR}/algorithm_op.c
+    ${ALG_DIR}/hungarian.cpp
 )
 
 # 包含头文件目录
@@ -29,7 +30,7 @@ target_link_libraries(project_hw ${M_LIB})
 target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model.so)
 
 # 添加编译选项和宏定义
-target_compile_options(project_hw PRIVATE -g -std=c99)
+target_compile_options(project_hw PRIVATE -O3 -std=c99)
 target_compile_definitions(project_hw PRIVATE _GNU_SOURCE)
 # 多线程
 find_package(Threads REQUIRED)
