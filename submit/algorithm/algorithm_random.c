@@ -101,7 +101,32 @@ void kmClear(struct KM * cthis){
     free(cthis->next);
 }
  
-
+void deepCopyKM(struct KM *dest, struct KM *src) {
+    // 先复制基本类型成员
+    dest->n = src->n;
+    dest->ny = src->ny;
+    dest->nx = src->nx;
+    dest->need_n = src->need_n;
+    int need_n = src->need_n;
+    dest->match = (int *)malloc(sizeof(int)*(need_n));
+    memcpy(dest->match, src->match, sizeof(int)*(need_n));
+    dest->lx = (int *)malloc(sizeof(int)*(need_n));
+    memcpy(dest->lx, src->lx, sizeof(int)*(need_n));
+    dest->ly = (int *)malloc(sizeof(int)*(need_n));
+    memcpy(dest->ly, src->ly, sizeof(int)*(need_n));
+    dest->visx = (bool *)malloc(sizeof(bool)*(need_n));
+    memcpy(dest->visx, src->visx, sizeof(bool)*(need_n));
+    dest->visy = (bool *)malloc(sizeof(bool)*(need_n));
+    memcpy(dest->visy, src->visy, sizeof(bool)*(need_n));
+    dest->fa = (int *)malloc(sizeof(int) * 2 * need_n);
+    memcpy(dest->fa, src->fa, sizeof(int) * 2 * need_n);
+    dest->slack = (int *)malloc(sizeof(bool)*(need_n));
+    memcpy(dest->slack, src->slack, sizeof(bool)*(need_n));
+    dest->visit_node = (bool *)malloc(sizeof(bool)*(need_n));
+    memcpy(dest->visit_node, src->visit_node, sizeof(bool)*(need_n));
+    dest->next = (int *)malloc(sizeof(int) * need_n);
+    memcpy(dest->next, src->next, sizeof(int)*(need_n));
+}
  
 
 int kmFindpath(struct KM * cthis, int x)
@@ -198,11 +223,16 @@ void cycleMergeLink(struct KM * cthis, int i, int j){
     cthis->match[j] = i;
 }
 
-void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p){
+void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p, bool random){
     int visited_start = -1;
     int visited_end = -1;
     int unvisited_start = -1;
     int unvisited_end = -1;
+    Queue visited_start_q, visited_end_q, unvisited_start_q, unvisited_end_q;
+    initQueue(&visited_start_q);
+    initQueue(&visited_end_q);
+    initQueue(&unvisited_start_q);
+    initQueue(&unvisited_end_q);
     int max_cost = -INF;
     for(int i = 1; i <= cthis->n; i++){
         if(cthis->visit_node[i]){
@@ -213,24 +243,65 @@ void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * 
                     this_cost += kmGetDistance(cthis->match[j], cthis->next[i]);
                     this_cost -= kmGetDistance(i, cthis->next[i]);
                     this_cost -= kmGetDistance(cthis->match[j], j);
-                    if(visited_start == -1 || this_cost > max_cost){
+                    if (!random)
+                    {
+                        if(visited_start == -1 || this_cost > max_cost){
                         max_cost = this_cost;
                         visited_start = i;
                         visited_end = cthis->next[i];
                         unvisited_start = j;
                         unvisited_end = cthis->match[j];
+                        }
                     }
+                    else{
+                        int random_choice = rand() % 100; // 生成 0 到 99 的随机数
+                        double rate = 1.0;
+                        if (random_choice > 95)
+                            rate = 1.0;
+                        else
+                            rate = 1.01;
+                        if(visited_start == -1 || this_cost * rate > max_cost){
+                            if(this_cost > max_cost)
+                                max_cost = this_cost;
+                            visited_start = i;
+                            visited_end = cthis->next[i];
+                            unvisited_start = j;
+                            unvisited_end = cthis->match[j];
+                            if (isFull(&visited_start_q))
+                            {
+                                dequeue(&visited_start_q);
+                                dequeue(&visited_end_q);
+                                dequeue(&unvisited_start_q);
+                                dequeue(&unvisited_end_q);
+                            }
+                            enqueue(&visited_start_q, visited_start);
+                            enqueue(&visited_end_q, visited_end);
+                            enqueue(&unvisited_start_q, unvisited_start);
+                            enqueue(&unvisited_end_q, unvisited_end);
+                        }
+                    }
+                    
                 }
             }
         }
     }
-    *visited_start_p = visited_start;
-    *visited_end_p = visited_end;
-    *unvisited_start_p = unvisited_start;
-    *unvisited_end_p = unvisited_end;
+    if (!random) 
+    {
+        *visited_start_p = visited_start;
+        *visited_end_p = visited_end;
+        *unvisited_start_p = unvisited_start;
+        *unvisited_end_p = unvisited_end;
+    }
+    else{
+        int random_choice = rand() % (visited_start_q.size);
+        *visited_start_p = (&visited_start_q)->items[random_choice];
+        *visited_end_p = (&visited_end_q)->items[random_choice];
+        *unvisited_start_p = (&unvisited_start_q)->items[random_choice];
+        *unvisited_end_p = (&unvisited_end_q)->items[random_choice];
+    }
 }
 
-void cycleMergeMain(struct KM * cthis){
+void cycleMergeMain(struct KM * cthis, bool random){
     int path_length = 0;
     int last_end = -1;
     memset(cthis->visit_node, 0, sizeof(bool) * cthis->need_n);
@@ -254,7 +325,7 @@ void cycleMergeMain(struct KM * cthis){
         if(cthis->visit_node[next]){
             int visited_start, visited_end;
             int unvisited_start, unvisited_end;
-            cycleMergeFindMinimalMerge(cthis, &visited_start, &visited_end, &unvisited_start, &unvisited_end);
+            cycleMergeFindMinimalMerge(cthis, &visited_start, &visited_end, &unvisited_start, &unvisited_end, random);
 
             cycleMergeLink(cthis, visited_start, unvisited_start);
             cycleMergeLink(cthis, unvisited_end, visited_end);
@@ -270,6 +341,56 @@ void cycleMergeMain(struct KM * cthis){
         }
     }
     printf("path length = %d\n", path_length);
+}
+
+
+// 初始化队列
+void initQueue(Queue *q) {
+    q->front = 0;
+    q->rear = -1;
+    q->size = 0;
+}
+
+// 检查队列是否为空
+int isEmpty(Queue *q) {
+    return q->size == 0;
+}
+
+// 检查队列是否已满
+int isFull(Queue *q) {
+    return q->size == MAX;
+}
+
+// 入队
+void enqueue(Queue *q, int item) {
+    if (isFull(q)) {
+        printf("Queue is full\n");
+        return;
+    }
+    q->rear = (q->rear + 1) % MAX;
+    q->items[q->rear] = item;
+    q->size++;
+}
+
+// 出队
+int dequeue(Queue *q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+    int item = q->items[q->front];
+    q->front = (q->front + 1) % MAX;
+    q->size--;
+    return item;
+}
+
+// 查看队首元素
+int peek(Queue *q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+    return q->items[q->front];
 }
 
 
@@ -335,7 +456,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
         // {
         //     min_cost = total_cost;
         //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        //     flag = 1;
+        //     flag = 2;
         // }
         // merge_random(input, output);
         // total_cost = getTotalCost(input, output);
@@ -343,7 +464,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
         // {
         //     min_cost = total_cost;
         //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        //     flag = 2;
+        //     flag = 3;
         // }
         // memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
         printf("flag=%d\n", flag);
@@ -1821,16 +1942,50 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
     int n = input->ioVec.len + 1;
     kmInit(&km, n, n, n);
     kmSolve(&km);
-    cycleMergeMain(&km);
-
     int cnt = 0;
     int now = 1;
-    while (cnt < input->ioVec.len)
-    {
-        output->sequence[cnt++] = km.next[now] - 1;
-        now = km.next[now];
+    uint32_t min_output = 0xFFFFFFFF, cur_output;
+    struct KM before_km;
+    OutputParam *bestoutput = (OutputParam *)malloc(sizeof(OutputParam));
+    bestoutput->len = output->len;
+    bestoutput->sequence = (uint32_t *)malloc(output->len * sizeof(uint32_t));
+    deepCopyKM(&before_km, &km);
+    bool random = true;
+    for(int i = 0; i < 3; i++) {
+        // 重置km
+        deepCopyKM(&km, &before_km);
+        if(i == 2)
+            random = false;
+        else
+            random = true;
+        cycleMergeMain(&km, random);
+        cnt = 0;
+        now = 1;
+        while (cnt < input->ioVec.len)
+        {
+            output->sequence[cnt++] = km.next[now] - 1;
+            now = km.next[now];
+        }
+        cur_output = getTotalCost(input, output);
+        printf("cur:%d\n",cur_output);
+        if (cur_output < min_output) {
+            min_output = cur_output;
+            cnt = 0, now = 1;
+            while (cnt < input->ioVec.len)
+            {
+                bestoutput->sequence[cnt] = output->sequence[cnt];
+                cnt++;
+            }
+        }
     }
     kmClear(&km);
+    kmClear(&before_km);
+    cnt = 0, now = 1;
+    while (cnt < input->ioVec.len)
+    {
+        output->sequence[cnt] = bestoutput->sequence[cnt];
+        cnt++;
+    }
     if(dist_martix){
         free(dist_martix);
     }
