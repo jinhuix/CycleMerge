@@ -136,7 +136,7 @@ void cycleMergeLink(struct KM * cthis, int i, int j);
 void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p, bool random);
 void cycleMergeMain(struct KM * cthis, bool random);
  
- #define MAX 10
+ #define MAX 6
 typedef struct {
     int items[MAX];
     int front;

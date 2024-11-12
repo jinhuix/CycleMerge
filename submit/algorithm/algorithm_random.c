@@ -256,7 +256,7 @@ void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * 
                     else{
                         int random_choice = rand() % 100; // 生成 0 到 99 的随机数
                         double rate = 1.0;
-                        if (random_choice > 90)
+                        if (random_choice > 95)
                             rate = 1.0;
                         else
                             rate = 1.01;
@@ -1954,7 +1954,7 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
     for(int i = 0; i < 3; i++) {
         // 重置km
         deepCopyKM(&km, &before_km);
-        if(i == 0)
+        if(i == 2)
             random = false;
         else
             random = true;
@@ -1967,6 +1967,7 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
             now = km.next[now];
         }
         cur_output = getTotalCost(input, output);
+        printf("cur:%d\n",cur_output);
         if (cur_output < min_output) {
             min_output = cur_output;
             cnt = 0, now = 1;
