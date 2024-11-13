@@ -4,107 +4,106 @@
 
 #include "../public.h"
 #include <sys/time.h>
-#include <pthread.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct
-{
-    struct timeval start;
-} TimeRecord;
+    typedef struct
+    {
+        struct timeval start;
+    } TimeRecord;
 
-static TimeRecord g_TimeRecord;
+    static TimeRecord g_TimeRecord;
 
-void startRecordTime();
+    void startRecordTime();
 
-int32_t getDurationMicroseconds();
+    int32_t getDurationMicroseconds();
 
-typedef struct
-{
-    int id;
-    struct req_node *next;
-} req_node;
+    typedef struct
+    {
+        int id;
+        struct req_node *next;
+    } req_node;
 
-typedef struct
-{
-    req_node *head;
-    req_node *tail;
-    int len;
-} req_list;
+    typedef struct
+    {
+        req_node *head;
+        req_node *tail;
+        int len;
+    } req_list;
 
-typedef struct
-{
-    int x, y, dis;
-} Node;
+    typedef struct
+    {
+        int x, y, dis;
+    } Node;
 
-typedef struct
-{
-    Node *nodes;
-    int size;
-    int capacity;
-} MinHeap;
+    typedef struct
+    {
+        Node *nodes;
+        int size;
+        int capacity;
+    } MinHeap;
 
-typedef struct
-{
-    int capacity;
-    int size;
-    MinHeap **heap_array;
-} MinHeapArray;
+    typedef struct
+    {
+        int capacity;
+        int size;
+        MinHeap **heap_array;
+    } MinHeapArray;
 
-typedef struct
-{
-    const InputParam *input;
-    OutputParam *output;
-    AccessTime *accessTime;
-} ThreadArg;
+    typedef struct
+    {
+        const InputParam *input;
+        OutputParam *output;
+        AccessTime *accessTime;
+    } ThreadArg;
 
-// 定义线程返回值结构体
-typedef struct
-{
-    OutputParam *output;
-    AccessTime accessTime;
-} ThreadResult;
+    // 定义线程返回值结构体
+    typedef struct
+    {
+        OutputParam *output;
+        AccessTime accessTime;
+    } ThreadResult;
 
-int32_t AlgorithmRun(const InputParam *input, OutputParam *output);
+    int32_t AlgorithmRun(const InputParam *input, OutputParam *output);
 
-void QuickSort(IOUint *a, int len);
+    void QuickSort(IOUint *a, int len);
 
-int32_t partition_scan(const InputParam *input, OutputParam *output);
+    int32_t partition_scan(const InputParam *input, OutputParam *output);
 
-int32_t Sort_Scan_MPScan_Perpartition(OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_len, const int scan_method);
+    int32_t Sort_Scan_MPScan_Perpartition(OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_len, const int scan_method);
 
-int32_t MPScan_star_PerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end);
+    int32_t MPScan_star_PerPartition(const InputParam *input, OutputParam *output, IOUint *sortedIOs, bool *vis, HeadInfo *head, int partition_start, int partition_end);
 
-int32_t MPScan(const InputParam *input, OutputParam *output);
+    int32_t MPScan(const InputParam *input, OutputParam *output);
 
-MinHeap *createMinHeap(int capacity);
-void swap(Node *a, Node *b);
-void heapify(MinHeap *heap, int idx);
-Node *extractMin(MinHeap *heap);
-Node *getMin(MinHeap *heap);
-void insertHeap(MinHeap *heap, Node node);
-void initUnionSet();
-void freeUnionSet();
-int find(int x);
-void unite(int x, int y);
-void destoryMinHeap(MinHeap *heap);
-int32_t merge(const InputParam *input, OutputParam *output);
-Node *randomExtractMin(MinHeap *heap);
-int32_t merge_random(const InputParam *input, OutputParam *output);
-void *merge_thread(void *arg);
-void *merge_random_thread(void *arg);
-void *partition_scan_merge_thread(void *arg);
-void *mp_scan_merge_random_thread(void *arg);
-int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
-int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output);
+    MinHeap *createMinHeap(int capacity);
+    void swap(Node *a, Node *b);
+    void heapify(MinHeap *heap, int idx);
+    Node *extractMin(MinHeap *heap);
+    Node *getMin(MinHeap *heap);
+    void insertHeap(MinHeap *heap, Node node);
+    void initUnionSet();
+    void freeUnionSet();
+    int find(int x);
+    void unite(int x, int y);
+    void destoryMinHeap(MinHeap *heap);
+    int32_t merge(const InputParam *input, OutputParam *output);
+    Node *randomExtractMin(MinHeap *heap);
+    int32_t merge_random(const InputParam *input, OutputParam *output);
+    void *merge_thread(void *arg);
+    void *merge_random_thread(void *arg);
+    void *partition_scan_merge_thread(void *arg);
+    void *mp_scan_merge_random_thread(void *arg);
+    int32_t SimulatedAnnealing(const InputParam *input, OutputParam *output);
+    int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output);
 
 
 
 #define INF 0x3f3f3f3f
-double getCost(const HeadInfo *start, const HeadInfo *target);
+uint32_t getCost(const HeadInfo *start, const HeadInfo *target);
 int get_distance(int i, int j);
 int min(int a, int b);
 int max(int a, int b);
@@ -177,14 +176,9 @@ struct KM{
 };
 
 typedef struct {
-    const InputParam *input;
-    OutputParam *output;
-} RunThreadArg;
-
-typedef struct {
-    float alpha;        // 寻址时间权重
-    float beta;         // 带体磨损权重
-    float gamma;        // 电机磨损权重
+    double alpha;        // 寻址时间权重
+    double beta;         // 带体磨损权重
+    double gamma;        // 电机磨损权重
     uint32_t b_rt;      // 基线读时延 = 寻址时长 + 读时长 + 算法运行时长
     uint32_t b_st;      // 基线寻址时长
     uint32_t b_bw;      // 基线带体磨损

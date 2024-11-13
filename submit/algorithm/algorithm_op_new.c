@@ -1,5 +1,4 @@
 #include "algorithm_op.h"
-#include "watchdog.h"
 #include "hungarian_c.h"
 
 #include <stdio.h>
@@ -9,7 +8,6 @@
 #include <math.h>
 #include <float.h>
 #include <assert.h>
-#include <signal.h>
 #define MAX_TRIALS 200       // 最大尝试次数
 #define NUM_EMPLOYED_BEES 40 // 雇佣蜂的数量
 #define NUM_ONLOOKER_BEES 20 // 跟随蜂的数量
@@ -34,9 +32,9 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
     gettimeofday(&start, NULL);
     SCAN(input, output);
     gettimeofday(&end, NULL);
+
     // 算法执行时间（ms）
     uint32_t b_at = ((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec)) / 1000.0;
-
     AccessTime accessTime = {0};
     TotalAccessTime(input, output, &accessTime);                            // 基线寻址时长
     cost_weight->b_st = accessTime.addressDuration;
@@ -45,29 +43,25 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
     cost_weight->b_rt = cost_weight->b_st + accessTime.readDuration + b_at; // 基线读时延
 
     // 场景：高性能hdd
-    cost_weight->alpha = 0.5 / cost_weight->b_rt;
-    cost_weight->beta = 0.3 / cost_weight->b_bw;
-    cost_weight->gamma = 0.2 / cost_weight->b_mw;
+    cost_weight->alpha = 0.5 * 1e7 / cost_weight->b_rt;
+    cost_weight->beta = 0.3 * 1e7 / cost_weight->b_bw;
+    cost_weight->gamma = 0.2 * 1e7 / cost_weight->b_mw;
 }
 
 int32_t SCAN(const InputParam *input, OutputParam *output) {
     // 初始化输出参数
     output->len = input->ioVec.len;
-
     // 复制 IO 请求数组并按 lpos 排序
     IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
     for (uint32_t i = 0; i < input->ioVec.len; ++i)
         sortedIOs[i] = input->ioVec.ioArray[i];
     QuickSort(sortedIOs, input->ioVec.len);
-
     // 初始化当前头位置为输入的头状态
     // HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
     HeadInfo currentHead = {0, 0, 0};
-
     // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
     int direction = 1;
     uint32_t index = 0;
-
     bool vis[input->ioVec.len + 1];
     memset(vis, 0, sizeof(vis));
     int cnt = 0;
@@ -106,7 +100,6 @@ int32_t SCAN(const InputParam *input, OutputParam *output) {
             currentHead.lpos = 0;
         }
     }
-
     free(sortedIOs);
     // DEBUG("SCAN 扫描了来回%d趟\n", cnt);
     return RETURN_OK;
@@ -392,6 +385,7 @@ void cycleMergeMain(struct KM * cthis){
             path_length += kmGetDistance(unvisited_end, visited_end);
             path_length -= kmGetDistance(visited_start, visited_end);
             now_node = unvisited_start;
+
         }
         else{
             path_length += kmGetDistance(now_node, next);
@@ -1098,36 +1092,29 @@ int32_t getDurationMicroseconds()
 }
 
 // 计算总代价：寻址时长 + 带体磨损 + 电机磨损
-double getTotalCost(const InputParam *input, OutputParam *output) {
+uint32_t getTotalCost(const InputParam *input, OutputParam *output) {
     AccessTime accessTime = {0};
     TotalAccessTime(input, output, &accessTime);                    // 寻址时长
     uint32_t a_bw = TotalTapeBeltWearTimes(input, output, NULL);    // 带体磨损
     uint32_t a_mw = TotalMotorWearTimes(input, output);             // 电机磨损
+    
     // 总代价
-    double totalCost = cost_weight->alpha * accessTime.addressDuration + cost_weight->beta * a_bw + cost_weight->gamma * a_mw;
-    return totalCost;
+    double tmp_cost = cost_weight->alpha * accessTime.addressDuration + cost_weight->beta * a_bw + cost_weight->gamma * a_mw;
+    uint32_t total_cost = 0;
+    if(tmp_cost > UINT32_MAX) total_cost = UINT32_MAX - 1;
+    else total_cost = (uint32_t)tmp_cost;
+    printf("totalCost: %d\n", total_cost);
+    return total_cost;
 }
 
 // 计算单次代价：寻址时长 + 带体磨损 + 电机磨损
-double getCost(const HeadInfo *start, const HeadInfo *target) {
+uint32_t getCost(const HeadInfo *start, const HeadInfo *target) {
     uint32_t a_st = SeekTimeCalculate(start, target);
     uint32_t a_bw = BeltWearTimes(start, target, NULL);
     uint32_t a_mw = MotorWearTimes(start, target);
     double cost = cost_weight->alpha * a_st + cost_weight->beta * a_bw + cost_weight->gamma * a_mw;
-    return cost;
-}
-
-void CheckBetterResults(const InputParam *input, OutputParam *output, int *best_sequence, uint32_t * min_cost_p, int * flag_p, int flag_v){
-    pthread_mutex_lock(&watchDog_g.check_mutex); // 保护现场
-    double total_cost = getTotalCost(input, output);
-    printf("check if find better results!\n");
-    if (total_cost < *min_cost_p) {
-        printf("find better results!\n");
-        *min_cost_p = total_cost;
-        *flag_p = flag_v;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-    }
-    pthread_mutex_unlock(&watchDog_g.check_mutex);
+    if(cost > UINT32_MAX) return UINT32_MAX - 1;
+    else return (uint32_t)cost;
 }
 
 /**
@@ -1137,92 +1124,65 @@ void CheckBetterResults(const InputParam *input, OutputParam *output, int *best_
  * @return int32_t          返回成功或者失败，RETURN_OK 或 RETURN_ERROR
  */
 int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
-    // 计算代价权重
-    initCostWeight(input, output);
+    uint32_t min_cost = UINT32_MAX;
+    uint32_t total_cost = UINT32_MAX;
+    int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
 
-    double min_cost = DBL_MAX;
-    double total_cost = DBL_MAX;
-    output->len = input->ioVec.len;
-    OutputParam tmp_output;
-    tmp_output.len = output->len;
-    tmp_output.sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-    if (input->ioVec.len > 1000) {
-        int flag = 1;
-        partition_scan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 0);
-
-        // cycleMerge(input, &tmp_output);
-        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 1);
-
-        fastCycleMerge(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 2);
-
-        // merge(input, &tmp_output);
-        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 3);
-
-        // merge_random(input, &tmp_output);
-        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 4);
-        printf("flag=%d\n", flag);
-    }
-    else {
-        int flag = 3;
-        partition_scan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 5);
-        
-        MPScan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 6);
-
-        cycleMerge(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 7);
-
-        merge(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 8);
-
-        merge_random(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 9);
-
-        NearestNeighborAlgorithm(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 10);
-
-        printf("flag=%d\n", flag);
+    int flag = 1;
+    partition_scan(input, output); // 在算法内部还是只考虑寻址时长
+    AccessTime accessTime = {0};
+    total_cost = getTotalCost(input, output);
+    if (total_cost < min_cost) {
+        min_cost = total_cost;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        flag = 1;
     }
 
-    free(tmp_output.sequence);
+    MPScan(input, output); // 在算法内部还是只考虑寻址时长
+    total_cost = getTotalCost(input, output);
+    if (total_cost < min_cost){
+        min_cost = total_cost;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        flag = 2;
+    }
+
+    fastCycleMerge(input, output);
+    total_cost = getTotalCost(input, output);
+    if (total_cost < min_cost){
+        min_cost = total_cost;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        flag = 3;
+    }
+
+    merge(input, output);
+    total_cost = getTotalCost(input, output);
+    if (total_cost < min_cost){
+        min_cost = total_cost;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        flag = 4;
+    }
+
+    merge_random(input, output);
+    total_cost = getTotalCost(input, output);
+    if (total_cost < min_cost){
+        min_cost = total_cost;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        flag = 5;
+    }
+
+    NearestNeighborAlgorithm(input, output);
+    total_cost = getTotalCost(input, output);
+    if (total_cost < min_cost){
+        min_cost = total_cost;
+        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+        flag = 6;
+    }
+    memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+    printf("flag=%d\n", flag);
+
+    free(best_sequence);
     return 0;
 }
-
-void* _AlgorithmRunThread(void *arg)
-{
-    // signal(SIGUSR1, handle_signal);
-
-    if (setjmp(jumpBuffer) == 0) {
-        // 在函数开始时设置跳转点
-        printf("Before longjmp\n");
-        signal(SIGUSR1, handle_signal); // 注册信号处理函数
-    } else {
-        // 在触发信号处理后跳转到这里
-        printf("After longjmp\n");
-        signal(SIGUSR1, SIG_DFL); // 恢复默认的信号处理函数
-        WatchDogWorkerFinish();
-        return; // 直接结束函数运行，TODO: 能不能想个法子做一些内存管理
-    }
-
-    ThreadArg *thread_arg = (ThreadArg*)arg;
-    int32_t ret, duration_us;
-
-    startRecordTime();
-
-    ret = IOScheduleAlgorithm(thread_arg->input, thread_arg->output);
-    printf("cost before operator optimization: %ld\n", getTotalCost(thread_arg->input, thread_arg->output));
-    // ret = operator_optimization(input, output);
-    printf("cost afther operator optimization_op: %ld\n", getTotalCost(thread_arg->input, thread_arg->output));
-    duration_us = getDurationMicroseconds();
-    // printf("duration_us=%d\n", duration_us);
-    
-    WatchDogWorkerFinish();
-    return NULL;
-}
-
 
 /**
  * @brief  算法运行的主入口
@@ -1230,22 +1190,24 @@ void* _AlgorithmRunThread(void *arg)
  * @param  output           输出参数
  * @return uint32_t          返回成功或者失败，RETURN_OK 或 RETURN_ERROR
  */
-int32_t AlgorithmRun(const InputParam *input, OutputParam *output) {
-    int32_t ret;
-    pthread_t thread_id;
-    RunThreadArg thread_arg;
-    int threshold = 17*1000000, granularity = 1000000; // 17s, 1s
+int32_t AlgorithmRun(const InputParam *input, OutputParam *output){
+    // 初始化cost权重
+    cost_weight = (CostWeights *)malloc(sizeof(CostWeights));
+    initCostWeight(input, output);
+
+    int32_t ret, duration_us;
+    g_input = input;
 
     startRecordTime();
-    WatchDogInit();
-    g_input = input;
-    thread_arg.input = input;
-    thread_arg.output = output;
 
-    pthread_create(&thread_id, NULL, _AlgorithmRunThread, &thread_arg);
-    pthread_join(thread_id, NULL);
-    // WatchDogFunc(&thread_id, threshold, granularity);
-    // sleep(1);
+    ret = IOScheduleAlgorithm(input, output);
+    // printf("cost before operator optimization: %ld\n", getTotalCost(input, output));
+    // ret = operator_optimization(input, output);
+    // printf("cost afther operator optimization_op: %ld\n", getTotalCost(input, output));
+    // duration_us = getDurationMicroseconds();
+
+    // printf("duration_us=%d\n", duration_us);
+
     return RETURN_OK;
 }
 

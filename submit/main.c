@@ -46,7 +46,7 @@ void PrintMetrics(const KeyMetrics *metrics)
 {
     printf("\nKey Metrics:\n");
     printf("\tioCount:\t\t\t %u\n", metrics->ioCount);
-    printf("\ttotalCost:\t\t\t %u\n", metrics->addressingDuration + metrics->tapeBeltWear + metrics->tapeMotorWear);
+    // printf("\ttotalCost:\t\t\t %u\n", metrics->addressingDuration + metrics->tapeBeltWear + metrics->tapeMotorWear);
     printf("\talgorithmRunningDuration:\t %.3f (ms)\n", metrics->algorithmRunningDuration);
     printf("\tmemoryUse:\t\t\t %ld (KB)\n", metrics->memoryUse);
     printf("\taddressingDuration:\t\t %u (ms)\n", metrics->addressingDuration);
