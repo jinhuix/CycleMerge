@@ -26,6 +26,34 @@ const InputParam *g_input;
 int * dist_martix = NULL;
 CostWeights *cost_weight;
 
+// 判断输入的IO是否是顺序的
+bool isSequentialIO(const InputParam *input) {
+    if (input == NULL || input->ioVec.ioArray == NULL) return false;  // 输入参数非法
+
+    IOUint *ioArray = input->ioVec.ioArray;
+
+    // 从第二个IO开始遍历，与前一个IO进行比较
+    for (uint32_t i = 1; i < input->ioVec.len; i++) {
+        IOUint prevIO = ioArray[i - 1];
+        IOUint currIO = ioArray[i];
+
+        // 检查wrap是否非递减
+        if (currIO.wrap < prevIO.wrap) {
+            return false;  // wrap值递减，不符合顺序
+        }
+
+        // 在wrap相等的情况下，检查startLpos顺序
+        if (currIO.wrap == prevIO.wrap) {
+            if ((currIO.wrap % 2 == 0 && currIO.startLpos < prevIO.startLpos) ||
+                (currIO.wrap % 2 != 0 && currIO.startLpos > prevIO.startLpos)) {
+                return false;  // 在同一个wrap中，startLpos顺序不符合要求
+            }
+        }
+    }
+
+    return true;  // 全部检查通过，IO序列符合顺序
+}
+
 void initCostWeight(const InputParam *input, OutputParam *output) {
     // 执行SCAN算法，统计时间
     struct timeval start, end;
@@ -43,9 +71,17 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
     cost_weight->b_rt = cost_weight->b_st + accessTime.readDuration + b_at; // 基线读时延
 
     // 场景：高性能hdd
-    cost_weight->alpha = 0.5 * 1e7 / cost_weight->b_rt;
-    cost_weight->beta = 0.3 * 1e7 / cost_weight->b_bw;
-    cost_weight->gamma = 0.2 * 1e7 / cost_weight->b_mw;
+    if(isSequentialIO(input)) {     // 备份归档场景：顺序IO
+        cost_weight->alpha = 0.3, cost_weight->beta = 0.5, cost_weight->gamma = 0.2;
+        // printf("backup\n");
+    }
+    else {
+        cost_weight->alpha = 0.5, cost_weight->beta = 0.3, cost_weight->gamma = 0.2;
+        // printf("hdd\n");
+    }
+    cost_weight->alpha = cost_weight->alpha * 1e7 / cost_weight->b_rt;
+    cost_weight->beta = cost_weight->alpha * 1e7 / cost_weight->b_bw;
+    cost_weight->gamma = cost_weight->alpha * 1e7 / cost_weight->b_mw;
 }
 
 int32_t SCAN(const InputParam *input, OutputParam *output) {
