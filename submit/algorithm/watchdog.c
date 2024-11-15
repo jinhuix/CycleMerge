@@ -1,5 +1,5 @@
 #include "watchdog.h"
-#include "algorithm_op.h"
+#include "algorithm.h"
 
 struct WatchDog watchDog_g;
 

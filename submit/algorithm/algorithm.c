@@ -1,4 +1,4 @@
-#include "algorithm_op.h"
+#include "algorithm.h"
 #include "hungarian_c.h"
 
 #include <stdio.h>
@@ -71,11 +71,11 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
     // 场景：高性能hdd
     if(isSequentialIO(input)) {     // 备份归档场景：顺序IO
         cost_weight->alpha = 0.3, cost_weight->beta = 0.5, cost_weight->gamma = 0.2;
-        // printf("backup\n");
+        printf("backup\n");
     }
     else {
         cost_weight->alpha = 0.5, cost_weight->beta = 0.3, cost_weight->gamma = 0.2;
-        // printf("hdd\n");
+        printf("hdd\n");
     }
     cost_weight->alpha = cost_weight->alpha * 1e7 / cost_weight->b_rt;
     cost_weight->beta = cost_weight->alpha * 1e7 / cost_weight->b_bw;
@@ -1162,57 +1162,35 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     uint32_t total_cost = UINT32_MAX;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
 
-    int flag = 1;
-    // partition_scan(input, output); // 在算法内部还是只考虑寻址时长
-    // AccessTime accessTime = {0};
-    // total_cost = getTotalCost(input, output);
-    // if (total_cost < min_cost) {
-    //     min_cost = total_cost;
-    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-    //     flag = 1;
-    // }
-
-    // MPScan(input, output); // 在算法内部还是只考虑寻址时长
-    // total_cost = getTotalCost(input, output);
-    // if (total_cost < min_cost){
-    //     min_cost = total_cost;
-    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-    //     flag = 2;
-    // }
-
-    fastCycleMerge(input, output);
-    // total_cost = getTotalCost(input, output);
-    // if (total_cost < min_cost){
-    //     min_cost = total_cost;
-    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-    //     flag = 3;
-    // }
-
-    // merge(input, output);
-    total_cost = getTotalCost(input, output);
-    if (total_cost < min_cost){
-        min_cost = total_cost;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        flag = 4;
+    if (input->ioVec.len < 5000)
+    {
+        int flag = 1;
+        AccessTime accessTime = {0};
+        fastCycleMerge(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 1;
+        }
+        printf("flag=%d\n", flag);
     }
-
-    // merge_random(input, output);
-    // total_cost = getTotalCost(input, output);
-    // if (total_cost < min_cost){
-    //     min_cost = total_cost;
-    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-    //     flag = 5;
-    // }
-
-    // NearestNeighborAlgorithm(input, output);
-    // total_cost = getTotalCost(input, output);
-    // if (total_cost < min_cost){
-    //     min_cost = total_cost;
-    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-    //     flag = 6;
-    // }
-    // memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-    // printf("flag=%d\n", flag);
+    else
+    {
+        int flag = 3;
+        merge(input, output); // 在算法内部还是只考虑寻址时长
+        AccessTime accessTime = {0};
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 3;
+        }
+        memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+        printf("flag=%d\n", flag);
+    }
 
     free(best_sequence);
     return 0;
