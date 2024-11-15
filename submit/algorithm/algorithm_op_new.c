@@ -1129,32 +1129,32 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
 
     int flag = 1;
-    partition_scan(input, output); // 在算法内部还是只考虑寻址时长
-    AccessTime accessTime = {0};
-    total_cost = getTotalCost(input, output);
-    if (total_cost < min_cost) {
-        min_cost = total_cost;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        flag = 1;
-    }
+    // partition_scan(input, output); // 在算法内部还是只考虑寻址时长
+    // AccessTime accessTime = {0};
+    // total_cost = getTotalCost(input, output);
+    // if (total_cost < min_cost) {
+    //     min_cost = total_cost;
+    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    //     flag = 1;
+    // }
 
-    MPScan(input, output); // 在算法内部还是只考虑寻址时长
-    total_cost = getTotalCost(input, output);
-    if (total_cost < min_cost){
-        min_cost = total_cost;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        flag = 2;
-    }
+    // MPScan(input, output); // 在算法内部还是只考虑寻址时长
+    // total_cost = getTotalCost(input, output);
+    // if (total_cost < min_cost){
+    //     min_cost = total_cost;
+    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    //     flag = 2;
+    // }
 
     fastCycleMerge(input, output);
-    total_cost = getTotalCost(input, output);
-    if (total_cost < min_cost){
-        min_cost = total_cost;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        flag = 3;
-    }
+    // total_cost = getTotalCost(input, output);
+    // if (total_cost < min_cost){
+    //     min_cost = total_cost;
+    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    //     flag = 3;
+    // }
 
-    merge(input, output);
+    // merge(input, output);
     total_cost = getTotalCost(input, output);
     if (total_cost < min_cost){
         min_cost = total_cost;
@@ -1162,23 +1162,23 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
         flag = 4;
     }
 
-    merge_random(input, output);
-    total_cost = getTotalCost(input, output);
-    if (total_cost < min_cost){
-        min_cost = total_cost;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        flag = 5;
-    }
+    // merge_random(input, output);
+    // total_cost = getTotalCost(input, output);
+    // if (total_cost < min_cost){
+    //     min_cost = total_cost;
+    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    //     flag = 5;
+    // }
 
-    NearestNeighborAlgorithm(input, output);
-    total_cost = getTotalCost(input, output);
-    if (total_cost < min_cost){
-        min_cost = total_cost;
-        memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-        flag = 6;
-    }
-    memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-    printf("flag=%d\n", flag);
+    // NearestNeighborAlgorithm(input, output);
+    // total_cost = getTotalCost(input, output);
+    // if (total_cost < min_cost){
+    //     min_cost = total_cost;
+    //     memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+    //     flag = 6;
+    // }
+    // memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+    // printf("flag=%d\n", flag);
 
     free(best_sequence);
     return 0;

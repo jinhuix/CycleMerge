@@ -14,7 +14,7 @@ set(HEADER_DIRS
 # 添加源文件变量
 set(SOURCES
     ${PROJECT_SOURCE_DIR}/main.c
-    ${ALG_DIR}/algorithm_op.c
+    ${ALG_DIR}/algorithm_op_new.c
     ${ALG_DIR}/watchdog.c
     ${ALG_DIR}/hungarian.cpp
 )
