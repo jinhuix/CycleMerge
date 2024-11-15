@@ -30,28 +30,26 @@ CostWeights *cost_weight;
 bool isSequentialIO(const InputParam *input) {
     if (input == NULL || input->ioVec.ioArray == NULL) return false;  // 输入参数非法
 
+    uint32_t cnt = 1;   // 第一个IO默认是顺序的
     IOUint *ioArray = input->ioVec.ioArray;
 
     // 从第二个IO开始遍历，与前一个IO进行比较
     for (uint32_t i = 1; i < input->ioVec.len; i++) {
         IOUint prevIO = ioArray[i - 1];
         IOUint currIO = ioArray[i];
-
-        // 检查wrap是否非递减
-        if (currIO.wrap < prevIO.wrap) {
-            return false;  // wrap值递减，不符合顺序
-        }
-
-        // 在wrap相等的情况下，检查startLpos顺序
-        if (currIO.wrap == prevIO.wrap) {
+        if (currIO.wrap < prevIO.wrap) continue;    // 检查wrap是否非递减
+        if (currIO.wrap == prevIO.wrap) {           // 在wrap相等的情况下，检查startLpos顺序
             if ((currIO.wrap % 2 == 0 && currIO.startLpos < prevIO.startLpos) ||
                 (currIO.wrap % 2 != 0 && currIO.startLpos > prevIO.startLpos)) {
-                return false;  // 在同一个wrap中，startLpos顺序不符合要求
+                continue;  // 在同一个wrap中，startLpos顺序不符合要求
             }
         }
+        cnt++;
     }
 
-    return true;  // 全部检查通过，IO序列符合顺序
+    // printf("cnt: %d\n", cnt);
+    if(cnt > 0.9 * input->ioVec.len) return true;
+    else return false;
 }
 
 void initCostWeight(const InputParam *input, OutputParam *output) {
