@@ -71,15 +71,15 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
     // 场景：高性能hdd
     if(isSequentialIO(input)) {     // 备份归档场景：顺序IO
         cost_weight->alpha = 0.3, cost_weight->beta = 0.5, cost_weight->gamma = 0.2;
-        printf("backup\n");
+        // printf("backup\n");
     }
     else {
         cost_weight->alpha = 0.5, cost_weight->beta = 0.3, cost_weight->gamma = 0.2;
-        printf("hdd\n");
+        // printf("hdd\n");
     }
     cost_weight->alpha = cost_weight->alpha * 1e7 / cost_weight->b_rt;
-    cost_weight->beta = cost_weight->alpha * 1e7 / cost_weight->b_bw;
-    cost_weight->gamma = cost_weight->alpha * 1e7 / cost_weight->b_mw;
+    cost_weight->beta = cost_weight->beta * 1e7 / cost_weight->b_bw;
+    cost_weight->gamma = cost_weight->gamma * 1e7 / cost_weight->b_mw;
 }
 
 int32_t SCAN(const InputParam *input, OutputParam *output) {
@@ -1162,7 +1162,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     uint32_t total_cost = UINT32_MAX;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
 
-    if (input->ioVec.len < 5000)
+    if (input->ioVec.len < 2000)
     {
         int flag = 1;
         AccessTime accessTime = {0};
@@ -1220,6 +1220,10 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output){
 
     // printf("duration_us=%d\n", duration_us);
 
+    if (cost_weight != NULL) {
+        free(cost_weight);
+        cost_weight = NULL;
+    }
     return RETURN_OK;
 }
 
