@@ -29,11 +29,13 @@ int * dist_martix = NULL;
 
 int _get_distance(int i, int j){
     if(i == j){
-        return -INF;
+        return INF;
     }
+    if(j == 1) return -0;
+
+    // return -(rand()%100000 +100);
 
     HeadInfo currentHead, targetPos;
-    
 
     if(i == 1){
         // head
@@ -56,8 +58,143 @@ int _get_distance(int i, int j){
         targetPos.status = HEAD_RW;
     }
 
+    int estimated_lower_bound = 0;
+    static int max_gap = INF;
+    // // landmark_check
+    // {
+    //     HeadInfo landMark = {140, 0, HEAD_RW};
+    //     // HeadInfo rightLandMark = {MAX_LPOS-1, 141, HEAD_RW};
+    //     int s_t_cost = getCost(&currentHead, &targetPos);
+    //     int s_l_cost = getCost(&currentHead, &landMark);
+    //     int t_l_cost = getCost(&targetPos, &landMark);
+    //     int l_s_cost = getCost(&landMark, &currentHead);
+    //     int l_t_cost = getCost(&landMark, &targetPos);
+    //     // printf("L: %d, %d, %d, %d, %d\n", s_t_cost, s_l_cost, t_l_cost, l_s_cost, l_t_cost);
+    //     if(s_l_cost - t_l_cost > estimated_lower_bound ) estimated_lower_bound = s_l_cost - t_l_cost;
+    //     if(l_t_cost - l_s_cost > estimated_lower_bound ) estimated_lower_bound = l_t_cost - l_s_cost;
+    // }
+
+    // {
+    //     HeadInfo landMark = {140, MAX_LPOS*2, HEAD_RW};
+    //     // HeadInfo rightLandMark = {MAX_LPOS-1, 141, HEAD_RW};
+    //     int s_t_cost = getCost(&currentHead, &targetPos);
+    //     int s_l_cost = getCost(&currentHead, &landMark);
+    //     int t_l_cost = getCost(&targetPos, &landMark);
+    //     int l_s_cost = getCost(&landMark, &currentHead);
+    //     int l_t_cost = getCost(&landMark, &targetPos);
+    //     // printf("R: %d, %d, %d, %d, %d\n", s_t_cost, s_l_cost, t_l_cost, l_t_cost, l_s_cost);
+    //     if(s_l_cost - t_l_cost > estimated_lower_bound ) estimated_lower_bound = s_l_cost - t_l_cost;
+    //     if(l_t_cost - l_s_cost > estimated_lower_bound ) estimated_lower_bound = l_t_cost - l_s_cost;
+    // }
+
+    // {
+    //     HeadInfo landMark = {140, MAX_LPOS/2, HEAD_RW};
+    //     // HeadInfo rightLandMark = {MAX_LPOS-1, 141, HEAD_RW};
+    //     int s_t_cost = getCost(&currentHead, &targetPos);
+    //     int s_l_cost = getCost(&currentHead, &landMark);
+    //     int t_l_cost = getCost(&targetPos, &landMark);
+    //     int l_s_cost = getCost(&landMark, &currentHead);
+    //     int l_t_cost = getCost(&landMark, &targetPos);
+    //     // printf("R: %d, %d, %d, %d, %d\n", s_t_cost, s_l_cost, t_l_cost, l_t_cost, l_s_cost);
+    //     if(s_l_cost - t_l_cost > estimated_lower_bound ) estimated_lower_bound = s_l_cost - t_l_cost;
+    //     if(l_t_cost - l_s_cost > estimated_lower_bound ) estimated_lower_bound = l_t_cost - l_s_cost;
+    // }
+    // int cost = getCost(&currentHead, &targetPos);
+    // printf("acc: %d, lower_bound: %d, diff: %d\n", cost, estimated_lower_bound,  cost - estimated_lower_bound);
+    // if(estimated_lower_bound != 0 &&cost - estimated_lower_bound != 0){
+    //     printf("%d, %d, %d\n", currentHead.lpos, currentHead.wrap, currentHead.status);
+    //     printf("%d, %d, %d\n", targetPos.lpos, targetPos.wrap, targetPos.status);
+    // }
+    // assert(getCost(&currentHead, &targetPos) >= estimated_lower_bound);
+
     // TotalTapeBeltWearTimes(&currentHead, &targetPos, NULL);  // 带体磨损
-    return -getCost(&currentHead, &targetPos);
+    return getCost(&currentHead, &targetPos);
+}
+
+int _get_approx_dist(int i, int j){
+    if(i == j){
+        return INF;
+    }
+    if(j == 1) return 0;
+
+    // return -(rand()%100000 +100);
+
+    HeadInfo currentHead, targetPos;
+
+    if(i == 1){
+        // head
+        currentHead = g_input->headInfo;
+    }
+    else{
+        currentHead.lpos = g_input->ioVec.ioArray[i-2].endLpos;
+        currentHead.wrap = g_input->ioVec.ioArray[i-2].wrap;
+        currentHead.status = HEAD_RW;
+    }
+
+    if(j == 1){
+        // head
+        targetPos = g_input->headInfo;
+        return -0;
+    }
+    else{
+        targetPos.lpos = g_input->ioVec.ioArray[j-2].startLpos;
+        targetPos.wrap = g_input->ioVec.ioArray[j-2].wrap;
+        targetPos.status = HEAD_RW;
+    }
+    
+    return abs(targetPos.lpos - currentHead.lpos);
+}
+
+int compare(const void *a, const void *b) {
+    int num1 = *(int *)a;
+    int num2 = *(int *)b;
+    return num1 - num2;
+}
+
+int getMiddleValue(int a, int b, int c) {
+    if ((a >= b && a <= c) || (a >= c && a <= b)) {
+        return a;
+    } else if ((b >= a && b <= c) || (b >= c && b <= a)) {
+        return b;
+    } else {
+        return c;
+    }
+}
+
+
+int quickSelect(int arr[], int low, int high, int k) {
+    if (low <= high) {
+        int pivot_a = arr[low];
+        int pivot_b = arr[(low+high)/2];
+        int pivot_c = arr[high];
+        int pivot = getMiddleValue(pivot_a, pivot_b, pivot_c);
+        int i = low - 1;
+
+        for (int j = low; j <= high - 1; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        int pivotIndex = i + 1;
+
+        if (pivotIndex == k - 1) {
+            return arr[pivotIndex];
+        } else if (pivotIndex > k - 1) {
+            return quickSelect(arr, low, pivotIndex - 1, k);
+        } else {
+            return quickSelect(arr, pivotIndex + 1, high, k);
+        }
+    }
+
+    return -1;  // 如果k超出数组范围，返回-1或其他适当的值
 }
 
 int kmGetDistance(int i, int j){
@@ -66,10 +203,32 @@ int kmGetDistance(int i, int j){
         memset(dist_martix, 0, sizeof(int)*(g_input->ioVec.len+2)*(g_input->ioVec.len+2));
 
         for(int i=1;i<=g_input->ioVec.len + 1;i++){
+            int dist_value_list[10010];
+            int dist_value_list_copy[10010];
             for(int j=1;j<=g_input->ioVec.len + 1;j++){
-                ;
                 dist_martix[i*(g_input->ioVec.len+2)+j] = _get_distance(i, j);
+                // dist_value_list[j-1] = _get_distance(i, j);
+                // dist_value_list[j-1] =dist_martix[i*(g_input->ioVec.len+2)+j];
+
+                // int approx_dist = _get_approx_dist(i ,j);
+                // dist_value_list[j-1] = approx_dist;
+                // dist_value_list_copy[j-1] = approx_dist;
             }
+            // int threshold = quickSelect(dist_value_list, 0, g_input->ioVec.len, 10000);
+            // for(int j=1;j<=g_input->ioVec.len + 1;j++){
+            //     if(j == i){
+            //         dist_martix[i*(g_input->ioVec.len+2)+j] = INF;
+            //     }
+            //     else if(j == 0){
+            //         dist_martix[i*(g_input->ioVec.len+2)+j] = 0;
+            //     }
+            //     else if(dist_value_list_copy[j-1] > threshold){
+            //         dist_martix[i*(g_input->ioVec.len+2)+j] = INF;
+            //     }
+            //     else{
+            //         dist_martix[i*(g_input->ioVec.len+2)+j] = _get_distance(i, j);
+            //     }
+            // }
         }
     }
     return dist_martix[i*(g_input->ioVec.len+2)+j];
@@ -121,118 +280,128 @@ void kmClear(struct KM * cthis){
     free(cthis->next);
 }
 
- 
+bool checkCycle(struct KM* cthis, int x, int y){
+    // 查询x一路往上能否找到y
+    int current = x;
+    if(x == y){
+        return true;
+    }
+    while(current != -1){
+        current = cthis->match[current];
+        if(current == y){
+            return true;
+        }
+        if(current == x){
+            break;
+        }
+        printf("curr = %d, x = %d, y = %d\n", current, x, y);
+    }
+    return false;
+}
 
-int kmFindpath(struct KM* cthis, int x) {
+int kmFindpath(struct KM* cthis, int x, int match_num) {
     int tempDelta;
     cthis->visx[x] = true;
     for(int y = 1; y <= cthis->ny; y++) {
         if(cthis->visy[y]) continue;
+        int dist = -kmGetDistance(x, y);
+        printf("%d->%d = %d\n", x, y, dist);
         
-        tempDelta = cthis->lx[x] + cthis->ly[y] - kmGetDistance(x, y);
+        tempDelta = cthis->lx[x] + cthis->ly[y] - dist;
+
+        printf("%d, %d\n", cthis->lx[x], cthis->ly[y]);
+        exit(0);
+        
         
         if(tempDelta == 0) {
             cthis->visy[y] = true;
-            cthis->fa[y + cthis->nx] = x;
+            // if(cthis->match[y] == -1 && match_num <= 9900){
+            //     // 判断会不会成环？
+            //     if(checkCycle(cthis, x, y)){
+            //         continue;
+            //         ;
+            //     }
+            // }
             
-            if(cthis->match[y] == -1) {
-                return y + cthis->nx;
+            if(cthis->match[y] == -1 || kmFindpath(cthis, cthis->match[y], match_num)) {
+                cthis->match[y] = x;
+                // printf("match %d, %d\n", y, x);
+                return 1;
             }
-            
-            cthis->fa[cthis->match[y]] = y + cthis->nx;
-            int res = kmFindpath(cthis, cthis->match[y]);
-            if(res > 0) return res;
         }
         else {
             // 更新斐波那契堆中对应点的slack值
-            int current_slack = cthis->slack_nodes[x]->key;
-            if(current_slack > tempDelta) {
-                fib_heap_decrease(cthis->slack_heap, cthis->slack_nodes[x], tempDelta);
+            if(tempDelta < cthis->slack[y]){
+                cthis->slack[y] = tempDelta;
             }
         }
     }
-    return -1;
+    return 0;
 }
 
 void kmMain(struct KM* cthis) {
-    // 初始化slack值到斐波那契堆
-    for (int i = 1; i <= cthis->ny; i++) {  // 应该使用ny而不是nx
-        cthis->slack_nodes[i] = fib_heap_insert_key(cthis->slack_heap, INF, i);
-    }
+    int duration_us = getDurationMicroseconds();
+    printf("[time] %s: start at %d\n", __func__, duration_us);
+    int match_num = 0;
+    
     for(int x = 1; x <= cthis->nx; ++x) {
-        for (int i = 1; i <= cthis->ny; i++) {
-            fib_heap_increase(cthis->slack_heap, cthis->slack_nodes[i], INF);  // 重置 slack 值为 INF
-        }
-        // 初始化各数组
-        for(int i = 1; i <= cthis->nx + cthis->ny; i++) {
-            cthis->fa[i] = -1;
-        }
-        memset(cthis->visx, false, sizeof(bool) * cthis->need_n);
-        memset(cthis->visy, false, sizeof(bool) * cthis->need_n);
-        int fir = 1;
-        int leaf = -1;
+        printf("x = %d\n", x);
+        memset(cthis->slack, INF, sizeof(bool) * cthis->need_n);
         while(true) {
-            if(fir == 1) {
-                leaf = kmFindpath(cthis, x);
-                fir = 0;
-            }
-            else {
-                // 使用斐波那契堆找到最小slack值的顶点
-                FibNode *minNode;
-                while(true) {
-                    minNode = cthis->slack_heap->min;
-                    if(minNode == NULL)
-                        break;
-                    if(minNode->key > 0)
-                        break;
-                    int i = minNode->value;
-                    //slack要重新清空，方以后接着用
-                    fib_heap_extract_min(cthis->slack_heap);
-                    fib_heap_insert_key(cthis->slack_heap, INF, i);
-                    // fib_heap_increase(cthis->slack_heap, cthis->slack_nodes[i], INF);
-                    leaf = kmFindpath(cthis, i);
-                    if(leaf > 0) break;
-                }
-            }
-            if(leaf > 0) {
-                int p = leaf;
-                while(p > 0) {
-                    cthis->match[p-cthis->nx] = cthis->fa[p];
-                    p = cthis->fa[cthis->fa[p]];
+            memset(cthis->visx, false, sizeof(bool) * cthis->need_n);
+            memset(cthis->visy, false, sizeof(bool) * cthis->need_n);
+
+            if(kmFindpath(cthis, x, match_num)){
+                match_num ++;
+                printf("match num: %d\n", match_num);
+                for(int i = 1; i <= cthis->nx; i++){
+                    printf("%d->%d\n", cthis->match[i], i);
                 }
                 break;
             }
-            else {
-                // 未找到增广路，更新顶标
-                int delta = cthis->slack_heap->min->key;
-                // 更新标号和slack值
-                for(int i = 1; i <= cthis->nx; ++i) {
-                    if(cthis->visx[i]) {
-                        cthis->lx[i] -= delta;
-                        // 更新对应的slack值
-                        fib_heap_decrease(cthis->slack_heap, cthis->slack_nodes[i], cthis->slack_nodes[i]->key - delta);
+            else{
+                int d = INF;
+                for(int y = 1; y <= cthis->ny; ++y)
+                {
+                    if(!cthis->visy[y]){
+                        if(cthis->slack[y] < d){
+                            d = cthis->slack[y];
+                        }
                     }
                 }
-                for(int j = 1; j <= cthis->ny; ++j) {
-                    if(cthis->visy[j]) {
-                        cthis->ly[j] += delta;
+
+                for(int i = 1; i <= cthis->ny; ++i) {
+                    if(cthis->visx[i]){
+                        cthis->lx[i] -= d;
+                    }
+                    if(cthis->visy[i]){
+                        cthis->ly[i] += d;
                     }
                 }
-            }        
+            }   
         }
     }
 }
  
 void kmSolve(struct KM * cthis)
 {
+    int duration_us = getDurationMicroseconds();
+    printf("[time] %s: start at %d\n", __func__, duration_us);
     memset(cthis->match,-1,sizeof(int) * cthis->need_n);
     memset(cthis->ly,0,sizeof(int) * cthis->need_n);
  
     for(int i=1;i<=cthis->nx;i++)
     {
         cthis->lx[i]=-INF;
-        for(int j=1;j<=cthis->ny;j++)
-            cthis->lx[i]=max(cthis->lx[i],kmGetDistance(i, j));
+        for(int j=1;j<=cthis->ny;j++){
+            if(i == j){
+                continue;
+            }
+            int dist = -kmGetDistance(i, j);
+            printf("%d,%d=%d\n", i, j, dist);
+            exit(1);
+            cthis->lx[i]=max(cthis->lx[i], dist);
+        }
     }
     kmMain(cthis);
 }
@@ -249,7 +418,8 @@ void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * 
     int visited_end = -1;
     int unvisited_start = -1;
     int unvisited_end = -1;
-    int max_cost = -INF;
+    int min_cost = INF;
+    int better_cnt = 0;
     for(int i = 1; i <= cthis->n; i++){
         if(cthis->visit_node[i]){
             for(int j = 1; j <= cthis->n; j++){
@@ -259,8 +429,8 @@ void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * 
                     this_cost += kmGetDistance(cthis->match[j], cthis->next[i]);
                     this_cost -= kmGetDistance(i, cthis->next[i]);
                     this_cost -= kmGetDistance(cthis->match[j], j);
-                    if(visited_start == -1 || this_cost > max_cost){
-                        max_cost = this_cost;
+                    if(visited_start == -1 || this_cost < min_cost){
+                        min_cost = this_cost;
                         visited_start = i;
                         visited_end = cthis->next[i];
                         unvisited_start = j;
@@ -277,13 +447,19 @@ void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * 
 }
 
 void cycleMergeMain(struct KM * cthis){
-    int path_length = 0;
+    int duration_us = getDurationMicroseconds();
+    printf("[time] %s: start at %d\n", __func__, duration_us);
+    int64_t path_length = 0;
     int cycle_cnt = 1;
     int last_end = -1;
+    int64_t lower_bound = 0;
     memset(cthis->visit_node, 0, sizeof(bool) * cthis->need_n);
     for(int i = 1; i <= cthis->ny; i++){
         int left = cthis->match[i];
         cthis->next[left] = i;
+        assert(left != -1);
+        assert(kmGetDistance(left, i) >= 0);
+        lower_bound += kmGetDistance(left, i);
     }
 
     int now_node = 1;
@@ -316,7 +492,7 @@ void cycleMergeMain(struct KM * cthis){
             now_node = next;
         }
     }
-    printf("path length = %d, cycle_cnt = %d\n", path_length, cycle_cnt);
+    printf("lower_bound = %ld, path length = %ld, cycle_cnt = %d\n", lower_bound, path_length, cycle_cnt);
 }
 
 static FibNode *fib_heap_search(FibHeap *heap, Type key);
@@ -1033,7 +1209,30 @@ uint32_t getCost(const HeadInfo *start, const HeadInfo *target)
     uint32_t beltW = BeltWearTimes(start, target, NULL);
     uint32_t motorW = MotorWearTimes(start, target);
     uint32_t cost = seekT + beltW + motorW;
+    static double min_cost = 1e9, max_cost = 0;
+    
+
+    double d_cost = 0.5*seekT/145728143 + 0.3*beltW/95486085 + 0.2*motorW/37050;
+    d_cost *= 1e10;
+    if(d_cost < min_cost){
+        min_cost = d_cost;
+        printf("min: %lf, max: %lf\n", min_cost, max_cost);
+    }
+    if(d_cost > max_cost){
+        max_cost = d_cost;
+        printf("min: %lf, max: %lf\n", min_cost, max_cost);
+    }
+    // d_cost *= 1e10;
+    if((d_cost + 0.499) > INF){
+        cost = INF;
+    }
+    else{
+        cost = (d_cost + 0.499);
+    }
+    // printf("%lf, %d\n",d_cost, cost);
+    // uint32_t cost = beltW;
     return cost;
+    // return rand()%10000;
 }
 
 
@@ -1049,6 +1248,80 @@ void CheckBetterResults(const InputParam *input, OutputParam *output, int *best_
         memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
     }
     pthread_mutex_unlock(&watchDog_g.check_mutex);
+}
+
+int32_t SCAN(const InputParam *input, OutputParam *output)
+{
+    // 初始化输出参数
+    output->len = input->ioVec.len;
+
+    // 复制 IO 请求数组并按 lpos 排序
+    IOUint *sortedIOs = (IOUint *)malloc(input->ioVec.len * sizeof(IOUint));
+    for (uint32_t i = 0; i < input->ioVec.len; ++i)
+        sortedIOs[i] = input->ioVec.ioArray[i];
+    QuickSort(sortedIOs, input->ioVec.len);
+
+    // 初始化当前头位置为输入的头状态
+    // HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
+    HeadInfo currentHead = {0, 0, 0};
+
+    // 扫描方向：1 表示从 BOT 向 EOT 扫描，-1 表示从 EOT 向 BOT 扫描
+    int direction = 1;
+    uint32_t index = 0;
+
+    bool vis[input->ioVec.len + 1];
+    memset(vis, 0, sizeof(vis));
+    int cnt = 0;
+    while (index < input->ioVec.len)
+    {
+        if (direction == 1)
+        {
+            // 从 BOT 向 EOT 扫描
+            for (uint32_t i = 0; i < input->ioVec.len; ++i)
+            {
+                if (sortedIOs[i].wrap & 1 || vis[sortedIOs[i].id])
+                {
+                    continue;
+                }
+                if (sortedIOs[i].startLpos >= currentHead.lpos)
+                {
+                    output->sequence[index++] = sortedIOs[i].id;
+                    vis[sortedIOs[i].id] = 1;
+                    currentHead.wrap = sortedIOs[i].wrap;
+                    // currentHead.lpos = sortedIOs[i].endLpos;
+                    currentHead.lpos = sortedIOs[i].startLpos;
+                }
+            }
+            direction = -1; // 改变扫描方向
+            currentHead.lpos = MAX_LPOS;
+            cnt++;
+        }
+        else
+        {
+            // 从 EOT 向 BOT 扫描
+            for (int32_t i = input->ioVec.len - 1; i >= 0; --i)
+            {
+                if (!(sortedIOs[i].wrap & 1) || vis[sortedIOs[i].id])
+                {
+                    continue;
+                }
+                if (sortedIOs[i].startLpos <= currentHead.lpos)
+                {
+                    output->sequence[index++] = sortedIOs[i].id;
+                    vis[sortedIOs[i].id] = 1;
+                    currentHead.wrap = sortedIOs[i].wrap;
+                    // currentHead.lpos = sortedIOs[i].endLpos;
+                    currentHead.lpos = sortedIOs[i].startLpos;
+                }
+            }
+            direction = 1; // 改变扫描方向
+            currentHead.lpos = 0;
+        }
+    }
+
+    free(sortedIOs);
+    // DEBUG("SCAN 扫描了来回%d趟\n", cnt);
+    return RETURN_OK;
 }
 
 /**
@@ -1068,42 +1341,45 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output)
     if (input->ioVec.len > 1000)
     {
         int flag = 1;
-        partition_scan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 0);
+        // SCAN2(input, &tmp_output); // 在算法内部还是只考虑寻址时长
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, -1);
 
-        // cycleMerge(input, &tmp_output);
-        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 1);
+        // partition_scan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 0);
 
-        fastCycleMerge(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 2);
+        cycleMerge(input, &tmp_output);
+        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 1);
+
+        // fastCycleMerge(input, &tmp_output);
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 2);
 
         // merge(input, &tmp_output);
         // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 3);
 
         // merge_random(input, &tmp_output);
         // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 4);
-        printf("flag=%d\n", flag);
+        // printf("flag=%d\n", flag);
     }
     else
     {
         int flag = 3;
-        partition_scan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 5);
+        // partition_scan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 5);
         
-        MPScan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 6);
+        // MPScan(input, &tmp_output); // 在算法内部还是只考虑寻址时长
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 6);
 
         cycleMerge(input, &tmp_output);
         CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 7);
 
-        merge(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 8);
+        // merge(input, &tmp_output);
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 8);
 
-        merge_random(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 9);
+        // merge_random(input, &tmp_output);
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 9);
 
-        NearestNeighborAlgorithm(input, &tmp_output);
-        CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 10);
+        // NearestNeighborAlgorithm(input, &tmp_output);
+        // CheckBetterResults(input, &tmp_output, output->sequence, &min_cost, &flag, 10);
 
         printf("flag=%d\n", flag);
     }
@@ -1164,8 +1440,8 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
     int32_t ret;
     pthread_t thread_id;
     RunThreadArg thread_arg;
-    int threshold = 17*1000000, granularity = 1000000; // 17s, 1s
-
+    int threshold = 17*1000000, granularity = 1000000; // 17s, 1s  
+    
     startRecordTime();
     WatchDogInit();
     g_input = input;
@@ -1173,8 +1449,8 @@ int32_t AlgorithmRun(const InputParam *input, OutputParam *output)
     thread_arg.output = output;
 
     pthread_create(&thread_id, NULL, _AlgorithmRunThread, &thread_arg);
-    // pthread_join(thread_id, NULL);
-    WatchDogFunc(&thread_id, threshold, granularity);
+    pthread_join(thread_id, NULL);
+    // WatchDogFunc(&thread_id, threshold, granularity);
     // sleep(1);
     return RETURN_OK;
 }
@@ -2564,6 +2840,8 @@ int32_t TailReinsert(const InputParam *input, OutputParam *output, int *pos, int
 }
 
 int32_t cycleMerge(const InputParam *input, OutputParam *output){
+    int duration_us = getDurationMicroseconds();
+    printf("[time] %s: start at %d\n", __func__, duration_us);
     struct KM km;
     int n = input->ioVec.len + 1;
     kmInit(&km, n, n, n);
@@ -2582,6 +2860,8 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
         free(dist_martix);
         dist_martix = NULL;
     }
+    duration_us = getDurationMicroseconds();
+    printf("[time] %s: end at %d\n", __func__, duration_us);
 
     return RETURN_OK;
 }
@@ -2589,7 +2869,6 @@ int32_t cycleMerge(const InputParam *input, OutputParam *output){
 int32_t fastCycleMerge(const InputParam *input, OutputParam *output)
 {
     int duration_us = getDurationMicroseconds();
-
     printf("[time] %s: start at %d\n", __func__, duration_us);
     struct KM km;
     int n = input->ioVec.len + 1;
@@ -2634,6 +2913,8 @@ int32_t fastCycleMerge(const InputParam *input, OutputParam *output)
 
 int32_t merge(const InputParam *input, OutputParam *output)
 {
+    int duration_us = getDurationMicroseconds();;
+    printf("[time] %s: start at %d\n", __func__, duration_us);
     for (uint32_t i = 0; i < input->ioVec.len; ++i)
     {
         output->sequence[i] = input->ioVec.ioArray[i].id;
@@ -2671,6 +2952,9 @@ int32_t merge(const InputParam *input, OutputParam *output)
         }
         insertHeap(heap, min_node);
     }
+    duration_us = getDurationMicroseconds();
+    printf("[time] %s: finish init heap at %d\n", __func__, duration_us);
+
 
     int nex[maxn], vis[maxn];
     memset(nex, 0, sizeof(nex));
@@ -2744,6 +3028,8 @@ int32_t merge(const InputParam *input, OutputParam *output)
     destoryMinHeap(heap);
 
     // TailReinsert(input, output, pos, lastpoints);
+    duration_us = getDurationMicroseconds();
+    printf("[time] %s: finish algo at %d\n", __func__, duration_us);
 
     return RETURN_OK;
 }

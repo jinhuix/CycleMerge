@@ -4,10 +4,9 @@
 extern "C"
 {
 #endif
+#include "../public.h"
 
-
-#define INF 0x3f3f3f3f
-int hungarianMinimumWeightPerfectMatchingDenseGraph_C(int n, int * dist_matrix, int * match);
+void CycleMerge(InputParam *input, int * walk_order);
 
 
 #ifdef __cplusplus

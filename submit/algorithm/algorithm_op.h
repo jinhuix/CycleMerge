@@ -4,6 +4,7 @@
 
 #include "../public.h"
 #include <sys/time.h>
+#include <pthread.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -20,6 +21,19 @@ extern "C"
     void startRecordTime();
 
     int32_t getDurationMicroseconds();
+
+    typedef struct
+    {
+        int id;
+        struct req_node *next;
+    } req_node;
+
+    typedef struct
+    {
+        req_node *head;
+        req_node *tail;
+        int len;
+    } req_list;
 
     typedef struct
     {
@@ -162,20 +176,10 @@ struct KM{
     FibNode** slack_nodes;
 };
 
-typedef struct {
-    double alpha;        // 寻址时间权重
-    double beta;         // 带体磨损权重
-    double gamma;        // 电机磨损权重
-    uint32_t b_rt;      // 基线读时延 = 寻址时长 + 读时长 + 算法运行时长
-    uint32_t b_st;      // 基线寻址时长
-    uint32_t b_bw;      // 基线带体磨损
-    uint32_t b_mw;      // 基线电机磨损
-} CostWeights;          // 代价评估权重
-
 int kmGetDistance(int i, int j);
 void kmInit(struct KM * cthis, int n, int nx, int ny);
 void kmClear(struct KM * cthis);
-int kmFindpath(struct KM * cthis, int x);
+// int kmFindpath(struct KM * cthis, int x);
 void kmMain(struct KM * cthis);
 void kmSolve(struct KM * cthis);
 

@@ -15,7 +15,7 @@ set(HEADER_DIRS
 set(SOURCES
     ${PROJECT_SOURCE_DIR}/main.c
     ${ALG_DIR}/algorithm.c
-    ${ALG_DIR}/watchdog.c
+    # ${ALG_DIR}/watchdog.c
     ${ALG_DIR}/hungarian.cpp
 )
 
@@ -33,6 +33,9 @@ target_link_libraries(project_hw PRIVATE ${PROJECT_SOURCE_DIR}/lib/libseek_model
 # 添加编译选项和宏定义
 target_compile_options(project_hw PRIVATE -O3 -std=c99)
 target_compile_definitions(project_hw PRIVATE _GNU_SOURCE)
+# 设置CPP的优化O3
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+
 # 多线程
 find_package(Threads REQUIRED)
 target_link_libraries(project_hw PRIVATE ${CMAKE_THREAD_LIBS_INIT})

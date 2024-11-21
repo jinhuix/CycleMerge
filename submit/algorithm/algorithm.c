@@ -77,9 +77,9 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
         cost_weight->alpha = 0.5, cost_weight->beta = 0.3, cost_weight->gamma = 0.2;
         // printf("hdd\n");
     }
-    cost_weight->alpha = cost_weight->alpha * 1e7 / cost_weight->b_rt;
-    cost_weight->beta = cost_weight->beta * 1e7 / cost_weight->b_bw;
-    cost_weight->gamma = cost_weight->gamma * 1e7 / cost_weight->b_mw;
+    cost_weight->alpha = cost_weight->alpha * 1e8 / cost_weight->b_rt;
+    cost_weight->beta = cost_weight->beta * 1e8 / cost_weight->b_bw;
+    cost_weight->gamma = cost_weight->gamma * 1e8 / cost_weight->b_mw;
 }
 
 int32_t SCAN(const InputParam *input, OutputParam *output) {
@@ -139,54 +139,6 @@ int32_t SCAN(const InputParam *input, OutputParam *output) {
     return RETURN_OK;
 }
 
-int _get_distance(int i, int j){
-    if(i == j){
-        return -INF;
-    }
-
-    HeadInfo currentHead, targetPos;
-    
-
-    if(i == 1){
-        // head
-        currentHead = g_input->headInfo;
-    }
-    else{
-        currentHead.lpos = g_input->ioVec.ioArray[i-2].endLpos;
-        currentHead.wrap = g_input->ioVec.ioArray[i-2].wrap;
-        currentHead.status = HEAD_RW;
-    }
-
-    if(j == 1){
-        // head
-        targetPos = g_input->headInfo;
-        return -0;
-    }
-    else{
-        targetPos.lpos = g_input->ioVec.ioArray[j-2].startLpos;
-        targetPos.wrap = g_input->ioVec.ioArray[j-2].wrap;
-        targetPos.status = HEAD_RW;
-    }
-
-    // TotalTapeBeltWearTimes(&currentHead, &targetPos, NULL);  // 带体磨损
-    return -getCost(&currentHead, &targetPos);
-}
-
-int kmGetDistance(int i, int j){
-    if(dist_martix == NULL){
-        dist_martix = (int *)malloc(sizeof(int)*(g_input->ioVec.len+2)*(g_input->ioVec.len+2));
-        memset(dist_martix, 0, sizeof(int)*(g_input->ioVec.len+2)*(g_input->ioVec.len+2));
-
-        for(int i=1;i<=g_input->ioVec.len + 1;i++){
-            for(int j=1;j<=g_input->ioVec.len + 1;j++){
-                ;
-                dist_martix[i*(g_input->ioVec.len+2)+j] = _get_distance(i, j);
-            }
-        }
-    }
-    return dist_martix[i*(g_input->ioVec.len+2)+j];
-    // return _get_distance(i, j);
-}
 
 int min(int a, int b)
 {
@@ -198,236 +150,7 @@ int max(int a, int b)
     return a>b?a:b;
 }
 
-void kmInit(struct KM * cthis, int n, int nx, int ny){
-    int need_n = n + 100;
-    cthis->match = (int *)malloc(sizeof(int)*(need_n));
-    cthis->lx = (int *)malloc(sizeof(int)*(need_n));
-    cthis->ly = (int *)malloc(sizeof(int)*(need_n));
-    cthis->visx = (bool *)malloc(sizeof(bool)*(need_n));
-    cthis->visy = (bool *)malloc(sizeof(bool)*(need_n));
-    cthis->fa = (int *)malloc(sizeof(int) * 2 * need_n);
-    cthis->slack = (int *)malloc(sizeof(bool)*(need_n));
-    cthis->visit_node = (bool *)malloc(sizeof(bool)*(need_n));
-    cthis->next = (int *)malloc(sizeof(int) * need_n);
 
-    cthis->n = n;
-    cthis->nx = nx;
-    cthis->ny = ny;
-    cthis->need_n = need_n;
-
-    // 初始化斐波那契堆
-    cthis->slack_heap = fib_heap_make();
-    cthis->slack_nodes = (FibNode **)malloc((cthis->nx + 1) * sizeof(FibNode *));
-}
-
-void kmClear(struct KM * cthis){
-    // 添加斐波那契堆相关的内存释放
-    fib_heap_destroy(cthis->slack_heap);
-    free(cthis->match);
-    free(cthis->lx);
-    free(cthis->ly);
-    free(cthis->visx);
-    free(cthis->visy);
-    free(cthis->fa);
-    free(cthis->slack);
-    free(cthis->visit_node);
-    free(cthis->next);
-}
-
-int kmFindpath(struct KM* cthis, int x) {
-    int tempDelta;
-    cthis->visx[x] = true;
-    for(int y = 1; y <= cthis->ny; y++) {
-        if(cthis->visy[y]) continue;
-        
-        tempDelta = cthis->lx[x] + cthis->ly[y] - kmGetDistance(x, y);
-        
-        if(tempDelta == 0) {
-            cthis->visy[y] = true;
-            cthis->fa[y + cthis->nx] = x;
-            
-            if(cthis->match[y] == -1) {
-                return y + cthis->nx;
-            }
-            
-            cthis->fa[cthis->match[y]] = y + cthis->nx;
-            int res = kmFindpath(cthis, cthis->match[y]);
-            if(res > 0) return res;
-        }
-        else {
-            // 更新斐波那契堆中对应点的slack值
-            int current_slack = cthis->slack_nodes[x]->key;
-            if(current_slack > tempDelta) {
-                fib_heap_decrease(cthis->slack_heap, cthis->slack_nodes[x], tempDelta);
-            }
-        }
-    }
-    return -1;
-}
-
-void kmMain(struct KM* cthis) {
-    // 初始化slack值到斐波那契堆
-    for (int i = 1; i <= cthis->ny; i++) {  // 应该使用ny而不是nx
-        cthis->slack_nodes[i] = fib_heap_insert_key(cthis->slack_heap, INF, i);
-    }
-    for(int x = 1; x <= cthis->nx; ++x) {
-        for (int i = 1; i <= cthis->ny; i++) {
-            fib_heap_increase(cthis->slack_heap, cthis->slack_nodes[i], INF);  // 重置 slack 值为 INF
-        }
-        // 初始化各数组
-        for(int i = 1; i <= cthis->nx + cthis->ny; i++) {
-            cthis->fa[i] = -1;
-        }
-        memset(cthis->visx, false, sizeof(bool) * cthis->need_n);
-        memset(cthis->visy, false, sizeof(bool) * cthis->need_n);
-        int fir = 1;
-        int leaf = -1;
-        while(true) {
-            if(fir == 1) {
-                leaf = kmFindpath(cthis, x);
-                fir = 0;
-            }
-            else {
-                // 使用斐波那契堆找到最小slack值的顶点
-                FibNode *minNode;
-                while(true) {
-                    minNode = cthis->slack_heap->min;
-                    if(minNode == NULL)
-                        break;
-                    if(minNode->key > 0)
-                        break;
-                    int i = minNode->value;
-                    //slack要重新清空，方以后接着用
-                    fib_heap_extract_min(cthis->slack_heap);
-                    fib_heap_insert_key(cthis->slack_heap, INF, i);
-                    // fib_heap_increase(cthis->slack_heap, cthis->slack_nodes[i], INF);
-                    leaf = kmFindpath(cthis, i);
-                    if(leaf > 0) break;
-                }
-            }
-            if(leaf > 0) {
-                int p = leaf;
-                while(p > 0) {
-                    cthis->match[p-cthis->nx] = cthis->fa[p];
-                    p = cthis->fa[cthis->fa[p]];
-                }
-                break;
-            }
-            else {
-                // 未找到增广路，更新顶标
-                int delta = cthis->slack_heap->min->key;
-                // 更新标号和slack值
-                for(int i = 1; i <= cthis->nx; ++i) {
-                    if(cthis->visx[i]) {
-                        cthis->lx[i] -= delta;
-                        // 更新对应的slack值
-                        fib_heap_decrease(cthis->slack_heap, cthis->slack_nodes[i], cthis->slack_nodes[i]->key - delta);
-                    }
-                }
-                for(int j = 1; j <= cthis->ny; ++j) {
-                    if(cthis->visy[j]) {
-                        cthis->ly[j] += delta;
-                    }
-                }
-            }        
-        }
-    }
-}
- 
-void kmSolve(struct KM * cthis)
-{
-    memset(cthis->match,-1,sizeof(int) * cthis->need_n);
-    memset(cthis->ly,0,sizeof(int) * cthis->need_n);
- 
-    for(int i=1;i<=cthis->nx;i++)
-    {
-        cthis->lx[i]=-INF;
-        for(int j=1;j<=cthis->ny;j++)
-            cthis->lx[i]=max(cthis->lx[i],kmGetDistance(i, j));
-    }
-    kmMain(cthis);
-}
-
-void cycleMergeLink(struct KM * cthis, int i, int j){
-    cthis->next[i] = j;
-    cthis->match[j] = i;
-}
-
-void cycleMergeFindMinimalMerge(struct KM * cthis, int * visited_start_p, int * visited_end_p, int * unvisited_start_p, int * unvisited_end_p){
-    int visited_start = -1;
-    int visited_end = -1;
-    int unvisited_start = -1;
-    int unvisited_end = -1;
-    int max_cost = -INF;
-    for(int i = 1; i <= cthis->n; i++){
-        if(cthis->visit_node[i]){
-            for(int j = 1; j <= cthis->n; j++){
-                if(!cthis->visit_node[j]){
-                    int this_cost = 0;
-                    this_cost += kmGetDistance(i, j);
-                    this_cost += kmGetDistance(cthis->match[j], cthis->next[i]);
-                    this_cost -= kmGetDistance(i, cthis->next[i]);
-                    this_cost -= kmGetDistance(cthis->match[j], j);
-                    if(visited_start == -1 || this_cost > max_cost){
-                        max_cost = this_cost;
-                        visited_start = i;
-                        visited_end = cthis->next[i];
-                        unvisited_start = j;
-                        unvisited_end = cthis->match[j];
-                    }
-                }
-            }
-        }
-    }
-    *visited_start_p = visited_start;
-    *visited_end_p = visited_end;
-    *unvisited_start_p = unvisited_start;
-    *unvisited_end_p = unvisited_end;
-}
-
-void cycleMergeMain(struct KM * cthis){
-    int path_length = 0;
-    int cycle_cnt = 1;
-    int last_end = -1;
-    memset(cthis->visit_node, 0, sizeof(bool) * cthis->need_n);
-    for(int i = 1; i <= cthis->ny; i++){
-        int left = cthis->match[i];
-        cthis->next[left] = i;
-    }
-
-    int now_node = 1;
-    
-    int visit_cnt = 0;
-    while(visit_cnt != cthis->n){
-        // assert(cthis->visit_node[now_node] == 0);
-        cthis->visit_node[now_node] = 1;
-        visit_cnt ++;
-        if(visit_cnt == cthis->n){
-            break;
-        }
-
-        int next = cthis->next[now_node];
-        if(cthis->visit_node[next]){
-            cycle_cnt ++;
-            int visited_start, visited_end;
-            int unvisited_start, unvisited_end;
-            cycleMergeFindMinimalMerge(cthis, &visited_start, &visited_end, &unvisited_start, &unvisited_end);
-
-            cycleMergeLink(cthis, visited_start, unvisited_start);
-            cycleMergeLink(cthis, unvisited_end, visited_end);
-            path_length += kmGetDistance(visited_start, unvisited_start);
-            path_length += kmGetDistance(unvisited_end, visited_end);
-            path_length -= kmGetDistance(visited_start, visited_end);
-            now_node = unvisited_start;
-
-        }
-        else{
-            path_length += kmGetDistance(now_node, next);
-            now_node = next;
-        }
-    }
-    printf("path length = %d, cycle_cnt = %d\n", path_length, cycle_cnt);
-}
 
 static FibNode *fib_heap_search(FibHeap *heap, Type key);
 
@@ -1162,7 +885,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     uint32_t total_cost = UINT32_MAX;
     int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
 
-    if (input->ioVec.len < 2000)
+    if (0 && input->ioVec.len < 2000)
     {
         int flag = 1;
         AccessTime accessTime = {0};
@@ -1189,6 +912,16 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
             flag = 3;
         }
         memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
+        printf("flag=%d\n", flag);
+
+        fastCycleMerge(input, output);
+        total_cost = getTotalCost(input, output);
+        if (total_cost < min_cost)
+        {
+            min_cost = total_cost;
+            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
+            flag = 1;
+        }
         printf("flag=%d\n", flag);
     }
 
@@ -2611,71 +2344,11 @@ int32_t TailReinsert(const InputParam *input, OutputParam *output, int *pos, int
     free(tmp);
 }
 
-int32_t cycleMerge(const InputParam *input, OutputParam *output){
-    struct KM km;
-    int n = input->ioVec.len + 1;
-    kmInit(&km, n, n, n);
-    kmSolve(&km);
-    cycleMergeMain(&km);
-
-    int cnt = 0;
-    int now = 1;
-    while (cnt < input->ioVec.len)
-    {
-        output->sequence[cnt++] = km.next[now] - 1;
-        now = km.next[now];
-    }
-    kmClear(&km);
-    if(dist_martix){
-        free(dist_martix);
-        dist_martix = NULL;
-    }
-
-    return RETURN_OK;
-}
 
 int32_t fastCycleMerge(const InputParam *input, OutputParam *output)
 {
     int duration_us = getDurationMicroseconds();
-
-    printf("[time] %s: start at %d\n", __func__, duration_us);
-    struct KM km;
-    int n = input->ioVec.len + 1;
-    kmInit(&km, n, n, n);
-    int match[maxn + 10];
-    kmGetDistance(1,1);
-    duration_us = getDurationMicroseconds();
-    printf("[time] %s: finish dist matrix %d\n", __func__, duration_us);
-    if(hungarianMinimumWeightPerfectMatchingDenseGraph_C(n, dist_martix, match)){
-        duration_us = getDurationMicroseconds();
-        printf("[time] %s: matching found at %d\n", __func__, duration_us);
-        for (int i = 0; i < n; i++)
-        {
-            int left = i + 1;
-            int right = match[i] + 1;
-            // printf("%d, %d, %d\n", i, left, right);
-            km.next[left] = right;
-            km.match[right] = left;
-        }
-        cycleMergeMain(&km);
-        duration_us = getDurationMicroseconds();
-        printf("[time] %s: merge end at %d\n", __func__, duration_us);
-    }
-    
-
-    int cnt = 0;
-    int now = 1;
-    while (cnt < input->ioVec.len)
-    {
-        output->sequence[cnt++] = km.next[now] - 1;
-        now = km.next[now];
-    }
-    kmClear(&km);
-    if (dist_martix)
-    {
-        free(dist_martix);
-        dist_martix = NULL;
-    }
+    CycleMerge(input, output->sequence);
 
     return RETURN_OK;
 }
@@ -2704,7 +2377,6 @@ int32_t merge(const InputParam *input, OutputParam *output)
     {
         HeadInfo status_tmp = {input->ioVec.ioArray[i].wrap, input->ioVec.ioArray[i].startLpos, HEAD_RW};
         Node min_node = {0, i + 1, getCost(&currentHead, &status_tmp)};
-
         for (int j = 0; j < input->ioVec.len; j++)
         {
             if (i == j)
@@ -2712,6 +2384,7 @@ int32_t merge(const InputParam *input, OutputParam *output)
             HeadInfo status1 = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].endLpos, HEAD_RW};
 
             Node tmp_node = {j + 1, i + 1, getCost(&status1, &status_tmp)};
+            // printf("%lu %lu: %lu\n", j+1, i+1, tmp_node.dis);
             if (tmp_node.dis < min_node.dis)
             {
                 min_node = tmp_node;
@@ -2744,14 +2417,6 @@ int32_t merge(const InputParam *input, OutputParam *output)
 
         if (nex[node->x] == 0 && (node->x == 0 || (nex[node->y] != node->x)) && vis[node->y] == 0 && find(node->x) != find(node->y))
         {
-            // TODO: tail sort
-            // tot_sz++;
-            // // 记录最后merge选取的最后10条边
-            // if (tot_sz > input->ioVec.len - lastpoints)
-            // {
-            //     pos[tot_sz + lastpoints - input->ioVec.len - 1] = node->y;
-            //     printf("pos[%d]=%d\n", tot_sz + lastpoints - input->ioVec.len - 1, node->y);
-            // }
             unite(node->x, node->y);
             nex[node->x] = node->y;
             vis[node->y] = 1;
@@ -2935,150 +2600,3 @@ int32_t merge_random(const InputParam *input, OutputParam *output)
     return RETURN_OK;
 }
 
-int32_t NearestNeighborAlgorithm(const InputParam *input, OutputParam *output)
-{
-    // 初始化输出参数
-    output->len = input->ioVec.len;
-
-    // 记录哪些请求已经被处理
-    bool processed[input->ioVec.len];
-    for (uint32_t i = 0; i < input->ioVec.len; ++i)
-    {
-        processed[i] = false;
-    }
-
-    // 初始化当前头位置为输入的头状态
-    HeadInfo currentHead = {input->headInfo.wrap, input->headInfo.lpos, input->headInfo.status};
-
-    // 对于每一个请求，找到距离当前头位置最近的未处理请求
-    for (uint32_t i = 0; i < input->ioVec.len; ++i)
-    {
-        int32_t minSeekTime = INT32_MAX;
-        uint32_t nextRequestIndex = 0;
-
-        for (uint32_t j = 0; j < input->ioVec.len; ++j)
-        {
-            if (processed[j])
-                continue;
-
-            HeadInfo nextHead = {input->ioVec.ioArray[j].wrap, input->ioVec.ioArray[j].startLpos, HEAD_RW};
-            // int32_t seekTime = SeekTimeCalculate(&currentHead, &nextHead);
-            int32_t seekTime = getCost(&currentHead, &nextHead);
-
-            if (seekTime < minSeekTime)
-            {
-                minSeekTime = seekTime;
-                nextRequestIndex = j;
-            }
-        }
-
-        // 更新当前头位置为找到的最近请求的末尾位置
-        currentHead.wrap = input->ioVec.ioArray[nextRequestIndex].wrap;
-        currentHead.lpos = input->ioVec.ioArray[nextRequestIndex].endLpos;
-        currentHead.status = HEAD_RW;
-
-        // 将该请求标记为已处理
-        processed[nextRequestIndex] = true;
-
-        // 将该请求添加到输出序列中
-        output->sequence[i] = input->ioVec.ioArray[nextRequestIndex].id;
-    }
-
-    return RETURN_OK;
-}
-
-// 包装 merge 函数的线程执行函数
-// TODO：cost加上磨损
-void *merge_thread(void *arg)
-{
-    ThreadArg *threadArg = (ThreadArg *)arg;
-
-    // 创建线程返回值
-    ThreadResult *result = (ThreadResult *)malloc(sizeof(ThreadResult));
-    result->output = threadArg->output;
-
-    merge(threadArg->input, result->output);
-    TotalAccessTime(threadArg->input, result->output, &result->accessTime);
-
-    pthread_exit(result); // 返回结果
-}
-
-// 包装 merge_random 函数的线程执行函数
-// TODO：cost加上磨损
-void *merge_random_thread(void *arg)
-{
-    ThreadArg *threadArg = (ThreadArg *)arg;
-
-    // 创建线程返回值
-    ThreadResult *result = (ThreadResult *)malloc(sizeof(ThreadResult));
-    result->output = threadArg->output;
-
-    merge_random(threadArg->input, result->output);
-    TotalAccessTime(threadArg->input, result->output, &result->accessTime);
-
-    pthread_exit(result); // 返回结果
-}
-
-// 线程1：执行 partition_scan 和 merge
-// TODO：cost加上磨损
-void *partition_scan_merge_thread(void *arg)
-{
-    int min_time = 0x3f3f3f3f;
-    ThreadArg *threadArg = (ThreadArg *)arg;
-
-    int *best_sequence = (int *)malloc(threadArg->input->ioVec.len * sizeof(int));
-    if (!best_sequence)
-        return NULL; // 内存分配失败，直接返回
-
-    partition_scan(threadArg->input, threadArg->output);
-    TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    if (threadArg->accessTime->addressDuration < min_time)
-    {
-        min_time = threadArg->accessTime->addressDuration;
-        memcpy(best_sequence, threadArg->output->sequence, threadArg->input->ioVec.len * sizeof(int));
-    }
-
-    merge(threadArg->input, threadArg->output);
-    TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    if (threadArg->accessTime->addressDuration < min_time)
-    {
-        min_time = threadArg->accessTime->addressDuration;
-        memcpy(best_sequence, threadArg->output->sequence, threadArg->input->ioVec.len * sizeof(int));
-    }
-
-    memcpy(threadArg->output->sequence, best_sequence, threadArg->input->ioVec.len * sizeof(int));
-    free(best_sequence);
-    return NULL;
-}
-
-// 线程2：执行 MPScan 和 merge_random
-// TODO：cost加上磨损
-void *mp_scan_merge_random_thread(void *arg)
-{
-    int min_time = 0x3f3f3f3f;
-    ThreadArg *threadArg = (ThreadArg *)arg;
-
-    int *best_sequence = (int *)malloc(threadArg->input->ioVec.len * sizeof(int));
-    if (!best_sequence)
-        return NULL; // 内存分配失败，直接返回
-
-    MPScan(threadArg->input, threadArg->output);
-    TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    if (threadArg->accessTime->addressDuration < min_time)
-    {
-        min_time = threadArg->accessTime->addressDuration;
-        memcpy(best_sequence, threadArg->output->sequence, threadArg->input->ioVec.len * sizeof(int));
-    }
-
-    merge_random(threadArg->input, threadArg->output);
-    TotalAccessTime(threadArg->input, threadArg->output, threadArg->accessTime);
-    if (threadArg->accessTime->addressDuration < min_time)
-    {
-        min_time = threadArg->accessTime->addressDuration;
-        memcpy(best_sequence, threadArg->output->sequence, threadArg->input->ioVec.len * sizeof(int));
-    }
-
-    memcpy(threadArg->output->sequence, best_sequence, threadArg->input->ioVec.len * sizeof(int));
-    free(best_sequence);
-    return NULL;
-}
