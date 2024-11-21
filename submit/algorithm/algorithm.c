@@ -77,9 +77,9 @@ void initCostWeight(const InputParam *input, OutputParam *output) {
         cost_weight->alpha = 0.5, cost_weight->beta = 0.3, cost_weight->gamma = 0.2;
         // printf("hdd\n");
     }
-    cost_weight->alpha = cost_weight->alpha * 1e8 / cost_weight->b_rt;
-    cost_weight->beta = cost_weight->beta * 1e8 / cost_weight->b_bw;
-    cost_weight->gamma = cost_weight->gamma * 1e8 / cost_weight->b_mw;
+    cost_weight->alpha = cost_weight->alpha * 1e7 / cost_weight->b_rt;
+    cost_weight->beta = cost_weight->beta * 1e7 / cost_weight->b_bw;
+    cost_weight->gamma = cost_weight->gamma * 1e7 / cost_weight->b_mw;
 }
 
 int32_t SCAN(const InputParam *input, OutputParam *output) {

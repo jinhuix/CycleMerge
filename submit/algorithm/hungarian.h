@@ -1,6 +1,7 @@
 #ifndef HUNGARIAN_H
 #define HUNGARIAN_H
 
+#include <stdio.h>
 #include <vector>
 #include <sys/time.h>
 #include "../public.h"
