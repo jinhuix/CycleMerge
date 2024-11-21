@@ -887,6 +887,8 @@ int quickSelect(int arr[], int low, int high, int k)
     return -1; // 如果k超出数组范围，返回-1或其他适当的值
 }
 
+
+
 std::vector<int> CycleMergeMain(const Graph & graph, std::vector<int> &next_vec)
 {
     int path_length = 0;
@@ -900,6 +902,12 @@ std::vector<int> CycleMergeMain(const Graph & graph, std::vector<int> &next_vec)
         prev_vec[next_vec[i]] = i;
         matched_weight += graph.getEdgeCost(i, next_vec[i]);
         // printf(" %d -> %d: %d\n", i, next_vec[i], adjMatrix.getEdgeCost(i, next_vec[i]));
+    }
+
+    std::vector<MergePoint> merge_point_vec;
+    for(int i = 0; i < next_vec.size(); i++)
+    {
+        merge_point_vec.push_back(MergePoint(i, -1, -1, -1, -1));
     }
 
     printf("matched_weight = %d\n", matched_weight);
@@ -920,9 +928,9 @@ std::vector<int> CycleMergeMain(const Graph & graph, std::vector<int> &next_vec)
         if (visit_node[next])
         {
             cycle_cnt++;
-            int visited_start, visited_end;
-            int unvisited_start, unvisited_end;
-            localCycleMergeFindMinimalMerge(graph, visit_node, next_vec, prev_vec, visited_start, visited_end, unvisited_start, unvisited_end);
+            int visited_start = -1, visited_end = -1;
+            int unvisited_start = -1, unvisited_end = -1;
+            localCycleMergeFindMinimalMerge(graph, visit_node, next_vec, prev_vec, visited_start, visited_end, unvisited_start, unvisited_end, merge_point_vec);
 
             next_vec[visited_start] = unvisited_start;
             next_vec[unvisited_end] = visited_end;
@@ -952,110 +960,61 @@ std::vector<int> CycleMergeMain(const Graph & graph, std::vector<int> &next_vec)
 }
 
 
-// std::vector<int> CycleMergeMain(const AdjMatrix &adjMatrix, std::vector<int> &next_vec)
-// {
-//     int path_length = 0;
-//     int cycle_cnt = 1;
-//     int last_end = -1;
-//     std::vector<int> visit_node(adjMatrix.n, 0);
-//     std::vector<int> prev_vec(next_vec.size(), -1);
-//     int matched_weight = 0;
-//     for (int i = 0; i < next_vec.size(); i++)
-//     {
-//         prev_vec[next_vec[i]] = i;
-//         matched_weight += adjMatrix.getEdgeCost(i, next_vec[i]);
-//         // printf(" %d -> %d: %d\n", i, next_vec[i], adjMatrix.getEdgeCost(i, next_vec[i]));
-//     }
-
-//     printf("matched_weight = %d\n", matched_weight);
-
-//     int now_node = 0;
-
-//     int visit_cnt = 0;
-//     while (visit_cnt != adjMatrix.n)
-//     {
-//         visit_node[now_node] = 1;
-//         visit_cnt++;
-//         if (visit_cnt == adjMatrix.n)
-//         {
-//             break;
-//         }
-
-//         int next = next_vec[now_node];
-//         if (visit_node[next])
-//         {
-//             cycle_cnt++;
-//             int visited_start, visited_end;
-//             int unvisited_start, unvisited_end;
-//             localCycleMergeFindMinimalMerge(adjMatrix, visit_node, next_vec, prev_vec, visited_start, visited_end, unvisited_start, unvisited_end);
-
-//             next_vec[visited_start] = unvisited_start;
-//             next_vec[unvisited_end] = visited_end;
-//             prev_vec[unvisited_start] = visited_start;
-//             prev_vec[visited_end] = unvisited_end;
-
-//             path_length += adjMatrix.getEdgeCost(visited_start, unvisited_start);
-//             path_length += adjMatrix.getEdgeCost(unvisited_end, visited_end);
-//             path_length -= adjMatrix.getEdgeCost(visited_start, visited_end);
-//             now_node = unvisited_start;
-//         }
-//         else
-//         {
-//             path_length += adjMatrix.getEdgeCost(now_node, next);
-//             now_node = next;
-//         }
-//     }
-//     std::vector<int> walk_order;
-//     int current_node = next_vec[0];
-//     while(current_node != 0){
-//         walk_order.push_back(current_node);
-//         current_node = next_vec[current_node];
-//     }
-//     printf("path length = %d, cycle_cnt = %d\n", path_length, cycle_cnt);
-
-//     return walk_order;
-// }
-
-
-
 std::vector<int> CycleMergeWithAdjMatrix(InputParam *input)
 {
-    printf("%s\n", __func__);
+    int32_t duration_us = getDurationMicroseconds();
+    printf("%s: =%d\n", __func__, duration_us);
     AdjMatrix adjMatrix(input);
+
+    duration_us = getDurationMicroseconds();
+    printf("%s: adjMatrix=%d\n", __func__, duration_us);
+
     std::vector<int> matching = hungarianMinimumWeightPerfectMatchingDenseGraph(adjMatrix);
+
+    duration_us = getDurationMicroseconds();
+    printf("%s: matching=%d\n", __func__, duration_us);
 
     std::vector<int> &next = matching;
 
-    printf("matching: %d\n", matching.size());
-
     std::vector<int> walk_order = CycleMergeMain(adjMatrix, next);
+
+    duration_us = getDurationMicroseconds();
+    printf("%s: CycleMergeMain=%d\n", __func__, duration_us);
 
     return walk_order;
 }
 
 std::vector<int> CycleMergeWithAdjTable(InputParam *input, int max_edge_per_node){
-    printf("%s\n", __func__);
     int n = input->ioVec.len + 1;
+    int32_t duration_us = getDurationMicroseconds();
+    printf("%s=%d\n", __func__, duration_us);
 
     AdjTable adjtable(input, max_edge_per_node);
-    // for(int i = 0; i < n; i++){
-    //     for(int edgeIdx = 0; edgeIdx < adjtable.leftEdges[i].size(); edgeIdx++){
-    //         printf("%d %d %d\n", i, adjtable.leftEdges[i][edgeIdx].right, adjtable.leftEdges[i][edgeIdx].cost);
-    //     }
-    // }
+
+    duration_us = getDurationMicroseconds();
+    printf("%s: construct adj table=%d\n", __func__, duration_us);
 
     std::vector<int> matching = hungarianMinimumWeightPerfectMatching(n, adjtable.leftEdges);
+
+    duration_us = getDurationMicroseconds();
+    printf("%s: matching=%d\n", __func__, duration_us);
 
     std::vector<int> &next = matching;
 
     adjtable.SortAllEdges();
 
+    duration_us = getDurationMicroseconds();
+    printf("%s: sortedges=%d\n", __func__, duration_us);
+
     std::vector<int> walk_order = CycleMergeMain(adjtable, next);
+
+    duration_us = getDurationMicroseconds();
+    printf("%s: CycleMergeMain=%d\n", __func__, duration_us);
 
     return walk_order;
 }
 
-void localCycleMergeFindMinimalMerge(const Graph &graph, const std::vector<int> &visit_node, const std::vector<int> &next_vec, const std::vector<int> &prev_vec, int &visited_start, int &visited_end, int &unvisited_start, int &unvisited_end)
+void localCycleMergeFindMinimalMerge(const Graph &graph, const std::vector<int> &visit_node, const std::vector<int> &next_vec, const std::vector<int> &prev_vec, int &visited_start, int &visited_end, int &unvisited_start, int &unvisited_end, std::vector<MergePoint> & minimal_merge_point)
 {
     int min_cost = oo;
     int better_cnt = 0;
@@ -1063,8 +1022,29 @@ void localCycleMergeFindMinimalMerge(const Graph &graph, const std::vector<int> 
     {
         if (visit_node[i])
         {
-            for (int j = 0; j < graph.n; j++)
-            {
+            if(
+                (minimal_merge_point[i].vis_end == next_vec[i])&&
+                (!visit_node[minimal_merge_point[i].unv_start]) &&
+                (minimal_merge_point[i].unv_start != -1)
+            ){
+                // 这个merge point不需要更新
+                if (visited_start == -1 || minimal_merge_point[i].cost < min_cost)
+                {
+                    min_cost = minimal_merge_point[i].cost;
+                    visited_start = i;
+                    visited_end = next_vec[i];
+                    int j = minimal_merge_point[i].unv_start;
+                    unvisited_start = j;
+                    unvisited_end = prev_vec[j];
+                }
+                continue;
+            }
+            int min_cost_for_i = oo;
+            int edge_num = graph.getEdgeNumFromI(i);
+            for(int edgeIdx = 0; edgeIdx < edge_num; edgeIdx++){
+                LeftEdge edge = graph.getEdgeFromI(i, edgeIdx);
+                int j = edge.right;
+            
                 if (!visit_node[j])
                 {
                     int this_cost = 0;
@@ -1072,6 +1052,12 @@ void localCycleMergeFindMinimalMerge(const Graph &graph, const std::vector<int> 
                     this_cost += graph.getEdgeCost(prev_vec[j], next_vec[i]);
                     this_cost -= graph.getEdgeCost(i, next_vec[i]);
                     this_cost -= graph.getEdgeCost(prev_vec[j], j);
+
+                    if(min_cost_for_i > this_cost){
+                        min_cost_for_i = this_cost;
+                        minimal_merge_point[i] = MergePoint(i, next_vec[i], j, prev_vec[j], this_cost);
+                    }
+
                     if (visited_start == -1 || this_cost < min_cost)
                     {
                         min_cost = this_cost;
@@ -1106,6 +1092,8 @@ void CycleMerge(InputParam *input, int * walk_order)
         }
     }
     else{
+        int32_t duration_us = getDurationMicroseconds();
+        printf("%s=%d\n", __func__, duration_us);
         std::vector<int> walk_order_vec = CycleMergeWithAdjTable(input, edge_per_node);
         assert(walk_order_vec.size() == n-1);
         for(int i = 0; i < walk_order_vec.size(); i++){

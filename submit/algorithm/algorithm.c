@@ -883,49 +883,19 @@ uint32_t getCost(const HeadInfo *start, const HeadInfo *target) {
 int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
     uint32_t min_cost = UINT32_MAX;
     uint32_t total_cost = UINT32_MAX;
-    int *best_sequence = (int *)malloc(input->ioVec.len * sizeof(int));
-
-    if (0 && input->ioVec.len < 2000)
+    if (1 || input->ioVec.len < 2000)
     {
         int flag = 1;
         AccessTime accessTime = {0};
         fastCycleMerge(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 1;
-        }
-        printf("flag=%d\n", flag);
     }
     else
     {
         int flag = 3;
-        merge(input, output); // 在算法内部还是只考虑寻址时长
         AccessTime accessTime = {0};
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 3;
-        }
-        memcpy(output->sequence, best_sequence, input->ioVec.len * sizeof(int));
-        printf("flag=%d\n", flag);
-
-        fastCycleMerge(input, output);
-        total_cost = getTotalCost(input, output);
-        if (total_cost < min_cost)
-        {
-            min_cost = total_cost;
-            memcpy(best_sequence, output->sequence, input->ioVec.len * sizeof(int));
-            flag = 1;
-        }
-        printf("flag=%d\n", flag);
+        merge(input, output); // 在算法内部还是只考虑寻址时长
     }
-
-    free(best_sequence);
+    total_cost = getTotalCost(input, output);
     return 0;
 }
 
@@ -2348,6 +2318,7 @@ int32_t TailReinsert(const InputParam *input, OutputParam *output, int *pos, int
 int32_t fastCycleMerge(const InputParam *input, OutputParam *output)
 {
     int duration_us = getDurationMicroseconds();
+    output->len = input->ioVec.len;
     CycleMerge(input, output->sequence);
 
     return RETURN_OK;

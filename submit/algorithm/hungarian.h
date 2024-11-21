@@ -21,11 +21,32 @@ struct WeightedBipartiteEdge {
     WeightedBipartiteEdge(int left, int right, int cost) : left(left), right(right), cost(cost) {}
 };
 
+struct LeftEdge
+{
+    int right;
+    int cost;
+
+    LeftEdge() : right(), cost() {}
+    LeftEdge(int right, int cost) : right(right), cost(cost) {}
+
+    const bool operator<(const LeftEdge &otherEdge) const
+    {
+        return right < otherEdge.right || (right == otherEdge.right && cost < otherEdge.cost);
+    }
+};
+
+
 
 struct Graph{
     int n;
     virtual int getEdgeCost(int i, int j) const = 0;
+
+    virtual int getEdgeNumFromI(int i) const = 0;
+
+    virtual LeftEdge getEdgeFromI(int i, int edgeIdx) const = 0;
 };
+
+
 
 struct AdjMatrix: public Graph{
     uint32_t * cost;
@@ -80,21 +101,18 @@ struct AdjMatrix: public Graph{
         if(cost[i*(n) + j] == oo) return oo;
         return cost[i*(n) + j];
     }
-};
 
-struct LeftEdge
-{
-    int right;
-    int cost;
+    int getEdgeNumFromI(int i) const{
+        return n;
+    }
 
-    LeftEdge() : right(), cost() {}
-    LeftEdge(int right, int cost) : right(right), cost(cost) {}
-
-    const bool operator<(const LeftEdge &otherEdge) const
-    {
-        return right < otherEdge.right || (right == otherEdge.right && cost < otherEdge.cost);
+    LeftEdge getEdgeFromI(int i, int edge_idx) const{
+        int j = edge_idx;
+        LeftEdge edge(j, cost[i*(n) + j]);
+        return edge;
     }
 };
+
 
 
 struct AdjTable : public Graph
@@ -146,7 +164,7 @@ struct AdjTable : public Graph
                 cost_vec_copy[j] = cost_value;
             }
 
-            int threshold = quickSelect(cost_vec_copy, 0, n-1, max_edge_per_node);
+            int threshold = quickSelect(cost_vec_copy, 0, n-1, max_edge_per_node - 2*near_edge);
 
             for(int j = 0; j < n; j++){
                 if(j == i) continue;
@@ -167,26 +185,67 @@ struct AdjTable : public Graph
         }
     }
 
-    int getEdgeCost(int i, int j) const {
-        
-
+    int getEdgeNumFromI(int i) const{
         const auto & edges = leftEdges[i];
-        int left = 0;
-        int right = edges.size() - 1;
-
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-
-            if (edges[mid].right == j) {
-                return edges[mid].cost;
-            } else if (edges[mid].right < j) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        return oo;
+        return edges.size();
     }
+
+    LeftEdge getEdgeFromI(int i, int edge_idx) const{
+        const auto & edges = leftEdges[i];
+        LeftEdge edge = edges[edge_idx];
+        return edge;
+    }
+
+    int getEdgeCost(int i, int j) const {
+        // const auto & edges = leftEdges[i];
+        // int left = 0;
+        // int right = edges.size() - 1;
+
+        // while (left <= right) {
+        //     int mid = left + (right - left) / 2;
+
+        //     if (edges[mid].right == j) {
+        //         return edges[mid].cost;
+        //     } else if (edges[mid].right < j) {
+        //         left = mid + 1;
+        //     } else {
+        //         right = mid - 1;
+        //     }
+        // }
+        // return oo;
+
+        HeadInfo src_pos, target_pos;
+        if(i == 0){
+            src_pos = input_ptr->headInfo;
+        }
+        else{
+            src_pos.lpos = input_ptr->ioVec.ioArray[i-1].endLpos;
+            src_pos.status = HEAD_RW;
+            src_pos.wrap = input_ptr->ioVec.ioArray[i-1].wrap;
+        }
+
+        uint32_t cost_value = oo;
+        if(j == i){
+            ;
+        }
+        else if(j == 0){
+            cost_value = 0;
+        }
+        else{
+            target_pos.lpos = input_ptr->ioVec.ioArray[j-1].startLpos;
+            target_pos.status = HEAD_RW;
+            target_pos.wrap = input_ptr->ioVec.ioArray[j-1].wrap;
+            cost_value = getCost(&src_pos, &target_pos);
+        }
+
+        return cost_value;
+    }
+};
+
+struct MergePoint{
+    int vis_start, vis_end, unv_start, unv_end;
+    int cost;
+    MergePoint(int _vis_start, int _vis_end, int _unv_start, int _unv_end, int _cost): vis_start(_vis_start), vis_end(_vis_end), unv_start(_unv_start), unv_end(_unv_end), cost(_cost) {}
 };
 
 // Given the number of nodes on each side of the bipartite graph and a list of edges, returns a minimum-weight perfect matching.
@@ -198,7 +257,7 @@ const std::vector<int> hungarianMinimumWeightPerfectMatching(int n, const std::v
 const std::vector<int> hungarianMinimumWeightPerfectMatchingDenseGraph(const AdjMatrix & adjMatrix);
 
 
-void localCycleMergeFindMinimalMerge(const Graph &adjMatrix, const std::vector<int> &visit_node, const std::vector<int> &next_vec, const std::vector<int> &prev_vec, int &visited_start, int &visited_end, int &unvisited_start, int &unvisited_end);
+void localCycleMergeFindMinimalMerge(const Graph &adjMatrix, const std::vector<int> &visit_node, const std::vector<int> &next_vec, const std::vector<int> &prev_vec, int &visited_start, int &visited_end, int &unvisited_start, int &unvisited_end, std::vector<MergePoint> & minimal_merge_point);
 
 std::vector<int> CycleMergeWithAdjMatrix(InputParam *input);
 std::vector<int> CycleMergeWithAdjTable(InputParam *input);
