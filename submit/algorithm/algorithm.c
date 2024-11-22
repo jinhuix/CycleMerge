@@ -895,7 +895,7 @@ int32_t IOScheduleAlgorithm(const InputParam *input, OutputParam *output) {
         AccessTime accessTime = {0};
         merge(input, output); // 在算法内部还是只考虑寻址时长
     }
-    total_cost = getTotalCost(input, output);
+    // total_cost = getTotalCost(input, output);
     return 0;
 }
 

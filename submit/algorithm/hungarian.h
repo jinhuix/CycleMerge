@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <memory>
 #include <sys/time.h>
 #include "../public.h"
 #include "algorithm.h"
@@ -24,7 +25,7 @@ struct WeightedBipartiteEdge {
 
 struct LeftEdge
 {
-    int right;
+    uint16_t right;
     int cost;
 
     LeftEdge() : right(), cost() {}
@@ -34,7 +35,7 @@ struct LeftEdge
     {
         return right < otherEdge.right || (right == otherEdge.right && cost < otherEdge.cost);
     }
-};
+}__attribute__((packed));
 
 
 

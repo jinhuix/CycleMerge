@@ -439,7 +439,7 @@ const std::vector<int> hungarianMinimumWeightPerfectMatching(const int n, const 
 
 const std::vector<int> hungarianMinimumWeightPerfectMatchingDenseGraph(const AdjMatrix &adjMatrix)
 {
-    printf("%s\n", __func__);
+    // printf("%s\n", __func__);
     // Edge lists for each left node.
     int n = adjMatrix.n;
 
@@ -963,23 +963,23 @@ std::vector<int> CycleMergeMain(const Graph & graph, std::vector<int> &next_vec)
 std::vector<int> CycleMergeWithAdjMatrix(InputParam *input)
 {
     int32_t duration_us = getDurationMicroseconds();
-    printf("%s: =%d\n", __func__, duration_us);
+    // printf("%s: =%d\n", __func__, duration_us);
     AdjMatrix adjMatrix(input);
 
     duration_us = getDurationMicroseconds();
-    printf("%s: adjMatrix=%d\n", __func__, duration_us);
+    // printf("%s: adjMatrix=%d\n", __func__, duration_us);
 
     std::vector<int> matching = hungarianMinimumWeightPerfectMatchingDenseGraph(adjMatrix);
 
     duration_us = getDurationMicroseconds();
-    printf("%s: matching=%d\n", __func__, duration_us);
+    // printf("%s: matching=%d\n", __func__, duration_us);
 
     std::vector<int> &next = matching;
 
     std::vector<int> walk_order = CycleMergeMain(adjMatrix, next);
 
     duration_us = getDurationMicroseconds();
-    printf("%s: CycleMergeMain=%d\n", __func__, duration_us);
+    // printf("%s: CycleMergeMain=%d\n", __func__, duration_us);
 
     return walk_order;
 }
@@ -987,29 +987,29 @@ std::vector<int> CycleMergeWithAdjMatrix(InputParam *input)
 std::vector<int> CycleMergeWithAdjTable(InputParam *input, int max_edge_per_node){
     int n = input->ioVec.len + 1;
     int32_t duration_us = getDurationMicroseconds();
-    printf("%s=%d\n", __func__, duration_us);
+    // printf("%s=%d\n", __func__, duration_us);
 
     AdjTable adjtable(input, max_edge_per_node);
 
     duration_us = getDurationMicroseconds();
-    printf("%s: construct adj table=%d\n", __func__, duration_us);
+    // printf("%s: construct adj table=%d\n", __func__, duration_us);
 
     std::vector<int> matching = hungarianMinimumWeightPerfectMatching(n, adjtable.leftEdges);
 
     duration_us = getDurationMicroseconds();
-    printf("%s: matching=%d\n", __func__, duration_us);
+    // printf("%s: matching=%d\n", __func__, duration_us);
 
     std::vector<int> &next = matching;
 
     adjtable.SortAllEdges();
 
     duration_us = getDurationMicroseconds();
-    printf("%s: sortedges=%d\n", __func__, duration_us);
+    // printf("%s: sortedges=%d\n", __func__, duration_us);
 
     std::vector<int> walk_order = CycleMergeMain(adjtable, next);
 
     duration_us = getDurationMicroseconds();
-    printf("%s: CycleMergeMain=%d\n", __func__, duration_us);
+    // printf("%s: CycleMergeMain=%d\n", __func__, duration_us);
 
     return walk_order;
 }
@@ -1084,8 +1084,8 @@ void CycleMerge(InputParam *input, int * walk_order)
 
     if(edge_per_node > n){
         std::vector<int> walk_order_vec = CycleMergeWithAdjMatrix(input);
-        printf("%d\n", walk_order_vec.size());
-        assert(walk_order_vec.size() == n-1);
+        // printf("%d\n", walk_order_vec.size());
+        // assert(walk_order_vec.size() == n-1);
 
         for(int i = 0; i < walk_order_vec.size(); i++){
             walk_order[i] = walk_order_vec[i];
