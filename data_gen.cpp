@@ -23,7 +23,7 @@ class Generator {
     std::vector<int> wrap;
     // std::vector<double> lpos;
     std::vector<int> lpos;
-    int last_wrap = -1, last_lpos = -1;
+    int last_wrap = -1, last_lpos = -1, random_flag = 0;
 
     std::mt19937 random;
     std::normal_distribution<double> normal_dist;
@@ -48,7 +48,8 @@ class Generator {
     }
 
     void generateSequentialOne(int &wrap, int &lpos, int io_nums) {
-        if (last_wrap == MAX_WRAP && MAX_LPOS - last_lpos <= 2000) {
+        if (random_flag || (last_wrap == MAX_WRAP && last_lpos <= 2000)) {
+            random_flag = 1;
             generateRandomOne(wrap, lpos);
             return;
         }
@@ -62,13 +63,13 @@ class Generator {
             wrap = last_wrap;
         }
         if (wrap & 1) {
-            int ran_num = randomIntBetween(20000000 / io_nums, 50000000 / io_nums);
+            int ran_num = randomIntBetween(200000000 / io_nums, 750000000 / io_nums);
             if (last_lpos < ran_num)
                 lpos = 0;
             else
                 lpos = last_lpos - ran_num;
         } else {
-            int ran_num = randomIntBetween(20000000 / io_nums, 50000000 / io_nums);
+            int ran_num = randomIntBetween(200000000 / io_nums, 750000000 / io_nums);
             if (last_lpos + ran_num > MAX_LPOS - 2000)
                 lpos = MAX_LPOS - 2000;
             else
