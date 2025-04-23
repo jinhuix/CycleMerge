@@ -1,28 +1,40 @@
-## 开发环境要求：
-Ubuntu  ≥ 	18.04
-cmake	≥  	3.27.5
-make	≥ 	4.1
-GCC		≥ 	7.5
+## Introduction
 
-## 编译运行
+The project was an entry for the 2nd University Student Information Storage Technology Competition organised by Huawei and won the Grand Prize. The official website of the competition: https://competition.huaweicloud.com/information/1000042106/introduction
+
+Introduction to the theme of the competition: 
+
+Tape media has a high capacity/price ratio and is widely used in archiving and data protection scenarios. Tape can only be a single concurrent read and write operations, any drop, random addressing or unreasonable tape access order will wear out the hardware life, resulting in tens of seconds/minutes of user delay, thus affecting the performance and life of the tape. In scenarios such as read/write correlation, tapes can utilize systematic techniques such as SSD caching and data scheduling to optimize lifetime and performance. However, in random read scenarios, tapes often use IO scheduling techniques to optimally sequence a batch of data accesses in order to significantly reduce seek latency and access wear. Magnetron disk IO scheduling techniques are typical OTSP (Open Loop Travelling Salesman Problem) optimal scheduling problems.
+
+The main challenge of this problem is how to achieve the optimal scheduling of IO by considering the constraints of multiple variables such as the number of IO requests, IO request time, algorithm complexity, etc. and constructing and solving a combined optimization model with the optimization objective of minimizing the tape seek latency and wear and tear.
+
+
+
+## Development Environment Requirements
+
+Ubuntu  ≥   18.04
+cmake   ≥   3.27.5
+make    ≥   4.1
+GCC     ≥   7.5
+
+
+
+## Compile and Run
+
+Compile:
 
 ```shell
-# 方法1
 cd project_hw
 mkdir build
 cd build
 cmake ..
 make
-./project_hw -f ../dataset/case_1.txt
-
-# 方法2
-./run.sh
+./project_hw -f /home/project_hw/dataset/case_1.txt
 ```
 
-
+Running Example:
 
 ```shell
-# 示例
 [root@kwepwebenv20531 project_hw]# mkdir build
 [root@kwepwebenv20531 project_hw]# cd build/
 [root@kwepwebenv20531 build]# cmake ..
@@ -32,13 +44,6 @@ Scanning dependencies of target project_hw
 [ 66%] Building C object CMakeFiles/project_hw.dir/algorithm/algorithm.c.o
 [100%] Linking C executable project_hw
 [100%] Built target project_hw
-[root@kwepwebenv20531 build]# ll
-总用量 48
--rw-r--r--. 1 root root 14459 7月  11 15:13 CMakeCache.txt
-drwxr-xr-x. 5 root root   235 7月  11 15:13 CMakeFiles
--rw-r--r--. 1 root root  1633 7月  11 15:13 cmake_install.cmake
--rw-r--r--. 1 root root  6094 7月  11 15:13 Makefile
--rwxr-xr-x. 1 root root 17360 7月  11 15:13 project_hw
 [root@kwepwebenv20531 build]# 
 [root@kwepwebenv20531 build]# ./project_hw -f /home/project_hw/dataset/case_4.txt
 Welcome to HW project.
@@ -60,12 +65,10 @@ io [10] : [10,6,500,1500]
 
 
 Key Metrics:
-	algorithmRunningDuration:	 45.000000 ms
-	addressingDuration:		 123 ms
-	readDuration:			 456 ms
-	tapeBeltWear:			 200
-	tapeMotorWear:			 100
+    algorithmRunningDuration:    45.000000 ms
+    addressingDuration:      123 ms
+    readDuration:            456 ms
+    tapeBeltWear:            200
+    tapeMotorWear:           100
 output sequence: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ]
-[root@kwepwebenv20531 build]# 
 ```
-
